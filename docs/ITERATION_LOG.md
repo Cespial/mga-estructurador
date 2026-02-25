@@ -83,3 +83,48 @@
 
 **Siguientes pasos**
 - Wave 3: WOW Landing page
+
+---
+
+## Iteracion 2026-02-25-3 -- Wave 3 -- WOW Landing publica
+
+**Objetivo**
+- Landing publica real en `/` (no redirect a login)
+- Secciones: Hero, Problema, Solucion, Flujo 4 pasos, Beneficios, Evidencia, CTA, Footer
+- Demo interactiva: wizard → scoring → resumen ejecutivo mock
+- SEO basico: robots.txt, sitemap.xml, OG/Twitter metadata
+
+**Scope**
+- Archivos tocados:
+  - `src/app/page.tsx` (reescrito) — landing completa con 8 secciones
+  - `src/components/landing/interactive-demo.tsx` (nuevo) — demo guiada con 3 pasos
+  - `src/app/robots.ts` (nuevo) — reglas robots.txt
+  - `src/app/sitemap.ts` (nuevo) — sitemap.xml
+
+**Cambios**
+- Hero con promesa de valor + 2 CTAs (demo + login)
+- Visualizacion de flujo en 4 pasos (Configurar → Diligenciar → Evaluar → Evidenciar)
+- Seccion problema (3 dolores: info dispersa, evaluacion manual, sin evidencia)
+- Seccion solucion (3 columnas: entidad configura, municipio diligencia, evaluacion)
+- Demo interactiva:
+  - Wizard con 2 etapas, 3 campos, boton "Llenar ejemplo"
+  - Scoring animado con rubrica ponderada (3 criterios con pesos)
+  - Resumen ejecutivo estilo PDF con evaluacion y recomendaciones
+- Seccion beneficios (4 cards: estandarizacion, evaluacion objetiva, IA, PDF)
+- Seccion "Auditable por diseno" (rubrica, PDF, control de acceso)
+- CTA final + footer
+- Landing es pagina estatica (prerendered)
+- robots.txt bloquea /dashboard/ y /api/
+- sitemap.xml con / y /login
+
+**Quality Gates**
+- lint: pass
+- typecheck: pass
+- build: pass (24 rutas, nuevas: / (static), /robots.txt, /sitemap.xml)
+
+**Commit**
+- hash: b5ad5c8
+- mensaje: `feat: wave 3 — public landing page + interactive demo + SEO`
+
+**Siguientes pasos**
+- Wave 4: Microinteracciones + sorpresa

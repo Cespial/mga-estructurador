@@ -60,6 +60,18 @@ Descripción: {campo_descripcion}
 Requerido: {Sí/No}
 </etapa_mga>
 
+[Si hay documentos procesados para la convocatoria (RAG):]
+<contexto_rag>
+Los siguientes fragmentos provienen de documentos oficiales de la convocatoria.
+Úsalos como fuente principal:
+
+[Fuente 1: {file_name} (relevancia: {similarity}%)]
+{chunk_text}
+
+[Fuente 2: {file_name} (relevancia: {similarity}%)]
+{chunk_text}
+</contexto_rag>
+
 <instruccion>
 Ayuda al municipio a completar el campo "{campo_nombre}" de la etapa "{etapa_nombre}".
 
@@ -92,11 +104,35 @@ Selección via `LLM_PROVIDER` env var (default: `openai`).
 2. Validar request con Zod (`aiAssistRequestSchema`)
 3. Rate limit: máx 10 req/min por usuario (via audit_logs count)
 4. Fetch convocatoria + template + etapa + campo
-5. Build system prompt + user prompt
-6. Hash del prompt (SHA-256, primeros 16 chars)
-7. Call LLM via adapter
-8. Validar respuesta con Zod (fallback graceful)
-9. Write audit_log (actor, action, prompt_hash, response, duration)
-10. Return response + `_meta` (model, duration_ms)
+5. **RAG retrieval**: `retrieveContext(convocatoria_id, query, top_k=5, threshold=0.7)`
+6. Build system prompt + user prompt (con `<contexto_rag>` si hay chunks)
+7. Hash del prompt (SHA-256, primeros 16 chars)
+8. Call LLM via adapter
+9. Validar respuesta con Zod (fallback graceful)
+10. Write audit_log (actor, action, prompt_hash, sources_used, response, duration)
+11. Return response + `_meta` (model, duration_ms)
+
+**Archivo fuente**: `src/app/api/ai/assist/route.ts`
+
+## RAG Pipeline (Document Processing)
+
+1. Entidad sube documento (PDF/TXT/DOCX) → Supabase Storage bucket `convocatoria-docs`
+2. Se registra metadata en tabla `documents` (status: `pending`)
+3. Entidad hace click en "Procesar" → POST `/api/documents/process`
+4. Pipeline:
+   - Descarga archivo de Storage
+   - Extrae texto: PDF (`pdf-parse`), TXT (directo), DOCX (strip XML tags)
+   - Chunking: ~500 tokens con 50 tokens overlap, breakpoints en fin de oración
+   - Embeddings: `text-embedding-3-small` via OpenAI (batch de 100)
+   - Insert en tabla `embeddings` con convocatoria_id
+   - Update document status → `ready`
+5. En cada request al asistente IA, se hace similarity search via `match_embeddings` RPC
+6. Los chunks relevantes se incluyen en el prompt como `<contexto_rag>`
+
+**Archivos fuente**:
+- `src/lib/ai/chunker.ts` — Chunking con overlap
+- `src/lib/ai/embeddings.ts` — Generación de embeddings (OpenAI)
+- `src/lib/ai/retrieval.ts` — Similarity search via Supabase RPC
+- `src/app/api/documents/process/route.ts` — Pipeline completo
 
 **Archivo fuente**: `src/app/api/ai/assist/route.ts`

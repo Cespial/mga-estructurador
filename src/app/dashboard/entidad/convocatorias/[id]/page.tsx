@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { updateConvocatoria, deleteConvocatoria } from "../actions";
-import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails } from "@/lib/types/database";
+import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails, Document } from "@/lib/types/database";
 
 export default async function ConvocatoriaDetailPage({
   params,
@@ -47,6 +47,14 @@ export default async function ConvocatoriaDetailPage({
 
   const municipiosAsignados = (assignments ?? []) as ConvocatoriaMunicipioWithDetails[];
 
+  const { data: docsList } = await supabase
+    .from("documents")
+    .select("*")
+    .eq("convocatoria_id", id);
+
+  const documents = (docsList ?? []) as Document[];
+  const readyDocs = documents.filter((d) => d.status === "ready").length;
+
   const updateWithId = updateConvocatoria.bind(null, id);
   const deleteWithId = deleteConvocatoria.bind(null, id);
 
@@ -81,7 +89,7 @@ export default async function ConvocatoriaDetailPage({
       </div>
 
       {/* Quick stats */}
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Link
           href={`/dashboard/entidad/convocatorias/${id}/plantilla`}
           className="rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
@@ -116,6 +124,18 @@ export default async function ConvocatoriaDetailPage({
               : "—"}
           </p>
           <p className="mt-1 text-xs text-blue-600">ver monitoreo</p>
+        </Link>
+        <Link
+          href={`/dashboard/entidad/convocatorias/${id}/documentos`}
+          className="rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
+        >
+          <p className="text-sm font-medium text-gray-500">Documentos</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{documents.length}</p>
+          <p className="mt-1 text-xs text-blue-600">
+            {documents.length === 0
+              ? "Subir documentos"
+              : `${readyDocs} procesado${readyDocs !== 1 ? "s" : ""}`}
+          </p>
         </Link>
       </div>
 

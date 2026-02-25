@@ -478,6 +478,37 @@ function AiResponsePanel({
           </div>
         )}
 
+        {/* Citations */}
+        {response.citations && response.citations.length > 0 && (
+          <div>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-teal-600">
+              Fuentes citadas
+            </p>
+            <div className="space-y-2">
+              {response.citations.map((cite, i) => (
+                <div
+                  key={i}
+                  className="rounded-md border border-teal-100 bg-teal-50/50 px-3 py-2"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="text-[10px] font-semibold text-teal-700">
+                      {cite.source}
+                    </span>
+                    {cite.relevance_score != null && (
+                      <span className="text-[10px] text-teal-500">
+                        {(cite.relevance_score * 100).toFixed(0)}% relevancia
+                      </span>
+                    )}
+                  </div>
+                  <p className="mt-1 line-clamp-3 text-[11px] text-teal-800">
+                    {cite.chunk_text}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
         {/* Action buttons */}
         <div className="flex items-center gap-2 border-t border-purple-100 pt-3">
           <button

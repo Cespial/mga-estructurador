@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/ai/prompts";
+import { retrieveContext } from "@/lib/ai/retrieval";
 import {
   aiAssistRequestSchema,
   aiAssistResponseSchema,
@@ -110,13 +111,23 @@ export async function POST(request: Request) {
     );
   }
 
-  // 6. Build prompt and call LLM
+  // 6. RAG: retrieve relevant document chunks
+  let ragChunks: Awaited<ReturnType<typeof retrieveContext>> = [];
+  try {
+    const query = `${etapa.nombre} - ${campo.nombre}: ${campo.descripcion}`;
+    ragChunks = await retrieveContext(convocatoria_id, query, 5, 0.7);
+  } catch {
+    // RAG is best-effort; continue without context if it fails
+  }
+
+  // 7. Build prompt and call LLM
   const systemPrompt = buildSystemPrompt();
   const userPrompt = buildUserPrompt({
     convocatoria,
     etapa,
     campo,
     currentText: current_text,
+    ragChunks: ragChunks.length > 0 ? ragChunks : undefined,
   });
 
   const promptHash = crypto
@@ -179,7 +190,11 @@ export async function POST(request: Request) {
     convocatoria_id,
     campo_id,
     prompt_hash: promptHash,
-    sources_used: [],
+    sources_used: ragChunks.map((c) => ({
+      file_name: c.file_name,
+      chunk_index: c.chunk_index,
+      similarity: c.similarity,
+    })),
     response_json: assistResponse,
     duration_ms: durationMs,
   });

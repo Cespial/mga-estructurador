@@ -1,4 +1,5 @@
 import type { Convocatoria, MgaEtapa, MgaCampo } from "@/lib/types/database";
+import type { RetrievedChunk } from "./retrieval";
 
 const SYSTEM_PROMPT = `Eres un asistente especializado en la Metodología General Ajustada (MGA) para la estructuración de proyectos de inversión pública en Colombia.
 
@@ -14,8 +15,10 @@ Tu objetivo es ayudar a municipios a diligenciar correctamente los campos de una
   "bullets": ["punto clave 1", "punto clave 2"],
   "risks": ["riesgo identificado 1"],
   "missing_info_questions": ["pregunta 1 sobre info faltante"],
-  "citations": []
-}`;
+  "citations": [{"source": "nombre_documento.pdf", "chunk_text": "texto relevante citado", "relevance_score": 0.85}]
+}
+
+Si recibes contexto de documentos (sección <contexto_rag>), utilízalo como fuente principal para tu respuesta y cita las fuentes en el campo "citations". Si no hay contexto de documentos, deja "citations" vacío.`;
 
 export function buildSystemPrompt(): string {
   return SYSTEM_PROMPT;
@@ -26,11 +29,13 @@ export function buildUserPrompt({
   etapa,
   campo,
   currentText,
+  ragChunks,
 }: {
   convocatoria: Convocatoria;
   etapa: MgaEtapa;
   campo: MgaCampo;
   currentText?: string;
+  ragChunks?: RetrievedChunk[];
 }): string {
   let prompt = `<convocatoria>
 Nombre: ${convocatoria.nombre}
@@ -44,7 +49,25 @@ Campo: ${campo.nombre}
 Tipo de campo: ${campo.tipo}
 Descripción: ${campo.descripcion}
 Requerido: ${campo.requerido ? "Sí" : "No"}
-</etapa_mga>
+</etapa_mga>`;
+
+  if (ragChunks && ragChunks.length > 0) {
+    prompt += `
+
+<contexto_rag>
+Los siguientes fragmentos provienen de documentos oficiales de la convocatoria. Úsalos como fuente principal:
+
+${ragChunks
+  .map(
+    (chunk, i) =>
+      `[Fuente ${i + 1}: ${chunk.file_name} (relevancia: ${(chunk.similarity * 100).toFixed(0)}%)]
+${chunk.chunk_text}`,
+  )
+  .join("\n\n")}
+</contexto_rag>`;
+  }
+
+  prompt += `
 
 <instruccion>
 Ayuda al municipio a completar el campo "${campo.nombre}" de la etapa "${etapa.nombre}".`;

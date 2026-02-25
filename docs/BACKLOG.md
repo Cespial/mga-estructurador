@@ -37,13 +37,15 @@
 - [x] Rate limiting (10 req/min por usuario)
 - [x] Panel de respuesta IA con "Usar sugerencia"
 
-### Wave 5 — Documentos + RAG
-- [ ] Upload a Supabase Storage por convocatoria
-- [ ] Tabla `documents` (metadata)
-- [ ] Pipeline chunking + embeddings (pgvector)
-- [ ] Tabla `embeddings` (convocatoria_id aislado)
-- [ ] Retrieval top-k con filtro por convocatoria
-- [ ] Citaciones en respuestas IA
+### Wave 5 — Documentos + RAG ✅
+- [x] Upload a Supabase Storage por convocatoria
+- [x] Tabla `documents` (metadata + status tracking)
+- [x] Pipeline chunking + embeddings (pgvector, text-embedding-3-small)
+- [x] Tabla `embeddings` (convocatoria_id aislado, HNSW index)
+- [x] Retrieval top-k con filtro por convocatoria (`match_embeddings` RPC)
+- [x] Citaciones en respuestas IA (panel con fuente y score)
+- [x] UI gestión documentos (upload, procesar, eliminar)
+- [x] Soporte PDF (pdf-parse), TXT, DOCX (básico)
 
 ### Wave 6 — Rúbricas + Evaluación
 - [ ] Tabla `rubrics` (criterios JSON por convocatoria)

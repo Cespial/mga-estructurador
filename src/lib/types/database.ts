@@ -89,6 +89,34 @@ export interface Submission {
   updated_at: string;
 }
 
+export type DocumentStatus = "pending" | "processing" | "ready" | "error";
+
+export interface Document {
+  id: string;
+  convocatoria_id: string;
+  tenant_id: string;
+  file_name: string;
+  file_path: string;
+  file_size: number;
+  mime_type: string;
+  status: DocumentStatus;
+  chunk_count: number;
+  error_message: string | null;
+  created_by: string;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface Embedding {
+  id: string;
+  document_id: string;
+  convocatoria_id: string;
+  chunk_index: number;
+  chunk_text: string;
+  metadata: Record<string, unknown>;
+  created_at: string;
+}
+
 // Joined types for UI convenience
 export interface ConvocatoriaWithTemplate extends Convocatoria {
   mga_templates: MgaTemplate | null;

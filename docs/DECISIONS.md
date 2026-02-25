@@ -89,3 +89,38 @@
 **Fecha**: 2026-02-25
 **Decisión**: El botón "Asistente IA" solo aparece en campos de tipo `textarea` y `text`, no en `number` o `date`.
 **Razón**: Solo los campos de texto libre se benefician de sugerencias narrativas del LLM.
+
+## DEC-019: pgvector con HNSW index para similarity search
+**Fecha**: 2026-02-25
+**Decisión**: Usar pgvector con HNSW index (`vector_cosine_ops`, m=16, ef_construction=64) para búsqueda de similaridad en embeddings.
+**Razón**: HNSW ofrece buen balance entre velocidad y recall. Mejor que IVFFlat para datasets que crecen sin necesidad de re-training.
+
+## DEC-020: RAG aislado por convocatoria_id
+**Fecha**: 2026-02-25
+**Decisión**: Tanto `documents` como `embeddings` llevan `convocatoria_id`. La función `match_embeddings` filtra por convocatoria_id antes de hacer similarity search.
+**Razón**: Multi-tenancy a nivel de datos. Un municipio no debe ver documentos de otra convocatoria. RLS adicional por rol.
+
+## DEC-021: text-embedding-3-small (1536 dims)
+**Fecha**: 2026-02-25
+**Decisión**: Usar modelo `text-embedding-3-small` de OpenAI para generar embeddings de 1536 dimensiones.
+**Razón**: Buen balance costo/calidad para MVP. Compatible con pgvector. Se puede migrar a modelos más grandes si se necesita mejor recall.
+
+## DEC-022: Chunking character-based con overlap
+**Fecha**: 2026-02-25
+**Decisión**: Chunks de ~500 tokens (~2000 chars) con overlap de ~50 tokens (~200 chars). Breakpoints preferidos en fin de oración o salto de línea.
+**Razón**: Simple y efectivo para MVP. El overlap evita perder contexto entre chunks. Los breakpoints semánticos mejoran la coherencia de cada chunk.
+
+## DEC-023: pdf-parse v1 con import dinámico
+**Fecha**: 2026-02-25
+**Decisión**: Usar pdf-parse v1.1.1 (no v2) con `await import("pdf-parse")` dinámico.
+**Razón**: pdf-parse v2 tiene API completamente diferente (clase PDFParse). v1 tiene la API simple `pdfParse(buffer)`. Se importa dinámicamente porque v1 intenta cargar un archivo test al importar estáticamente.
+
+## DEC-024: RAG best-effort (no bloquea asistente)
+**Fecha**: 2026-02-25
+**Decisión**: Si el RAG falla (no hay embeddings, error de API), el asistente IA continúa sin contexto de documentos.
+**Razón**: El asistente debe funcionar siempre, con o sin documentos. RAG enriquece pero no es requisito.
+
+## DEC-025: Server actions redirect on error (not return)
+**Fecha**: 2026-02-25
+**Decisión**: Las server actions de documentos hacen `redirect(url?error=msg)` en vez de retornar `{ error }`.
+**Razón**: Next.js form `action` espera `void | Promise<void>`. Retornar objetos no es compatible con el tipo `action`. Redirect con query param es el patrón compatible.

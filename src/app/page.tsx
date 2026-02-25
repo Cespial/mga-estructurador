@@ -37,9 +37,12 @@ export default function LandingPage() {
             <a href="#como-funciona" className="text-sm text-gray-600 hover:text-gray-900">
               Flujo
             </a>
-            <a href="#beneficios" className="text-sm text-gray-600 hover:text-gray-900">
-              Beneficios
-            </a>
+            <Link href="/casos" className="text-sm text-gray-600 hover:text-gray-900">
+              Casos
+            </Link>
+            <Link href="/implementacion" className="text-sm text-gray-600 hover:text-gray-900">
+              Implementacion
+            </Link>
             <Link
               href="/login"
               className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -260,9 +263,12 @@ export default function LandingPage() {
             Estructurador MGA &mdash; Plataforma de gestion de proyectos MGA
             por convocatorias.
           </p>
-          <p className="mt-1">
-            Desarrollado con Next.js, Supabase y Claude AI.
-          </p>
+          <div className="mt-2 flex items-center justify-center gap-4 text-xs">
+            <a href="#demo" className="hover:text-gray-700">Demo</a>
+            <Link href="/casos" className="hover:text-gray-700">Casos</Link>
+            <Link href="/implementacion" className="hover:text-gray-700">Implementacion</Link>
+            <Link href="/login" className="hover:text-gray-700">Entrar</Link>
+          </div>
         </div>
       </footer>
     </div>

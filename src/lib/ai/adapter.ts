@@ -1,5 +1,3 @@
-import OpenAI from "openai";
-
 export interface LlmMessage {
   role: "system" | "user" | "assistant";
   content: string;
@@ -20,30 +18,11 @@ export interface LlmAdapter {
 // ============================================================
 
 export function createOpenAiAdapter(): LlmAdapter {
-  const client = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
-
-  return {
-    async chat(messages) {
-      const response = await client.chat.completions.create({
-        model: process.env.OPENAI_MODEL ?? "gpt-4o-mini",
-        messages,
-        temperature: 0.3,
-        response_format: { type: "json_object" },
-      });
-
-      const choice = response.choices[0];
-      return {
-        content: choice.message.content ?? "{}",
-        model: response.model,
-        usage: {
-          prompt_tokens: response.usage?.prompt_tokens ?? 0,
-          completion_tokens: response.usage?.completion_tokens ?? 0,
-        },
-      };
-    },
-  };
+  // OpenAI adapter kept for backwards compatibility but no longer default.
+  // Requires OPENAI_API_KEY and the "openai" npm package.
+  throw new Error(
+    "OpenAI adapter is disabled. Set LLM_PROVIDER=anthropic and configure ANTHROPIC_API_KEY.",
+  );
 }
 
 // ============================================================
@@ -66,7 +45,7 @@ export function createAnthropicAdapter(): LlmAdapter {
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({
-          model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-20250514",
+          model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6",
           max_tokens: 2048,
           system: systemMsg?.content ?? "",
           messages: userMsgs.map((m) => ({
@@ -105,13 +84,13 @@ export function createAnthropicAdapter(): LlmAdapter {
 // ============================================================
 
 export function createLlmAdapter(): LlmAdapter {
-  const provider = process.env.LLM_PROVIDER ?? "openai";
+  const provider = process.env.LLM_PROVIDER ?? "anthropic";
 
   switch (provider) {
-    case "anthropic":
-      return createAnthropicAdapter();
     case "openai":
-    default:
       return createOpenAiAdapter();
+    case "anthropic":
+    default:
+      return createAnthropicAdapter();
   }
 }

@@ -21,9 +21,9 @@ export const aiAssistResponseSchema = z.object({
 export type AiAssistResponse = z.infer<typeof aiAssistResponseSchema>;
 
 export const aiAssistRequestSchema = z.object({
-  convocatoria_id: z.string().uuid(),
-  etapa_id: z.string(),
-  campo_id: z.string(),
+  convocatoria_id: z.string().min(1),
+  etapa_id: z.string().min(1),
+  campo_id: z.string().min(1),
   current_text: z.string().optional(),
 });
 

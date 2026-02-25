@@ -82,7 +82,7 @@ export async function POST(request: Request) {
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", convocatoria_id)
-    .single();
+    .maybeSingle();
 
   if (!tmpl) {
     return NextResponse.json(

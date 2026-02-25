@@ -1,0 +1,3 @@
+# BLOCKERS
+
+(Sin bloqueos activos)

@@ -24,3 +24,18 @@
 **Fecha**: 2026-02-24
 **Decisión**: Zod como librería única de validación (inputs, schemas IA, API responses).
 **Razón**: Type-safe, composable, excelente DX con TypeScript.
+
+## DEC-006: Auth email+password (no magic link)
+**Fecha**: 2026-02-25
+**Decisión**: Usar email+password como método principal de autenticación.
+**Razón**: Más simple para MVP, no requiere configurar SMTP. Magic link se puede agregar después.
+
+## DEC-007: Auto-create profile on signup via trigger
+**Fecha**: 2026-02-25
+**Decisión**: Trigger en `auth.users` que crea automáticamente un registro en `profiles`.
+**Razón**: Garantiza que todo usuario tiene profile. El rol default es `municipio_user`; admins asignan roles manualmente.
+
+## DEC-008: RLS helper functions (SECURITY DEFINER)
+**Fecha**: 2026-02-25
+**Decisión**: Funciones `auth_user_role()`, `auth_user_tenant_id()`, `auth_user_municipio_id()` con SECURITY DEFINER.
+**Razón**: Simplifica policies RLS. SECURITY DEFINER permite acceder a `profiles` desde policies sin recursión.

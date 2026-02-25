@@ -2,13 +2,13 @@
 
 ## MVP (MUST)
 
-### Wave 1 — Auth + Roles + RLS
-- [ ] Configurar Supabase Auth (email magic link o password)
-- [ ] Crear tablas: `tenants`, `profiles`, `municipios` (seed)
-- [ ] Implementar roles: `platform_admin`, `entidad_admin`, `municipio_user`
-- [ ] Políticas RLS por tenant y rol
-- [ ] UI: login page + redirección por rol
-- [ ] Middleware de protección de rutas
+### Wave 1 — Auth + Roles + RLS ✅
+- [x] Configurar Supabase Auth (email + password)
+- [x] Crear tablas: `tenants`, `profiles`, `municipios` (seed)
+- [x] Implementar roles: `platform_admin`, `entidad_admin`, `municipio_user`
+- [x] Políticas RLS por tenant y rol
+- [x] UI: login page + redirección por rol
+- [x] Middleware de protección de rutas
 
 ### Wave 2 — Convocatorias + Plantilla MGA
 - [ ] Tabla `convocatorias` (tenant_id, metadata, fechas, estado)

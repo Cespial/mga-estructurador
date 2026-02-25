@@ -77,6 +77,18 @@ export interface ConvocatoriaMunicipio {
   updated_at: string;
 }
 
+export interface Submission {
+  id: string;
+  convocatoria_id: string;
+  municipio_id: string;
+  data_json: Record<string, string>;
+  etapa_actual: string | null;
+  progress: number;
+  completed_at: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // Joined types for UI convenience
 export interface ConvocatoriaWithTemplate extends Convocatoria {
   mga_templates: MgaTemplate | null;

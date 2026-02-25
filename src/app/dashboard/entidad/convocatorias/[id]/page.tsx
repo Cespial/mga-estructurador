@@ -102,7 +102,10 @@ export default async function ConvocatoriaDetailPage({
             {municipiosAsignados.length === 0 ? "Asignar municipios" : "municipios asignados"}
           </p>
         </Link>
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
+        <Link
+          href={`/dashboard/entidad/convocatorias/${id}/monitoreo`}
+          className="rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
+        >
           <p className="text-sm font-medium text-gray-500">Avance promedio</p>
           <p className="mt-1 text-2xl font-bold text-gray-900">
             {municipiosAsignados.length > 0
@@ -112,8 +115,8 @@ export default async function ConvocatoriaDetailPage({
                 ) + "%"
               : "—"}
           </p>
-          <p className="mt-1 text-xs text-gray-400">progreso MGA</p>
-        </div>
+          <p className="mt-1 text-xs text-blue-600">ver monitoreo</p>
+        </Link>
       </div>
 
       {/* Edit form */}

@@ -54,3 +54,18 @@
 **Fecha**: 2026-02-25
 **Decisión**: Al crear una convocatoria, se inserta automáticamente un `mga_templates` con `etapas_json: []`.
 **Razón**: Simplifica la relación 1:1 (convocatoria siempre tiene template). El entidad_admin lo llena después.
+
+## DEC-012: Submission data_json flat (campo_id → value)
+**Fecha**: 2026-02-25
+**Decisión**: `data_json` en submissions es un objeto plano `{ campo_id: string_value }` sin estructura por etapa.
+**Razón**: Simplifica lectura/escritura. Los campos tienen IDs únicos globales. El progreso se calcula cruzando con la plantilla MGA.
+
+## DEC-013: Autosave con state (no refs) — debounce 1.5s
+**Fecha**: 2026-02-25
+**Decisión**: Autosave usa estado React (`pendingFields`) en vez de refs, con debounce de 1.5 segundos vía useEffect.
+**Razón**: ESLint React Compiler no permite acceso a refs durante render. El patrón state-based es igual de efectivo y pasa lint.
+
+## DEC-014: Trigger para sync progress submissions → convocatoria_municipios
+**Fecha**: 2026-02-25
+**Decisión**: Un trigger PostgreSQL sincroniza `submissions.progress` a `convocatoria_municipios.progress` automáticamente.
+**Razón**: La entidad consulta `convocatoria_municipios` para ver avance. Sincronizar vía trigger evita queries adicionales y mantiene consistencia.

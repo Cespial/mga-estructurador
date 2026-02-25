@@ -18,13 +18,14 @@
 - [x] Tabla `convocatoria_municipios` (asignación + remover)
 - [x] UI municipio: ver convocatoria asignada y etapas MGA
 
-### Wave 3 — Wizard MGA
-- [ ] Tabla `submissions` (convocatoria_id, municipio_id, data_json, etapa_actual)
-- [ ] Wizard UI por etapas MGA
-- [ ] Autosave (debounced)
-- [ ] Validaciones mínimas por etapa
-- [ ] Cálculo de progreso (%)
-- [ ] Tablero entidad: lista municipios + % avance
+### Wave 3 — Wizard MGA ✅
+- [x] Tabla `submissions` (convocatoria_id, municipio_id, data_json, etapa_actual, progress)
+- [x] Wizard UI por etapas MGA (sidebar + campos + navegación)
+- [x] Autosave (debounced 1.5s, state-based)
+- [x] Validaciones mínimas por etapa (campos requeridos)
+- [x] Cálculo de progreso (% campos requeridos completados)
+- [x] Tablero entidad: monitoreo con desglose por etapa por municipio
+- [x] Sync progress trigger (submissions → convocatoria_municipios)
 
 ### Wave 4 — Asistente IA
 - [ ] Endpoint server-side `/api/ai/assist`

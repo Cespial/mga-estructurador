@@ -179,10 +179,24 @@ export function WizardClient({
             </div>
             <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
               <div
-                className="h-full rounded-full bg-blue-600 transition-all duration-500"
+                className={`h-full rounded-full transition-all duration-500 ${
+                  progress === 100
+                    ? "bg-green-500 animate-shimmer"
+                    : "bg-blue-600"
+                }`}
                 style={{ width: `${progress}%` }}
               />
             </div>
+            {progress === 100 && (
+              <div className="mt-2 animate-fade-in-up rounded-md bg-green-50 px-3 py-2 text-center">
+                <p className="text-xs font-semibold text-green-700">
+                  Completado
+                </p>
+                <p className="text-[10px] text-green-600">
+                  Todas las etapas diligenciadas
+                </p>
+              </div>
+            )}
           </div>
 
           <nav className="space-y-1">

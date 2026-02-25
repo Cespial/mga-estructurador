@@ -51,6 +51,7 @@ export function MonitoreoTable({
   const [evaluating, setEvaluating] = useState<string | null>(null);
   const [localRows, setLocalRows] = useState(rows);
   const [openPopover, setOpenPopover] = useState<string | null>(null);
+  const [freshScores, setFreshScores] = useState<Set<string>>(new Set());
 
   const closePopover = useCallback(() => setOpenPopover(null), []);
 
@@ -104,6 +105,15 @@ export function MonitoreoTable({
               : r,
           ),
         );
+        // Mark as fresh for reveal animation
+        setFreshScores((prev) => new Set(prev).add(key));
+        setTimeout(() => {
+          setFreshScores((prev) => {
+            const next = new Set(prev);
+            next.delete(key);
+            return next;
+          });
+        }, 1000);
       }
     } catch {
       // silently fail
@@ -188,7 +198,10 @@ export function MonitoreoTable({
                               aria-label={`Score ${Math.round(ep.score)} puntos — ver desglose`}
                               className="cursor-pointer"
                             >
-                              <ScoreBadge score={ep.score} />
+                              <ScoreBadge
+                                score={ep.score}
+                                animate={freshScores.has(`${row.submissionId}:${ep.etapaId}`)}
+                              />
                             </button>
                             {openPopover === popoverKey && ep.scoresJson && (
                               <ScorePopover
@@ -284,7 +297,7 @@ function ProgressPill({ value }: { value: number }) {
   );
 }
 
-function ScoreBadge({ score }: { score: number }) {
+function ScoreBadge({ score, animate = false }: { score: number; animate?: boolean }) {
   let color = "bg-red-100 text-red-700";
   if (score >= 80) color = "bg-green-100 text-green-700";
   else if (score >= 60) color = "bg-yellow-100 text-yellow-700";
@@ -292,7 +305,9 @@ function ScoreBadge({ score }: { score: number }) {
 
   return (
     <span
-      className={`inline-block min-w-[2.5rem] rounded-full px-2 py-0.5 text-[10px] font-bold ${color}`}
+      className={`inline-block min-w-[2.5rem] rounded-full px-2 py-0.5 text-[10px] font-bold ${color} ${
+        animate ? "animate-score-reveal" : ""
+      }`}
       title={`Score: ${score}/100`}
     >
       {Math.round(score)}pts

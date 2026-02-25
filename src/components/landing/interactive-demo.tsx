@@ -350,7 +350,7 @@ function ScoringStep({
                 <div className="text-right">
                   {hasScore ? (
                     <span
-                      className={`text-lg font-bold ${
+                      className={`animate-score-reveal text-lg font-bold ${
                         pct >= 75 ? "text-green-600" : pct >= 50 ? "text-yellow-600" : "text-red-600"
                       }`}
                     >
@@ -374,7 +374,7 @@ function ScoringStep({
 
       {/* Overall score */}
       {weightedScore != null && (
-        <div className="mt-6 rounded-lg border border-blue-100 bg-blue-50 p-4 text-center">
+        <div className="animate-fade-in-up mt-6 rounded-lg border border-blue-100 bg-blue-50 p-4 text-center">
           <p className="text-xs font-medium uppercase tracking-wider text-blue-600">
             Score ponderado total
           </p>
@@ -408,6 +408,8 @@ function SummaryStep({
   weightedScore: number | null;
   onRestart: () => void;
 }) {
+  const [showImproved, setShowImproved] = useState(true);
+
   return (
     <div>
       <div className="mb-6 flex items-center justify-between">
@@ -419,7 +421,7 @@ function SummaryStep({
             Asi se veria el PDF exportable de este municipio.
           </p>
         </div>
-        <div className="rounded-lg bg-blue-50 px-3 py-1.5 text-center">
+        <div className="animate-score-reveal rounded-lg bg-blue-50 px-3 py-1.5 text-center">
           <p className="text-xs text-blue-600">Score</p>
           <p className="text-xl font-bold text-blue-700">
             {weightedScore?.toFixed(1) ?? "—"}%
@@ -427,8 +429,11 @@ function SummaryStep({
         </div>
       </div>
 
+      {/* Before / After toggle */}
+      <BeforeAfterToggle showImproved={showImproved} onToggle={setShowImproved} />
+
       {/* Mock PDF preview */}
-      <div className="rounded-lg border border-gray-200 bg-gray-50 p-5">
+      <div className="animate-fade-in-up rounded-lg border border-gray-200 bg-gray-50 p-5">
         <div className="mb-4 border-b border-gray-200 pb-3">
           <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
             Convocatoria de ejemplo
@@ -506,6 +511,69 @@ function SummaryStep({
           En la app real, este resumen se exporta como PDF.
         </p>
       </div>
+    </div>
+  );
+}
+
+/* ── Before/After Toggle ── */
+
+const BEFORE_TEXT =
+  "hay un problema de agua en el municipio y la gente se enferma mucho. queremos hacer algo para mejorar esto.";
+
+const AFTER_TEXT =
+  "La comunidad rural del municipio de San Pedro carece de acceso a agua potable. El 60% de la poblacion depende de fuentes no tratadas, generando enfermedades gastrointestinales recurrentes que afectan principalmente a 890 menores de edad y 420 adultos mayores.";
+
+function BeforeAfterToggle({
+  showImproved,
+  onToggle,
+}: {
+  showImproved: boolean;
+  onToggle: (v: boolean) => void;
+}) {
+  return (
+    <div className="mb-4 rounded-lg border border-purple-100 bg-purple-50/30 p-4">
+      <div className="mb-3 flex items-center justify-between">
+        <p className="text-xs font-semibold uppercase tracking-wider text-purple-600">
+          Antes vs Despues del Asistente IA
+        </p>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => onToggle(false)}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+              !showImproved
+                ? "bg-gray-200 text-gray-800"
+                : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            Antes
+          </button>
+          <button
+            onClick={() => onToggle(true)}
+            className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+              showImproved
+                ? "bg-purple-600 text-white"
+                : "text-gray-400 hover:text-gray-600"
+            }`}
+          >
+            Despues
+          </button>
+        </div>
+      </div>
+      <div className="overflow-hidden rounded-md border border-gray-200 bg-white px-4 py-3">
+        <p className="text-xs font-medium text-gray-500">Problema central</p>
+        <p
+          className={`mt-1 text-sm transition-all duration-300 ${
+            showImproved ? "text-gray-800" : "italic text-gray-500"
+          }`}
+        >
+          {showImproved ? AFTER_TEXT : BEFORE_TEXT}
+        </p>
+      </div>
+      <p className="mt-2 text-center text-[10px] text-purple-400">
+        {showImproved
+          ? "Texto mejorado con contexto de documentos y estructura MGA"
+          : "Texto crudo sin asistencia"}
+      </p>
     </div>
   );
 }

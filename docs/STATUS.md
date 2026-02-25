@@ -1,8 +1,8 @@
 # STATUS — Estructurador MGA por Convocatorias
 
-> Última actualización: 2026-02-25 | Iteración: 6
+> Última actualización: 2026-02-25 | Iteración: 7
 
-## Estado actual: WAVE 6 — Rúbricas + Evaluación (completada)
+## Estado actual: WAVE 7 — Demo + Empaque (completada) — MVP TERMINADO
 
 ### ¿Qué funciona?
 - [x] Next.js 16 + TypeScript + Tailwind CSS 4 (App Router, `src/` dir)
@@ -45,8 +45,12 @@
 - [x] **Monitoreo con scores**: tabla entidad con score badges + botón "Evaluar" por etapa
 - [x] **Feedback municipio**: vista municipio con scores + recomendaciones por etapa
 
-### ¿Qué falta? (próximas waves)
-- [ ] **Wave 7**: Demo y empaque final
+- [x] **DEMO_SCRIPT.md**: guion de presentación 8-10 min con 6 actos
+- [x] **Seed completo**: datos demo con contenido MGA realista (2 submissions, rúbrica, evaluaciones)
+- [x] **DEPLOY.md**: checklist de despliegue Vercel + Supabase con troubleshooting
+
+### ¿Qué falta?
+- Todas las waves del MVP completadas (1-7)
 
 ### Bloqueos
 - Ninguno actualmente.

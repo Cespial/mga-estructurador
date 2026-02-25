@@ -55,11 +55,11 @@
 - [x] Tablero entidad: monitoreo con score badges + botón "Evaluar" por etapa
 - [x] Vista municipio: score por etapa + recomendaciones accionables
 
-### Wave 7 — Demo + Empaque
-- [ ] DEMO_SCRIPT.md con guion 7-10 min
-- [ ] Dataset de ejemplo (convocatoria demo + 2 municipios)
-- [ ] Checklist despliegue Vercel + Supabase prod
-- [ ] Seed script para demo
+### Wave 7 — Demo + Empaque ✅
+- [x] DEMO_SCRIPT.md con guion 8-10 min (6 actos, narración, preguntas frecuentes)
+- [x] Dataset de ejemplo: 2 submissions con contenido MGA realista, rúbrica con 7 criterios, 2 evaluaciones
+- [x] DEPLOY.md con checklist Vercel + Supabase prod + troubleshooting
+- [x] Seed script actualizado con datos demo completos
 
 ## SHOULD (si alcanza)
 - [ ] Ingesta masiva de documentos (batch upload)

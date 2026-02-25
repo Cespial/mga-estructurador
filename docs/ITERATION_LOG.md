@@ -164,3 +164,47 @@
 
 **Siguientes pasos**
 - Wave 5: Proof para vender (kit comercial)
+
+---
+
+## Iteracion 2026-02-25-5 -- Wave 5 -- Proof para vender (kit comercial)
+
+**Objetivo**
+- Pagina /casos con casos de uso honestos (placeholder)
+- Pagina /implementacion con checklist de 7 fases + kit de plataforma
+- Navegacion completa entre paginas publicas
+
+**Scope**
+- Archivos tocados:
+  - `src/app/casos/page.tsx` (nuevo) — 3 casos de uso con desafio/solucion/resultados
+  - `src/app/implementacion/page.tsx` (nuevo) — 7 fases, checklist con roles, kit resumen
+  - `src/app/page.tsx` (mod) — nav + footer con links a Casos/Implementacion
+  - `src/app/sitemap.ts` (mod) — nuevas entradas
+
+**Cambios**
+- /casos: 3 case studies (Infraestructura Vial, Saneamiento Basico, Proyectos Educativos)
+  - Estructura: titulo, entidad, descripcion, desafio, solucion, resultados, tags
+  - Disclaimer: "datos ilustrativos"
+  - CTA a demo y a implementacion
+- /implementacion: 7 fases con timeline visual
+  - Fase 1-7: Configuracion → Diseno → Documentos → Rubrica → Apertura → Monitoreo → Evaluacion
+  - Cada paso con checkbox visual + tag de rol (Admin/Tecnico/Equipo/Sistema)
+  - Kit resumen: 4 pilares (Gestion, Diligenciamiento, Evaluacion, Evidencia)
+  - CTA a demo y login
+- Landing: nav actualizado con Casos + Implementacion, footer con links
+- Sitemap: /casos (0.8) + /implementacion (0.8)
+- Ambas paginas son estaticas (prerendered)
+
+**Quality Gates**
+- lint: pass
+- typecheck: pass
+- build: pass (26 rutas, nuevas: /casos, /implementacion — ambas static)
+
+**Commit**
+- hash: a971df2
+- mensaje: `feat: wave 5 — sales proof kit (casos + implementacion + nav)`
+
+**Resultado final**
+- Paquete vendible completo: Landing + Demo + Casos + Implementacion + Manual + Help Center
+- Waves 0-5 completadas
+- 26 rutas en produccion

@@ -58,7 +58,7 @@ export default async function WizardPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const mgaTemplate = template as MgaTemplate | null;
   const etapas = mgaTemplate?.etapas_json ?? [];

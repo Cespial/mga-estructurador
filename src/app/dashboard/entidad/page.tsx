@@ -13,7 +13,7 @@ const estadoBadge: Record<ConvocatoriaEstado, string> = {
 
 export default async function EntidadDashboard() {
   const profile = await getProfile();
-  if (!profile || profile.role !== "entidad_admin") {
+  if (!profile || profile.role !== "entidad_admin" || !profile.tenant_id) {
     redirect("/dashboard");
   }
 
@@ -21,6 +21,7 @@ export default async function EntidadDashboard() {
   const { data: convocatorias } = await supabase
     .from("convocatorias")
     .select("*")
+    .eq("tenant_id", profile.tenant_id)
     .order("created_at", { ascending: false });
 
   const items = (convocatorias ?? []) as Convocatoria[];

@@ -128,15 +128,15 @@ export async function processDocument(convocatoriaId: string, documentId: string
     .update({ status: "processing" })
     .eq("id", documentId);
 
-  // Call the processing API route
+  // Call the processing API route using service role key for server-to-server auth
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
-  const { data: { session } } = await supabase.auth.getSession();
+  const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 
   const res = await fetch(`${baseUrl}/api/documents/process`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "Cookie": `sb-access-token=${session?.access_token}`,
+      ...(serviceKey ? { "x-service-role-key": serviceKey } : {}),
     },
     body: JSON.stringify({ document_id: documentId }),
   });

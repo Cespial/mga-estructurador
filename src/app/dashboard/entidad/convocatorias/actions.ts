@@ -39,7 +39,7 @@ export async function createConvocatoria(formData: FormData) {
     redirect("/dashboard/entidad/convocatorias/nueva?error=" + encodeURIComponent(error.message));
   }
 
-  // Auto-create empty template
+  // Auto-create empty template (ignore errors — user can create later via plantilla page)
   await supabase.from("mga_templates").insert({
     convocatoria_id: data.id,
     etapas_json: [],

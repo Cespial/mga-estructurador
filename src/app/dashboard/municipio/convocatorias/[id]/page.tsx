@@ -30,7 +30,7 @@ export default async function MunicipioConvocatoriaPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const mgaTemplate = template as MgaTemplate | null;
   const etapas = mgaTemplate?.etapas_json ?? [];
@@ -147,7 +147,7 @@ export default async function MunicipioConvocatoriaPage({
               const requiredFields = etapa.campos.filter((c) => c.requerido);
               const filledRequired = submission
                 ? requiredFields.filter(
-                    (c) => submission.data_json[c.id]?.trim(),
+                    (c) => String(submission.data_json[c.id] ?? "").trim(),
                   ).length
                 : 0;
               const etapaProgress =

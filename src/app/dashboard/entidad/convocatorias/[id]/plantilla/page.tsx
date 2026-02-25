@@ -31,7 +31,7 @@ export default async function PlantillaPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const mgaTemplate = template as MgaTemplate | null;
 

@@ -17,11 +17,16 @@ export default async function MunicipioDashboard() {
     redirect("/dashboard");
   }
 
+  if (!profile.municipio_id) {
+    redirect("/dashboard");
+  }
+
   const supabase = await createClient();
 
   const { data: assignments } = await supabase
     .from("convocatoria_municipios")
     .select("*, convocatorias(*)")
+    .eq("municipio_id", profile.municipio_id)
     .order("created_at", { ascending: false });
 
   const items = (assignments ?? []) as ConvocatoriaMunicipioWithConvocatoria[];

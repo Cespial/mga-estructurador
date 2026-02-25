@@ -32,7 +32,7 @@ export default async function RubricasPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const mgaTemplate = template as MgaTemplate | null;
   const etapas = mgaTemplate?.etapas_json ?? [];
@@ -42,7 +42,7 @@ export default async function RubricasPage({
     .from("rubrics")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const existingRubric = rubric as Rubric | null;
 

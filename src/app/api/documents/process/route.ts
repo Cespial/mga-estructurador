@@ -1,15 +1,24 @@
 import { NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createClient as createServerClient } from "@/lib/supabase/server";
+import { createClient as createBrowserClient } from "@supabase/supabase-js";
 import { getProfile } from "@/lib/auth";
 import { chunkText } from "@/lib/ai/chunker";
 import { generateEmbeddings } from "@/lib/ai/embeddings";
 // pdf-parse v1 is imported dynamically to avoid its test file import at module load
 
 export async function POST(request: Request) {
-  // 1. Auth check
-  const profile = await getProfile();
-  if (!profile || profile.role !== "entidad_admin") {
-    return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+  // 1. Auth check — supports cookie auth OR service role key for server-to-server calls
+  const serviceKey = request.headers.get("x-service-role-key");
+  const isServiceCall = serviceKey && serviceKey === process.env.SUPABASE_SERVICE_ROLE_KEY;
+
+  let callerTenantId: string | null = null;
+
+  if (!isServiceCall) {
+    const profile = await getProfile();
+    if (!profile || profile.role !== "entidad_admin") {
+      return NextResponse.json({ error: "No autorizado" }, { status: 401 });
+    }
+    callerTenantId = profile.tenant_id;
   }
 
   // 2. Parse request
@@ -27,7 +36,13 @@ export async function POST(request: Request) {
     );
   }
 
-  const supabase = await createClient();
+  // Use service role client for server-to-server, or cookie client for direct calls
+  const supabase = isServiceCall
+    ? createBrowserClient(
+        process.env.NEXT_PUBLIC_SUPABASE_URL!,
+        process.env.SUPABASE_SERVICE_ROLE_KEY!,
+      )
+    : await createServerClient();
 
   // 3. Fetch document
   const { data: doc } = await supabase
@@ -43,7 +58,8 @@ export async function POST(request: Request) {
     );
   }
 
-  if (doc.tenant_id !== profile.tenant_id) {
+  // For direct calls, verify tenant ownership (service calls are trusted)
+  if (!isServiceCall && doc.tenant_id !== callerTenantId) {
     return NextResponse.json({ error: "No autorizado" }, { status: 403 });
   }
 

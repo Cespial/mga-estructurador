@@ -26,7 +26,7 @@ export async function getOrCreateSubmission(convocatoriaId: string): Promise<{
     .select("*")
     .eq("convocatoria_id", convocatoriaId)
     .eq("municipio_id", profile.municipio_id)
-    .single();
+    .maybeSingle();
 
   if (existing) {
     return { submission: existing as Submission };
@@ -121,7 +121,7 @@ function calculateProgress(
       if (campo.requerido) {
         totalRequired++;
         const value = data[campo.id];
-        if (value && value.trim().length > 0) {
+        if (value && String(value).trim().length > 0) {
           filledRequired++;
         }
       }

@@ -40,7 +40,7 @@ export default async function MonitoreoPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const template = tmpl as MgaTemplate | null;
   const etapas = template?.etapas_json ?? [];
@@ -50,7 +50,7 @@ export default async function MonitoreoPage({
     .from("rubrics")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
   const rubric = rubricData as Rubric | null;
   const hasRubric = (rubric?.criterios_json?.length ?? 0) > 0;
 
@@ -95,7 +95,7 @@ export default async function MonitoreoPage({
       let progress = 0;
       if (requiredFields.length > 0 && sub) {
         const filled = requiredFields.filter(
-          (c) => sub.data_json[c.id]?.trim(),
+          (c) => String(sub.data_json[c.id] ?? "").trim(),
         ).length;
         progress = Math.round((filled / requiredFields.length) * 100);
       }

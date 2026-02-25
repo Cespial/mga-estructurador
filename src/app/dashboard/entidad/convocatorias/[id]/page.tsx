@@ -35,7 +35,7 @@ export default async function ConvocatoriaDetailPage({
     .from("mga_templates")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const mgaTemplate = template as MgaTemplate | null;
   const etapasCount = mgaTemplate?.etapas_json?.length ?? 0;
@@ -59,7 +59,7 @@ export default async function ConvocatoriaDetailPage({
     .from("rubrics")
     .select("*")
     .eq("convocatoria_id", id)
-    .single();
+    .maybeSingle();
 
   const rubric = rubricData as Rubric | null;
   const criteriosCount = rubric?.criterios_json?.length ?? 0;

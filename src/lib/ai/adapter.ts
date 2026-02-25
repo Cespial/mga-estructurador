@@ -30,10 +30,15 @@ export function createOpenAiAdapter(): LlmAdapter {
 // ============================================================
 
 export function createAnthropicAdapter(): LlmAdapter {
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-
   return {
     async chat(messages) {
+      const apiKey = process.env.ANTHROPIC_API_KEY;
+      if (!apiKey) {
+        throw new Error(
+          "ANTHROPIC_API_KEY no está configurada. Agrégala en .env.local o en Vercel.",
+        );
+      }
+
       const systemMsg = messages.find((m) => m.role === "system");
       const userMsgs = messages.filter((m) => m.role !== "system");
 
@@ -41,7 +46,7 @@ export function createAnthropicAdapter(): LlmAdapter {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "x-api-key": apiKey ?? "",
+          "x-api-key": apiKey,
           "anthropic-version": "2023-06-01",
         },
         body: JSON.stringify({

@@ -13,6 +13,7 @@ import type {
 } from "@/lib/types/database";
 import { toRow, toRows } from "@/lib/supabase/helpers";
 import { MonitoreoTable } from "./monitoreo-table";
+import { HelpButton } from "@/components/help-button";
 
 export default async function MonitoreoPage({
   params,
@@ -160,9 +161,12 @@ export default async function MonitoreoPage({
 
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            Monitoreo de avance
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Monitoreo de avance
+            </h2>
+            <HelpButton section="monitoreo" label="Ayuda con monitoreo" />
+          </div>
           <p className="mt-1 text-sm text-gray-500">{convocatoria.nombre}</p>
         </div>
         <div className="text-right">

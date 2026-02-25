@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation";
+import Link from "next/link";
 import { getProfile, getRoleLabel } from "@/lib/auth";
 import { LogoutButton } from "@/components/logout-button";
 
@@ -26,6 +27,12 @@ export default async function DashboardLayout({
             </span>
           </div>
           <div className="flex items-center gap-3">
+            <Link
+              href="/dashboard/ayuda"
+              className="text-sm text-gray-500 hover:text-gray-700"
+            >
+              Ayuda
+            </Link>
             <span className="text-sm text-gray-600">
               {profile.full_name || profile.email}
             </span>

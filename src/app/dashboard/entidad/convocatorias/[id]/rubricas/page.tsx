@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { Convocatoria, MgaTemplate, Rubric } from "@/lib/types/database";
 import { RubricEditor } from "./rubric-editor";
+import { HelpButton } from "@/components/help-button";
 
 export default async function RubricasPage({
   params,
@@ -57,9 +58,12 @@ export default async function RubricasPage({
         </Link>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900">
-        Rúbrica de evaluación — {convocatoria.nombre}
-      </h2>
+      <div className="flex items-center gap-3">
+        <h2 className="text-xl font-semibold text-gray-900">
+          Rúbrica de evaluación — {convocatoria.nombre}
+        </h2>
+        <HelpButton section="rubricas" label="Ayuda con rúbricas" />
+      </div>
       <p className="mt-1 text-sm text-gray-500">
         Define los criterios de evaluación por campo MGA. Estos criterios se
         usarán para evaluar automáticamente las submissions de los municipios.

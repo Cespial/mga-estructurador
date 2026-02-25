@@ -6,6 +6,7 @@ import type { Convocatoria, Document } from "@/lib/types/database";
 import { toRow, toRows } from "@/lib/supabase/helpers";
 import { uploadDocuments, deleteDocument, processDocument } from "./actions";
 import { UploadForm } from "./upload-form";
+import { HelpButton } from "@/components/help-button";
 
 export default async function DocumentosPage({
   params,
@@ -61,9 +62,12 @@ export default async function DocumentosPage({
 
       <div className="flex items-start justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">
-            Documentos — {convocatoria.nombre}
-          </h2>
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold text-gray-900">
+              Documentos — {convocatoria.nombre}
+            </h2>
+            <HelpButton section="documentos" label="Ayuda con documentos" />
+          </div>
           <p className="mt-1 text-sm text-gray-500">
             Sube documentos de la convocatoria para que el asistente IA los use
             como contexto (RAG).

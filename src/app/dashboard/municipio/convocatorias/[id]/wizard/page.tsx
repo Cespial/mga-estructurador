@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getOrCreateSubmission } from "./actions";
 import { WizardClient } from "./wizard-client";
 import type { Convocatoria, MgaTemplate } from "@/lib/types/database";
+import { HelpButton } from "@/components/help-button";
 
 export default async function WizardPage({
   params,
@@ -114,9 +115,12 @@ export default async function WizardPage({
         </Link>
       </div>
 
-      <h2 className="text-lg font-semibold text-gray-900">
-        Diligenciar MGA — {convocatoria.nombre}
-      </h2>
+      <div className="flex items-center gap-3">
+        <h2 className="text-lg font-semibold text-gray-900">
+          Diligenciar MGA — {convocatoria.nombre}
+        </h2>
+        <HelpButton section="flujo-ejecucion" label="Ayuda con el wizard" />
+      </div>
       <p className="mt-1 text-sm text-gray-500">
         Completa cada etapa. El progreso se guarda automáticamente.
       </p>

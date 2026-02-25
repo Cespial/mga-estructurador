@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import type { Convocatoria, MgaTemplate, Submission } from "@/lib/types/database";
+import type { Convocatoria, MgaTemplate, Submission, Evaluation } from "@/lib/types/database";
 
 export default async function MunicipioConvocatoriaPage({
   params,
@@ -43,6 +43,19 @@ export default async function MunicipioConvocatoriaPage({
     .maybeSingle();
 
   const submission = sub as Submission | null;
+
+  // Fetch evaluations for this submission
+  const evalMap = new Map<string, Evaluation>();
+  if (submission) {
+    const { data: evals } = await supabase
+      .from("evaluations")
+      .select("*")
+      .eq("submission_id", submission.id);
+
+    for (const ev of (evals ?? []) as Evaluation[]) {
+      evalMap.set(ev.etapa_id, ev);
+    }
+  }
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -144,47 +157,88 @@ export default async function MunicipioConvocatoriaPage({
                     )
                   : 0;
 
+              const evaluation = evalMap.get(etapa.id);
+
               return (
                 <div
                   key={etapa.id}
-                  className="flex items-center gap-3 rounded-lg border border-gray-200 bg-white px-4 py-3"
+                  className="rounded-lg border border-gray-200 bg-white"
                 >
-                  <span
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                      etapaProgress === 100
-                        ? "bg-green-100 text-green-700"
-                        : etapaProgress > 0
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-gray-100 text-gray-500"
-                    }`}
-                  >
-                    {etapaProgress === 100 ? "\u2713" : etapa.orden}
-                  </span>
-                  <div className="min-w-0 flex-1">
-                    <p className="text-sm font-medium text-gray-900">
-                      {etapa.nombre}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {etapa.campos.length} campos
-                      {requiredFields.length > 0 &&
-                        ` (${filledRequired}/${requiredFields.length} requeridos)`}
-                    </p>
-                  </div>
-                  <div className="w-20">
-                    <div className="h-1.5 overflow-hidden rounded-full bg-gray-200">
-                      <div
-                        className={`h-full rounded-full transition-all ${
-                          etapaProgress === 100
-                            ? "bg-green-500"
-                            : "bg-blue-500"
-                        }`}
-                        style={{ width: `${etapaProgress}%` }}
-                      />
+                  <div className="flex items-center gap-3 px-4 py-3">
+                    <span
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                        etapaProgress === 100
+                          ? "bg-green-100 text-green-700"
+                          : etapaProgress > 0
+                            ? "bg-yellow-100 text-yellow-700"
+                            : "bg-gray-100 text-gray-500"
+                      }`}
+                    >
+                      {etapaProgress === 100 ? "\u2713" : etapa.orden}
+                    </span>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-medium text-gray-900">
+                        {etapa.nombre}
+                      </p>
+                      <p className="text-xs text-gray-400">
+                        {etapa.campos.length} campos
+                        {requiredFields.length > 0 &&
+                          ` (${filledRequired}/${requiredFields.length} requeridos)`}
+                      </p>
                     </div>
+                    {evaluation && (
+                      <span
+                        className={`rounded-full px-2 py-0.5 text-xs font-bold ${
+                          evaluation.total_score >= 80
+                            ? "bg-green-100 text-green-700"
+                            : evaluation.total_score >= 60
+                              ? "bg-yellow-100 text-yellow-700"
+                              : evaluation.total_score >= 40
+                                ? "bg-orange-100 text-orange-700"
+                                : "bg-red-100 text-red-700"
+                        }`}
+                      >
+                        {Math.round(evaluation.total_score)}pts
+                      </span>
+                    )}
+                    <div className="w-20">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-gray-200">
+                        <div
+                          className={`h-full rounded-full transition-all ${
+                            etapaProgress === 100
+                              ? "bg-green-500"
+                              : "bg-blue-500"
+                          }`}
+                          style={{ width: `${etapaProgress}%` }}
+                        />
+                      </div>
+                    </div>
+                    <span className="w-10 text-right text-xs text-gray-500">
+                      {etapaProgress}%
+                    </span>
                   </div>
-                  <span className="w-10 text-right text-xs text-gray-500">
-                    {etapaProgress}%
-                  </span>
+
+                  {/* Evaluation feedback */}
+                  {evaluation && evaluation.recomendaciones.length > 0 && (
+                    <div className="border-t border-gray-100 px-4 py-2">
+                      <p className="text-[10px] font-semibold uppercase tracking-wider text-indigo-600">
+                        Recomendaciones
+                      </p>
+                      <ul className="mt-1 space-y-0.5">
+                        {evaluation.recomendaciones.map((rec, i) => (
+                          <li
+                            key={i}
+                            className="flex items-start gap-1.5 text-xs text-gray-700"
+                          >
+                            <span className="mt-0.5 text-indigo-400">
+                              &bull;
+                            </span>
+                            {rec}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
                 </div>
               );
             })}

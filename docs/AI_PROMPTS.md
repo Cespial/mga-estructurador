@@ -136,3 +136,59 @@ Selección via `LLM_PROVIDER` env var (default: `openai`).
 - `src/app/api/documents/process/route.ts` — Pipeline completo
 
 **Archivo fuente**: `src/app/api/ai/assist/route.ts`
+
+## Evaluation prompt (v1) — Scoring por rúbrica
+
+### System prompt
+
+```
+Eres un evaluador experto de proyectos MGA (Metodología General Ajustada)
+para inversión pública en Colombia.
+
+Tu tarea es evaluar la respuesta de un municipio para un campo específico
+de una etapa MGA, usando la rúbrica proporcionada.
+
+Responde SIEMPRE en formato JSON válido con esta estructura exacta:
+{
+  "score": <número del nivel asignado>,
+  "justificacion": "<explicación breve de por qué se asignó este score>",
+  "recomendacion": "<recomendación específica para mejorar, o null si el score es máximo>"
+}
+```
+
+### User prompt (per criterion)
+
+```
+<criterio>
+Criterio: {criterio.descripcion}
+Campo: {campo_nombre}
+Peso: {criterio.peso}
+
+Niveles de evaluación:
+  - Score 1 (Insuficiente): {descripcion}
+  - Score 2 (Básico): {descripcion}
+  - Score 3 (Bueno): {descripcion}
+  - Score 4 (Excelente): {descripcion}
+</criterio>
+
+<respuesta_municipio>
+{valor del campo o "(Campo vacío — el municipio no ha respondido)"}
+</respuesta_municipio>
+
+Evalúa la respuesta del municipio según el criterio y los niveles definidos.
+Responde ÚNICAMENTE con el JSON especificado.
+```
+
+### Scoring calculation
+
+1. Per criterion: LLM assigns score (1-4) based on rubric levels
+2. Normalize: `normalizedScore = score / maxScore` (per criterion)
+3. Weighted sum: `weightedScore = Σ(normalizedScore × peso)`
+4. Total: `totalScore = (weightedScore / totalWeight) × 100` (0-100 scale)
+5. Upsert into `evaluations` table (UNIQUE on submission_id + etapa_id)
+
+### Fallback
+
+If LLM response is not valid JSON: `{ score: 1, justificacion: "Error al evaluar", recomendacion: null }`
+
+**Archivo fuente**: `src/app/api/evaluations/run/route.ts`

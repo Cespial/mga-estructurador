@@ -8,14 +8,10 @@ import type {
   Municipio,
   Submission,
   ConvocatoriaMunicipio,
+  Evaluation,
+  Rubric,
 } from "@/lib/types/database";
-
-interface MunicipioMonitorRow {
-  municipio: Municipio;
-  assignment: ConvocatoriaMunicipio;
-  submission: Submission | null;
-  perEtapa: { etapaId: string; nombre: string; progress: number }[];
-}
+import { MonitoreoTable } from "./monitoreo-table";
 
 export default async function MonitoreoPage({
   params,
@@ -49,13 +45,24 @@ export default async function MonitoreoPage({
   const template = tmpl as MgaTemplate | null;
   const etapas = template?.etapas_json ?? [];
 
+  // Fetch rubric
+  const { data: rubricData } = await supabase
+    .from("rubrics")
+    .select("*")
+    .eq("convocatoria_id", id)
+    .single();
+  const rubric = rubricData as Rubric | null;
+  const hasRubric = (rubric?.criterios_json?.length ?? 0) > 0;
+
   // Fetch assigned municipios
   const { data: assignments } = await supabase
     .from("convocatoria_municipios")
     .select("*, municipios(*)")
     .eq("convocatoria_id", id);
 
-  const assignmentList = (assignments ?? []) as (ConvocatoriaMunicipio & { municipios: Municipio })[];
+  const assignmentList = (assignments ?? []) as (ConvocatoriaMunicipio & {
+    municipios: Municipio;
+  })[];
 
   // Fetch all submissions for this convocatoria
   const { data: submissions } = await supabase
@@ -68,29 +75,49 @@ export default async function MonitoreoPage({
     submissionsByMunicipio.set(sub.municipio_id, sub);
   }
 
+  // Fetch all evaluations
+  const { data: evaluations } = await supabase
+    .from("evaluations")
+    .select("*")
+    .eq("convocatoria_id", id);
+
+  // Map evaluations by submission_id + etapa_id
+  const evalMap = new Map<string, Evaluation>();
+  for (const ev of (evaluations ?? []) as Evaluation[]) {
+    evalMap.set(`${ev.submission_id}:${ev.etapa_id}`, ev);
+  }
+
   // Build monitoring rows
-  const rows: MunicipioMonitorRow[] = assignmentList.map((a) => {
+  const rows = assignmentList.map((a) => {
     const sub = submissionsByMunicipio.get(a.municipio_id) ?? null;
     const perEtapa = etapas.map((etapa) => {
       const requiredFields = etapa.campos.filter((c) => c.requerido);
-      if (requiredFields.length === 0) {
-        return { etapaId: etapa.id, nombre: etapa.nombre, progress: 0 };
+      let progress = 0;
+      if (requiredFields.length > 0 && sub) {
+        const filled = requiredFields.filter(
+          (c) => sub.data_json[c.id]?.trim(),
+        ).length;
+        progress = Math.round((filled / requiredFields.length) * 100);
       }
-      const filled = sub
-        ? requiredFields.filter(
-            (c) => sub.data_json[c.id]?.trim(),
-          ).length
-        : 0;
+
+      const evaluation = sub
+        ? evalMap.get(`${sub.id}:${etapa.id}`) ?? null
+        : null;
+
       return {
         etapaId: etapa.id,
         nombre: etapa.nombre,
-        progress: Math.round((filled / requiredFields.length) * 100),
+        progress,
+        score: evaluation?.total_score ?? null,
+        recomendaciones: evaluation?.recomendaciones ?? [],
       };
     });
+
     return {
       municipio: a.municipios,
-      assignment: a,
-      submission: sub,
+      assignmentEstado: a.estado,
+      submissionId: sub?.id ?? null,
+      overallProgress: sub?.progress ?? 0,
       perEtapa,
     };
   });
@@ -98,8 +125,7 @@ export default async function MonitoreoPage({
   const avgProgress =
     rows.length > 0
       ? Math.round(
-          rows.reduce((acc, r) => acc + (r.submission?.progress ?? 0), 0) /
-            rows.length,
+          rows.reduce((acc, r) => acc + r.overallProgress, 0) / rows.length,
         )
       : 0;
 
@@ -119,15 +145,26 @@ export default async function MonitoreoPage({
           <h2 className="text-xl font-semibold text-gray-900">
             Monitoreo de avance
           </h2>
-          <p className="mt-1 text-sm text-gray-500">
-            {convocatoria.nombre}
-          </p>
+          <p className="mt-1 text-sm text-gray-500">{convocatoria.nombre}</p>
         </div>
         <div className="text-right">
           <p className="text-3xl font-bold text-blue-600">{avgProgress}%</p>
           <p className="text-xs text-gray-400">avance promedio</p>
         </div>
       </div>
+
+      {!hasRubric && (
+        <div className="mt-4 rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">
+          No hay rúbrica definida.{" "}
+          <Link
+            href={`/dashboard/entidad/convocatorias/${id}/rubricas`}
+            className="font-medium text-amber-800 underline"
+          >
+            Definir rúbrica
+          </Link>{" "}
+          para habilitar evaluaciones.
+        </div>
+      )}
 
       {rows.length === 0 ? (
         <div className="mt-8 rounded-lg border border-dashed border-gray-300 p-8 text-center">
@@ -136,81 +173,14 @@ export default async function MonitoreoPage({
           </p>
         </div>
       ) : (
-        <div className="mt-6 overflow-x-auto rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Municipio
-                </th>
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Estado
-                </th>
-                {etapas.map((etapa) => (
-                  <th
-                    key={etapa.id}
-                    className="px-3 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500"
-                  >
-                    {etapa.nombre}
-                  </th>
-                ))}
-                <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
-                  Total
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200">
-              {rows.map((row) => (
-                <tr key={row.municipio.id}>
-                  <td className="px-4 py-3">
-                    <p className="text-sm font-medium text-gray-900">
-                      {row.municipio.nombre}
-                    </p>
-                    <p className="text-xs text-gray-400">
-                      {row.municipio.departamento}
-                    </p>
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    {row.submission ? (
-                      <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
-                        En curso
-                      </span>
-                    ) : (
-                      <span className="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
-                        Sin iniciar
-                      </span>
-                    )}
-                  </td>
-                  {row.perEtapa.map((ep) => (
-                    <td key={ep.etapaId} className="px-3 py-3 text-center">
-                      <ProgressPill value={ep.progress} />
-                    </td>
-                  ))}
-                  <td className="px-4 py-3 text-center">
-                    <span className="text-sm font-bold text-gray-900">
-                      {Math.round(row.submission?.progress ?? 0)}%
-                    </span>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+        <div className="mt-6">
+          <MonitoreoTable
+            rows={rows}
+            etapas={etapas.map((e) => ({ id: e.id, nombre: e.nombre }))}
+            hasRubric={hasRubric}
+          />
         </div>
       )}
     </div>
-  );
-}
-
-function ProgressPill({ value }: { value: number }) {
-  let bg = "bg-gray-100 text-gray-500";
-  if (value === 100) bg = "bg-green-100 text-green-700";
-  else if (value > 0) bg = "bg-yellow-100 text-yellow-700";
-
-  return (
-    <span
-      className={`inline-block min-w-[2.5rem] rounded-full px-2 py-0.5 text-xs font-medium ${bg}`}
-    >
-      {value}%
-    </span>
   );
 }

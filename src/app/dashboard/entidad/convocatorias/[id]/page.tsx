@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { updateConvocatoria, deleteConvocatoria } from "../actions";
-import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails, Document } from "@/lib/types/database";
+import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails, Document, Rubric } from "@/lib/types/database";
 
 export default async function ConvocatoriaDetailPage({
   params,
@@ -55,6 +55,15 @@ export default async function ConvocatoriaDetailPage({
   const documents = (docsList ?? []) as Document[];
   const readyDocs = documents.filter((d) => d.status === "ready").length;
 
+  const { data: rubricData } = await supabase
+    .from("rubrics")
+    .select("*")
+    .eq("convocatoria_id", id)
+    .single();
+
+  const rubric = rubricData as Rubric | null;
+  const criteriosCount = rubric?.criterios_json?.length ?? 0;
+
   const updateWithId = updateConvocatoria.bind(null, id);
   const deleteWithId = deleteConvocatoria.bind(null, id);
 
@@ -89,7 +98,7 @@ export default async function ConvocatoriaDetailPage({
       </div>
 
       {/* Quick stats */}
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href={`/dashboard/entidad/convocatorias/${id}/plantilla`}
           className="rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
@@ -135,6 +144,18 @@ export default async function ConvocatoriaDetailPage({
             {documents.length === 0
               ? "Subir documentos"
               : `${readyDocs} procesado${readyDocs !== 1 ? "s" : ""}`}
+          </p>
+        </Link>
+        <Link
+          href={`/dashboard/entidad/convocatorias/${id}/rubricas`}
+          className="rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
+        >
+          <p className="text-sm font-medium text-gray-500">Rúbrica</p>
+          <p className="mt-1 text-2xl font-bold text-gray-900">{criteriosCount}</p>
+          <p className="mt-1 text-xs text-blue-600">
+            {criteriosCount === 0
+              ? "Definir criterios"
+              : `criterio${criteriosCount !== 1 ? "s" : ""} definido${criteriosCount !== 1 ? "s" : ""}`}
           </p>
         </Link>
       </div>

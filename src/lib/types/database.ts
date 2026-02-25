@@ -117,6 +117,53 @@ export interface Embedding {
   created_at: string;
 }
 
+export interface RubricNivel {
+  score: number;
+  label: string;
+  descripcion: string;
+}
+
+export interface RubricCriterio {
+  campo_id: string;
+  peso: number;
+  descripcion: string;
+  niveles: RubricNivel[];
+}
+
+export interface Rubric {
+  id: string;
+  convocatoria_id: string;
+  tenant_id: string;
+  criterios_json: RubricCriterio[];
+  created_at: string;
+  updated_at: string;
+}
+
+export interface EvaluationScore {
+  campo_id: string;
+  campo_nombre: string;
+  score: number;
+  max_score: number;
+  justificacion: string;
+}
+
+export interface Evaluation {
+  id: string;
+  submission_id: string;
+  convocatoria_id: string;
+  municipio_id: string;
+  etapa_id: string;
+  scores_json: EvaluationScore[];
+  total_score: number;
+  max_score: number;
+  recomendaciones: string[];
+  evaluated_by: string | null;
+  llm_model: string | null;
+  duration_ms: number | null;
+  created_at: string;
+  updated_at: string;
+}
+
 // Joined types for UI convenience
 export interface ConvocatoriaWithTemplate extends Convocatoria {
   mga_templates: MgaTemplate | null;

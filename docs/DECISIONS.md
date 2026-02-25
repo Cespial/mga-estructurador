@@ -124,3 +124,18 @@
 **Fecha**: 2026-02-25
 **Decisión**: Las server actions de documentos hacen `redirect(url?error=msg)` en vez de retornar `{ error }`.
 **Razón**: Next.js form `action` espera `void | Promise<void>`. Retornar objetos no es compatible con el tipo `action`. Redirect con query param es el patrón compatible.
+
+## DEC-026: Rúbrica como JSONB (criterios_json) — 1:1 con convocatoria
+**Fecha**: 2026-02-25
+**Decisión**: Una rúbrica por convocatoria (UNIQUE), criterios como JSONB array. Cada criterio tiene campo_id, peso, descripción y niveles de evaluación (score 1-4).
+**Razón**: Mismo patrón que mga_templates. Flexible, se valida en la app. La relación campo_id → campo MGA permite evaluar campos específicos.
+
+## DEC-027: Evaluación por etapa con scoring LLM
+**Fecha**: 2026-02-25
+**Decisión**: Evaluaciones se generan por etapa (no por submission completa). Por cada criterio de la etapa, el LLM evalúa la respuesta del municipio y asigna un score según los niveles de la rúbrica.
+**Razón**: Granularidad por etapa permite evaluaciones parciales. El municipio puede ver feedback incremental. El score final es un promedio ponderado normalizado a 100 puntos.
+
+## DEC-028: Upsert de evaluaciones (UNIQUE submission_id + etapa_id)
+**Fecha**: 2026-02-25
+**Decisión**: Un constraint UNIQUE en `evaluations(submission_id, etapa_id)` permite re-evaluar una etapa sobreescribiendo la evaluación anterior.
+**Razón**: Las evaluaciones se pueden repetir a medida que el municipio mejora sus respuestas. Solo se mantiene la evaluación más reciente.

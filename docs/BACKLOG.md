@@ -47,12 +47,13 @@
 - [x] UI gestión documentos (upload, procesar, eliminar)
 - [x] Soporte PDF (pdf-parse), TXT, DOCX (básico)
 
-### Wave 6 — Rúbricas + Evaluación
-- [ ] Tabla `rubrics` (criterios JSON por convocatoria)
-- [ ] Tabla `evaluations` (submission_id, etapa, score, recomendaciones)
-- [ ] Scoring por etapa
-- [ ] Tablero entidad: alerts + recomendaciones
-- [ ] Vista municipio: recomendaciones accionables
+### Wave 6 — Rúbricas + Evaluación ✅
+- [x] Tabla `rubrics` (criterios JSON por convocatoria, UNIQUE constraint)
+- [x] Tabla `evaluations` (submission_id, etapa_id, scores_json, total_score, recomendaciones)
+- [x] Editor de rúbrica visual (criterios con pesos + 4 niveles de evaluación)
+- [x] Scoring por etapa via LLM (evaluación por criterio con prompt especializado)
+- [x] Tablero entidad: monitoreo con score badges + botón "Evaluar" por etapa
+- [x] Vista municipio: score por etapa + recomendaciones accionables
 
 ### Wave 7 — Demo + Empaque
 - [ ] DEMO_SCRIPT.md con guion 7-10 min

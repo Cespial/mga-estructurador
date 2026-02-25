@@ -123,6 +123,7 @@ export default async function WizardPage({
 
       <div className="mt-6">
         <WizardClient
+          convocatoriaId={id}
           submissionId={submission.id}
           etapas={etapas}
           initialData={submission.data_json}

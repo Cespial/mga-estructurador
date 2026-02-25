@@ -27,13 +27,15 @@
 - [x] Tablero entidad: monitoreo con desglose por etapa por municipio
 - [x] Sync progress trigger (submissions → convocatoria_municipios)
 
-### Wave 4 — Asistente IA
-- [ ] Endpoint server-side `/api/ai/assist`
-- [ ] Schema de salida Zod (suggested_text, bullets, risks, etc.)
-- [ ] Adapter pattern para LLM (OpenAI/Anthropic)
-- [ ] Tabla `audit_logs` para interacciones IA
-- [ ] UI: botón de asistente por campo MGA
-- [ ] Prompt template contextual
+### Wave 4 — Asistente IA ✅
+- [x] Endpoint server-side `/api/ai/assist`
+- [x] Schema de salida Zod (suggested_text, bullets, risks, etc.)
+- [x] Adapter pattern para LLM (OpenAI/Anthropic)
+- [x] Tabla `audit_logs` para interacciones IA
+- [x] UI: botón de asistente por campo MGA
+- [x] Prompt template contextual
+- [x] Rate limiting (10 req/min por usuario)
+- [x] Panel de respuesta IA con "Usar sugerencia"
 
 ### Wave 5 — Documentos + RAG
 - [ ] Upload a Supabase Storage por convocatoria

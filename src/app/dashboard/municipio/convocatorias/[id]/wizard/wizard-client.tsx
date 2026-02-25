@@ -1,10 +1,12 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import type { MgaEtapa } from "@/lib/types/database";
+import type { MgaEtapa, MgaCampo } from "@/lib/types/database";
+import type { AiAssistResponse } from "@/lib/ai/schemas";
 import { saveSubmissionData } from "./actions";
 
 interface WizardProps {
+  convocatoriaId: string;
   submissionId: string;
   etapas: MgaEtapa[];
   initialData: Record<string, string>;
@@ -13,6 +15,7 @@ interface WizardProps {
 }
 
 export function WizardClient({
+  convocatoriaId,
   submissionId,
   etapas,
   initialData,
@@ -31,7 +34,17 @@ export function WizardClient({
   const [saving, setSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<string | null>(null);
   const [dirty, setDirty] = useState(false);
-  const [pendingFields, setPendingFields] = useState<Record<string, string>>({});
+  const [pendingFields, setPendingFields] = useState<Record<string, string>>(
+    {},
+  );
+
+  // AI assist state
+  const [aiLoading, setAiLoading] = useState<string | null>(null); // campo_id being loaded
+  const [aiResponse, setAiResponse] = useState<{
+    campoId: string;
+    data: AiAssistResponse & { _meta?: { model: string; duration_ms: number } };
+  } | null>(null);
+  const [aiError, setAiError] = useState<string | null>(null);
 
   const currentEtapa = etapas[currentEtapaIndex];
 
@@ -84,6 +97,47 @@ export function WizardClient({
       await doSave(fieldsToSave, etapas[currentEtapaIndex].id);
     }
     setCurrentEtapaIndex(index);
+    // Clear AI panel when changing etapa
+    setAiResponse(null);
+    setAiError(null);
+  }
+
+  async function requestAiAssist(campo: MgaCampo) {
+    setAiLoading(campo.id);
+    setAiError(null);
+    setAiResponse(null);
+
+    try {
+      const res = await fetch("/api/ai/assist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          convocatoria_id: convocatoriaId,
+          etapa_id: currentEtapa.id,
+          campo_id: campo.id,
+          current_text: data[campo.id] || undefined,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setAiError(json.error ?? "Error al consultar el asistente IA");
+        return;
+      }
+
+      setAiResponse({ campoId: campo.id, data: json });
+    } catch {
+      setAiError("Error de conexión al consultar el asistente IA");
+    } finally {
+      setAiLoading(null);
+    }
+  }
+
+  function applyAiSuggestion() {
+    if (!aiResponse) return;
+    handleFieldChange(aiResponse.campoId, aiResponse.data.suggested_text);
+    setAiResponse(null);
   }
 
   function getEtapaStatus(etapa: MgaEtapa): "empty" | "partial" | "complete" {
@@ -206,15 +260,49 @@ export function WizardClient({
           <div className="divide-y divide-gray-50 px-6">
             {currentEtapa.campos.map((campo) => (
               <div key={campo.id} className="py-4">
-                <label
-                  htmlFor={campo.id}
-                  className="mb-1 flex items-center gap-2 text-sm font-medium text-gray-700"
-                >
-                  {campo.nombre}
-                  {campo.requerido && (
-                    <span className="text-xs text-red-500">*</span>
+                <div className="mb-1 flex items-center justify-between">
+                  <label
+                    htmlFor={campo.id}
+                    className="flex items-center gap-2 text-sm font-medium text-gray-700"
+                  >
+                    {campo.nombre}
+                    {campo.requerido && (
+                      <span className="text-xs text-red-500">*</span>
+                    )}
+                  </label>
+                  {(campo.tipo === "textarea" || campo.tipo === "text") && (
+                    <button
+                      type="button"
+                      onClick={() => requestAiAssist(campo)}
+                      disabled={aiLoading !== null}
+                      className="inline-flex items-center gap-1.5 rounded-md border border-purple-200 bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition hover:bg-purple-100 disabled:cursor-not-allowed disabled:opacity-50"
+                    >
+                      {aiLoading === campo.id ? (
+                        <>
+                          <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-purple-300 border-t-purple-700" />
+                          Consultando...
+                        </>
+                      ) : (
+                        <>
+                          <svg
+                            className="h-3.5 w-3.5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            strokeWidth={1.5}
+                            stroke="currentColor"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z"
+                            />
+                          </svg>
+                          Asistente IA
+                        </>
+                      )}
+                    </button>
                   )}
-                </label>
+                </div>
                 {campo.descripcion && (
                   <p className="mb-2 text-xs text-gray-500">
                     {campo.descripcion}
@@ -225,6 +313,20 @@ export function WizardClient({
                   value={data[campo.id] ?? ""}
                   onChange={(val) => handleFieldChange(campo.id, val)}
                 />
+
+                {/* AI Response Panel — inline below the field */}
+                {aiResponse && aiResponse.campoId === campo.id && (
+                  <AiResponsePanel
+                    response={aiResponse.data}
+                    onApply={applyAiSuggestion}
+                    onDismiss={() => setAiResponse(null)}
+                  />
+                )}
+                {aiError && aiLoading === null && aiResponse === null && (
+                  <div className="mt-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700">
+                    {aiError}
+                  </div>
+                )}
               </div>
             ))}
           </div>
@@ -255,6 +357,151 @@ export function WizardClient({
   );
 }
 
+// ============================================================
+// AI Response Panel
+// ============================================================
+
+function AiResponsePanel({
+  response,
+  onApply,
+  onDismiss,
+}: {
+  response: AiAssistResponse & {
+    _meta?: { model: string; duration_ms: number };
+  };
+  onApply: () => void;
+  onDismiss: () => void;
+}) {
+  return (
+    <div className="mt-3 rounded-lg border border-purple-200 bg-purple-50/50">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-purple-100 px-4 py-2">
+        <span className="text-xs font-semibold text-purple-700">
+          Sugerencia del Asistente IA
+        </span>
+        <div className="flex items-center gap-2">
+          {response._meta && (
+            <span className="text-[10px] text-purple-400">
+              {response._meta.model} &middot;{" "}
+              {(response._meta.duration_ms / 1000).toFixed(1)}s
+            </span>
+          )}
+          <button
+            onClick={onDismiss}
+            className="text-purple-400 hover:text-purple-600"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div className="space-y-3 px-4 py-3">
+        {/* Suggested text */}
+        <div>
+          <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-purple-500">
+            Texto sugerido
+          </p>
+          <div className="rounded-md bg-white p-3 text-sm text-gray-800 shadow-sm">
+            {response.suggested_text}
+          </div>
+        </div>
+
+        {/* Bullets */}
+        {response.bullets.length > 0 && (
+          <div>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-purple-500">
+              Puntos clave
+            </p>
+            <ul className="space-y-1">
+              {response.bullets.map((b, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-1.5 text-xs text-gray-700"
+                >
+                  <span className="mt-0.5 text-purple-400">&bull;</span>
+                  {b}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Risks */}
+        {response.risks.length > 0 && (
+          <div>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-amber-600">
+              Riesgos identificados
+            </p>
+            <ul className="space-y-1">
+              {response.risks.map((r, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-1.5 text-xs text-amber-700"
+                >
+                  <span className="mt-0.5">&#9888;</span>
+                  {r}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Missing info questions */}
+        {response.missing_info_questions.length > 0 && (
+          <div>
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-blue-600">
+              Informacion faltante
+            </p>
+            <ul className="space-y-1">
+              {response.missing_info_questions.map((q, i) => (
+                <li
+                  key={i}
+                  className="flex items-start gap-1.5 text-xs text-blue-700"
+                >
+                  <span className="mt-0.5">?</span>
+                  {q}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex items-center gap-2 border-t border-purple-100 pt-3">
+          <button
+            onClick={onApply}
+            className="rounded-md bg-purple-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-purple-700"
+          >
+            Usar sugerencia
+          </button>
+          <button
+            onClick={onDismiss}
+            className="rounded-md border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+          >
+            Descartar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================
+// Field Input
+// ============================================================
+
 function FieldInput({
   campo,
   value,
@@ -276,7 +523,7 @@ function FieldInput({
           onChange={(e) => onChange(e.target.value)}
           rows={5}
           className={baseClass}
-          placeholder="Escriba aquí..."
+          placeholder="Escriba aqui..."
         />
       );
     case "number":
@@ -308,7 +555,7 @@ function FieldInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={baseClass}
-          placeholder="Escriba aquí..."
+          placeholder="Escriba aqui..."
         />
       );
   }

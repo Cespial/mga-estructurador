@@ -69,3 +69,23 @@
 **Fecha**: 2026-02-25
 **Decisión**: Un trigger PostgreSQL sincroniza `submissions.progress` a `convocatoria_municipios.progress` automáticamente.
 **Razón**: La entidad consulta `convocatoria_municipios` para ver avance. Sincronizar vía trigger evita queries adicionales y mantiene consistencia.
+
+## DEC-015: LLM Adapter pattern con factory function
+**Fecha**: 2026-02-25
+**Decisión**: Usar patrón adapter con interfaz `LlmAdapter` y factory `createLlmAdapter()` que selecciona OpenAI o Anthropic según env var `LLM_PROVIDER`.
+**Razón**: Permite cambiar de proveedor LLM sin modificar código de negocio. OpenAI usa SDK oficial; Anthropic usa fetch directo para evitar dependencia adicional.
+
+## DEC-016: Rate limiting via audit_logs count
+**Fecha**: 2026-02-25
+**Decisión**: Rate limiting simple: contar registros en `audit_logs` del usuario en el último minuto (máx 10).
+**Razón**: No requiere infraestructura adicional (Redis, etc.). Suficiente para MVP. La tabla audit_logs ya existe para trazabilidad.
+
+## DEC-017: Fallback graceful para respuestas LLM no conformes
+**Fecha**: 2026-02-25
+**Decisión**: Si el LLM devuelve JSON que no pasa Zod, intentar extraer campos individuales. Si devuelve texto plano, envolverlo como `suggested_text`.
+**Razón**: Los LLMs no siempre respetan el schema exacto. Es mejor mostrar algo útil que fallar completamente.
+
+## DEC-018: Asistente IA solo en campos textarea y text
+**Fecha**: 2026-02-25
+**Decisión**: El botón "Asistente IA" solo aparece en campos de tipo `textarea` y `text`, no en `number` o `date`.
+**Razón**: Solo los campos de texto libre se benefician de sugerencias narrativas del LLM.

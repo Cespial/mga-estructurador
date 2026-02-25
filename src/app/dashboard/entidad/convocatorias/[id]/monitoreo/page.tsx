@@ -11,6 +11,7 @@ import type {
   Evaluation,
   Rubric,
 } from "@/lib/types/database";
+import { toRow, toRows } from "@/lib/supabase/helpers";
 import { MonitoreoTable } from "./monitoreo-table";
 
 export default async function MonitoreoPage({
@@ -32,8 +33,8 @@ export default async function MonitoreoPage({
     .eq("id", id)
     .single();
 
-  if (!conv) notFound();
-  const convocatoria = conv as Convocatoria;
+  const convocatoria = toRow<Convocatoria>(conv);
+  if (!convocatoria) notFound();
 
   // Fetch template
   const { data: tmpl } = await supabase
@@ -42,7 +43,7 @@ export default async function MonitoreoPage({
     .eq("convocatoria_id", id)
     .maybeSingle();
 
-  const template = tmpl as MgaTemplate | null;
+  const template = toRow<MgaTemplate>(tmpl);
   const etapas = template?.etapas_json ?? [];
 
   // Fetch rubric
@@ -51,7 +52,7 @@ export default async function MonitoreoPage({
     .select("*")
     .eq("convocatoria_id", id)
     .maybeSingle();
-  const rubric = rubricData as Rubric | null;
+  const rubric = toRow<Rubric>(rubricData);
   const hasRubric = (rubric?.criterios_json?.length ?? 0) > 0;
 
   // Fetch assigned municipios
@@ -60,9 +61,7 @@ export default async function MonitoreoPage({
     .select("*, municipios(*)")
     .eq("convocatoria_id", id);
 
-  const assignmentList = (assignments ?? []) as (ConvocatoriaMunicipio & {
-    municipios: Municipio;
-  })[];
+  const assignmentList = toRows<ConvocatoriaMunicipio & { municipios: Municipio }>(assignments);
 
   // Fetch all submissions for this convocatoria
   const { data: submissions } = await supabase
@@ -71,7 +70,7 @@ export default async function MonitoreoPage({
     .eq("convocatoria_id", id);
 
   const submissionsByMunicipio = new Map<string, Submission>();
-  for (const sub of (submissions ?? []) as Submission[]) {
+  for (const sub of toRows<Submission>(submissions)) {
     submissionsByMunicipio.set(sub.municipio_id, sub);
   }
 
@@ -83,8 +82,25 @@ export default async function MonitoreoPage({
 
   // Map evaluations by submission_id + etapa_id
   const evalMap = new Map<string, Evaluation>();
-  for (const ev of (evaluations ?? []) as Evaluation[]) {
+  for (const ev of toRows<Evaluation>(evaluations)) {
     evalMap.set(`${ev.submission_id}:${ev.etapa_id}`, ev);
+  }
+
+  // Compute totalPeso per etapa from rubric criterios
+  const criterios = rubric?.criterios_json ?? [];
+  const campoToEtapa = new Map<string, string>();
+  for (const etapa of etapas) {
+    for (const campo of etapa.campos) {
+      campoToEtapa.set(campo.id, etapa.id);
+    }
+  }
+
+  const etapaTotalPeso = new Map<string, number>();
+  for (const c of criterios) {
+    const etapaId = campoToEtapa.get(c.campo_id);
+    if (etapaId) {
+      etapaTotalPeso.set(etapaId, (etapaTotalPeso.get(etapaId) ?? 0) + c.peso);
+    }
   }
 
   // Build monitoring rows
@@ -109,6 +125,8 @@ export default async function MonitoreoPage({
         nombre: etapa.nombre,
         progress,
         score: evaluation?.total_score ?? null,
+        totalPeso: etapaTotalPeso.get(etapa.id) ?? 0,
+        scoresJson: evaluation?.scores_json ?? null,
         recomendaciones: evaluation?.recomendaciones ?? [],
       };
     });

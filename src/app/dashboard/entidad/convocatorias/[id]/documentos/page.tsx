@@ -3,7 +3,9 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { Convocatoria, Document } from "@/lib/types/database";
-import { uploadDocument, deleteDocument, processDocument } from "./actions";
+import { toRow, toRows } from "@/lib/supabase/helpers";
+import { uploadDocuments, deleteDocument, processDocument } from "./actions";
+import { UploadForm } from "./upload-form";
 
 export default async function DocumentosPage({
   params,
@@ -27,8 +29,8 @@ export default async function DocumentosPage({
     .eq("id", id)
     .single();
 
-  if (!conv) notFound();
-  const convocatoria = conv as Convocatoria;
+  const convocatoria = toRow<Convocatoria>(conv);
+  if (!convocatoria) notFound();
 
   const { data: docs } = await supabase
     .from("documents")
@@ -36,9 +38,9 @@ export default async function DocumentosPage({
     .eq("convocatoria_id", id)
     .order("created_at", { ascending: false });
 
-  const documents = (docs ?? []) as Document[];
+  const documents = toRows<Document>(docs);
 
-  const uploadWithId = uploadDocument.bind(null, id);
+  const uploadAction = uploadDocuments.bind(null, id);
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -69,33 +71,7 @@ export default async function DocumentosPage({
         </div>
       </div>
 
-      {/* Upload form */}
-      <div className="mt-6 rounded-lg border border-gray-200 bg-white p-6">
-        <h3 className="text-base font-semibold text-gray-900">
-          Subir documento
-        </h3>
-        <p className="mt-1 text-xs text-gray-500">
-          Formatos permitidos: PDF, TXT, DOCX. Tamaño máximo: 10MB.
-        </p>
-        <form action={uploadWithId} className="mt-4 flex items-end gap-3">
-          <div className="flex-1">
-            <input
-              id="file"
-              name="file"
-              type="file"
-              accept=".pdf,.txt,.docx,application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-              required
-              className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100"
-            />
-          </div>
-          <button
-            type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Subir
-          </button>
-        </form>
-      </div>
+      <UploadForm action={uploadAction} />
 
       {/* Documents list */}
       <div className="mt-6">
@@ -185,6 +161,7 @@ function DocumentCard({
             <form action={processWithIds}>
               <button
                 type="submit"
+                aria-label={`Procesar ${doc.file_name}`}
                 className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
               >
                 Procesar
@@ -194,6 +171,7 @@ function DocumentCard({
           <form action={deleteWithIds}>
             <button
               type="submit"
+              aria-label={`Eliminar ${doc.file_name}`}
               className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100"
             >
               Eliminar

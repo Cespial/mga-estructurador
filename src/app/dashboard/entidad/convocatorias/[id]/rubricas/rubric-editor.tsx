@@ -143,10 +143,52 @@ export function RubricEditor({
           </div>
         </div>
         {criterios.length > 0 && (
-          <p className="mt-2 text-xs text-gray-500">
-            {criterios.length} criterio{criterios.length !== 1 ? "s" : ""} · Peso
-            total: {totalPeso}
-          </p>
+          <div className="mt-3">
+            <p className="text-xs text-gray-500">
+              {criterios.length} criterio{criterios.length !== 1 ? "s" : ""} · Peso
+              total: {totalPeso}
+            </p>
+            {/* Weight distribution bar */}
+            {totalPeso > 0 && (
+              <div className="mt-2">
+                <div className="flex h-3 overflow-hidden rounded-full">
+                  {criterios.map((c, i) => {
+                    const pct = (c.peso / totalPeso) * 100;
+                    const colors = [
+                      "bg-blue-500", "bg-emerald-500", "bg-amber-500",
+                      "bg-purple-500", "bg-rose-500", "bg-cyan-500",
+                      "bg-orange-500", "bg-indigo-500",
+                    ];
+                    return (
+                      <div
+                        key={c.campo_id}
+                        className={`${colors[i % colors.length]}`}
+                        style={{ width: `${pct}%` }}
+                        title={`${allCampos.find((ac) => ac.id === c.campo_id)?.nombre ?? c.campo_id}: ${pct.toFixed(1)}%`}
+                      />
+                    );
+                  })}
+                </div>
+                <div className="mt-1.5 flex flex-wrap gap-x-3 gap-y-1">
+                  {criterios.map((c, i) => {
+                    const campo = allCampos.find((ac) => ac.id === c.campo_id);
+                    const pct = (c.peso / totalPeso) * 100;
+                    const dotColors = [
+                      "bg-blue-500", "bg-emerald-500", "bg-amber-500",
+                      "bg-purple-500", "bg-rose-500", "bg-cyan-500",
+                      "bg-orange-500", "bg-indigo-500",
+                    ];
+                    return (
+                      <span key={c.campo_id} className="flex items-center gap-1 text-[10px] text-gray-600">
+                        <span className={`inline-block h-2 w-2 rounded-full ${dotColors[i % dotColors.length]}`} />
+                        {campo?.nombre ?? c.campo_id}: {pct.toFixed(1)}%
+                      </span>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
@@ -174,6 +216,11 @@ export function RubricEditor({
                   <div>
                     <p className="text-sm font-semibold text-gray-900">
                       {campo?.nombre ?? criterio.campo_id}
+                      {totalPeso > 0 && (
+                        <span className="ml-2 text-xs font-normal text-gray-400">
+                          {((criterio.peso / totalPeso) * 100).toFixed(1)}%
+                        </span>
+                      )}
                     </p>
                     <p className="text-xs text-gray-500">
                       {campo?.etapa_nombre}
@@ -181,6 +228,7 @@ export function RubricEditor({
                   </div>
                   <button
                     onClick={() => removeCriterio(ci)}
+                    aria-label={`Eliminar criterio ${campo?.nombre ?? criterio.campo_id}`}
                     className="text-xs text-red-600 hover:text-red-800"
                   >
                     Eliminar

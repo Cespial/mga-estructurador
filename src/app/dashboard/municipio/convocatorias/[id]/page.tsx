@@ -126,10 +126,20 @@ export default async function MunicipioConvocatoriaPage({
               style={{ width: `${submission.progress}%` }}
             />
           </div>
-          <p className="mt-2 text-xs text-gray-400">
-            Última actualización:{" "}
-            {new Date(submission.updated_at).toLocaleString("es-CO")}
-          </p>
+          <div className="mt-2 flex items-center justify-between">
+            <p className="text-xs text-gray-400">
+              Última actualización:{" "}
+              {new Date(submission.updated_at).toLocaleString("es-CO")}
+            </p>
+            <a
+              href={`/api/submissions/${submission.id}/pdf`}
+              download
+              aria-label="Descargar resumen en PDF"
+              className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+            >
+              Descargar PDF
+            </a>
+          </div>
         </div>
       )}
 

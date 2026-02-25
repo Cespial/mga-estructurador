@@ -10,13 +10,13 @@
 - [x] UI: login page + redirección por rol
 - [x] Middleware de protección de rutas
 
-### Wave 2 — Convocatorias + Plantilla MGA
-- [ ] Tabla `convocatorias` (tenant_id, metadata, fechas, estado)
-- [ ] CRUD convocatoria (UI entidad_admin)
-- [ ] Tabla `mga_templates` (etapas + campos en JSON)
-- [ ] Editor simple de plantilla MGA
-- [ ] Tabla `convocatoria_municipios` (asignación)
-- [ ] UI municipio: ver convocatoria asignada y etapas
+### Wave 2 — Convocatorias + Plantilla MGA ✅
+- [x] Tabla `convocatorias` (tenant_id, metadata, fechas, estado)
+- [x] CRUD convocatoria (UI entidad_admin)
+- [x] Tabla `mga_templates` (etapas + campos en JSON)
+- [x] Editor visual de plantilla MGA (client component)
+- [x] Tabla `convocatoria_municipios` (asignación + remover)
+- [x] UI municipio: ver convocatoria asignada y etapas MGA
 
 ### Wave 3 — Wizard MGA
 - [ ] Tabla `submissions` (convocatoria_id, municipio_id, data_json, etapa_actual)

@@ -128,3 +128,39 @@
 
 **Siguientes pasos**
 - Wave 4: Microinteracciones + sorpresa
+
+---
+
+## Iteracion 2026-02-25-4 -- Wave 4 -- Microinteracciones + Sorpresa
+
+**Objetivo**
+- 4 microinteracciones accesibles (prefers-reduced-motion)
+- 1 momento sorpresa: toggle Before/After del Asistente IA
+
+**Scope**
+- Archivos tocados:
+  - `src/app/globals.css` (mod) — keyframes: score-reveal, shimmer, fade-in-up + reduced-motion
+  - `src/app/dashboard/entidad/convocatorias/[id]/monitoreo/monitoreo-table.tsx` (mod) — score reveal animation
+  - `src/app/dashboard/municipio/convocatorias/[id]/wizard/wizard-client.tsx` (mod) — progress celebration
+  - `src/components/landing/interactive-demo.tsx` (mod) — score reveal + before/after toggle
+
+**Cambios**
+- CSS animations: score-reveal (scale+bounce 0.5s), shimmer (gradient sweep 2s loop), fade-in-up (0.4s)
+- Reduced-motion media query: desactiva todas las animaciones
+- Monitoreo: ScoreBadge con animate-score-reveal al evaluar (1s timeout, luego estatico)
+- Wizard: barra de progreso verde con shimmer al 100% + mensaje "Completado" con fade-in-up
+- Landing demo scoring: scores individuales con reveal animation, score total con fade-in-up
+- Landing demo summary: score badge con reveal, PDF preview con fade-in-up
+- Before/After toggle: texto crudo vs texto mejorado con IA (toggle Antes/Despues)
+
+**Quality Gates**
+- lint: pass
+- typecheck: pass
+- build: pass (24 rutas)
+
+**Commit**
+- hash: 23582a6
+- mensaje: `feat: wave 4 — microinteractions + before/after surprise`
+
+**Siguientes pasos**
+- Wave 5: Proof para vender (kit comercial)

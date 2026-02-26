@@ -39,12 +39,20 @@ export default async function EntidadDashboard() {
             Gestiona convocatorias y monitorea el avance de municipios.
           </p>
         </div>
-        <Link
-          href="/dashboard/entidad/convocatorias/nueva"
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-        >
-          + Nueva convocatoria
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href="/dashboard/entidad/analytics"
+            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          >
+            Analytics
+          </Link>
+          <Link
+            href="/dashboard/entidad/convocatorias/nueva"
+            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          >
+            + Nueva convocatoria
+          </Link>
+        </div>
       </div>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-3">

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 import { InteractiveDemo } from "@/components/landing/interactive-demo";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
   title: "Estructurador MGA — Estructura, evalua y evidencia proyectos MGA",
@@ -23,11 +24,11 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-950">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/90">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <span className="text-lg font-bold text-gray-900">
+          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
             Estructurador MGA
           </span>
           <div className="flex items-center gap-4">
@@ -43,6 +44,10 @@ export default function LandingPage() {
             <Link href="/implementacion" className="text-sm text-gray-600 hover:text-gray-900">
               Implementacion
             </Link>
+            <Link href="/contacto" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200">
+              Contacto
+            </Link>
+            <ThemeToggle />
             <Link
               href="/login"
               className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
@@ -60,12 +65,12 @@ export default function LandingPage() {
             <div className="mb-4 inline-flex rounded-full bg-blue-50 px-4 py-1.5 text-xs font-medium text-blue-700">
               Plataforma de gestion MGA por convocatorias
             </div>
-            <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
+            <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
               Estructura, recibe, evalua y{" "}
               <span className="text-blue-600">evidencia en PDF</span>
               {" "}&mdash; sin friccion
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
               Configura convocatorias con etapas y campos. Los municipios
               diligencian con asistente IA. Evalua con rubricas ponderadas.
               Exporta todo en PDF auditables.
@@ -94,9 +99,9 @@ export default function LandingPage() {
       </section>
 
       {/* Problem */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16">
+      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             El problema que resolvemos
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
@@ -119,7 +124,7 @@ export default function LandingPage() {
       {/* Solution */}
       <section id="como-funciona" className="scroll-mt-16 border-t border-gray-100 px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Como lo resolvemos
           </h2>
           <p className="mx-auto mt-3 max-w-2xl text-gray-600">
@@ -162,10 +167,10 @@ export default function LandingPage() {
       </section>
 
       {/* Interactive Demo */}
-      <section id="demo" className="scroll-mt-16 border-t border-gray-100 bg-gray-50 px-4 py-16">
+      <section id="demo" className="scroll-mt-16 border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
         <div className="mx-auto max-w-4xl">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               Demo interactiva
             </h2>
             <p className="mt-3 text-gray-600">
@@ -182,7 +187,7 @@ export default function LandingPage() {
       {/* Benefits */}
       <section id="beneficios" className="scroll-mt-16 border-t border-gray-100 px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Beneficios medibles
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
@@ -207,9 +212,9 @@ export default function LandingPage() {
       </section>
 
       {/* Evidence / Trust */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16">
+      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
         <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900">
+          <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
             Auditable por diseno
           </h2>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
@@ -232,7 +237,7 @@ export default function LandingPage() {
       {/* CTA */}
       <section className="border-t border-gray-100 px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
             Listo para estructurar tus convocatorias?
           </h2>
           <p className="mt-3 text-gray-600">
@@ -257,8 +262,8 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-gray-50 px-4 py-8">
-        <div className="mx-auto max-w-6xl text-center text-sm text-gray-500">
+      <footer className="border-t border-gray-200 bg-gray-50 px-4 py-8 dark:border-gray-800 dark:bg-gray-900">
+        <div className="mx-auto max-w-6xl text-center text-sm text-gray-500 dark:text-gray-400">
           <p>
             Estructurador MGA &mdash; Plataforma de gestion de proyectos MGA
             por convocatorias.
@@ -267,6 +272,7 @@ export default function LandingPage() {
             <a href="#demo" className="hover:text-gray-700">Demo</a>
             <Link href="/casos" className="hover:text-gray-700">Casos</Link>
             <Link href="/implementacion" className="hover:text-gray-700">Implementacion</Link>
+            <Link href="/contacto" className="hover:text-gray-700">Contacto</Link>
             <Link href="/login" className="hover:text-gray-700">Entrar</Link>
           </div>
         </div>
@@ -295,10 +301,10 @@ function FlowSteps() {
             >
               {i + 1}
             </div>
-            <p className="mt-2 text-sm font-semibold text-gray-900">
+            <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
               {step.label}
             </p>
-            <p className="mt-0.5 max-w-[140px] text-center text-xs text-gray-500">
+            <p className="mt-0.5 max-w-[140px] text-center text-xs text-gray-500 dark:text-gray-400">
               {step.desc}
             </p>
           </div>
@@ -313,9 +319,9 @@ function FlowSteps() {
 
 function ProblemCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left">
-      <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{description}</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
+      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
     </div>
   );
 }
@@ -330,16 +336,16 @@ function SolutionCard({
   items: string[];
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left">
+    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
       <div className="mb-3 flex items-center gap-2">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-900 dark:text-blue-300">
           {step}
         </span>
-        <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
       </div>
       <ul className="space-y-1.5">
         {items.map((item) => (
-          <li key={item} className="flex items-start gap-2 text-sm text-gray-600">
+          <li key={item} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
             <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
             {item}
           </li>
@@ -351,18 +357,18 @@ function SolutionCard({
 
 function BenefitCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left">
-      <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{description}</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
+      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
     </div>
   );
 }
 
 function TrustCard({ title, description }: { title: string; description: string }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left">
-      <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600">{description}</p>
+    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
+      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
     </div>
   );
 }

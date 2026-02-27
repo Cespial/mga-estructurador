@@ -4,7 +4,7 @@ import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import type {
   Submission,
-  Rubric,
+  LegacyRubric as Rubric,
   RubricCriterio,
   MgaTemplate,
   MgaEtapa,

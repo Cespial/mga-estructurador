@@ -9,7 +9,7 @@ import type {
   Submission,
   ConvocatoriaMunicipio,
   Evaluation,
-  Rubric,
+  LegacyRubric as Rubric,
 } from "@/lib/types/database";
 import { toRow, toRows } from "@/lib/supabase/helpers";
 import { MonitoreoTable } from "./monitoreo-table";

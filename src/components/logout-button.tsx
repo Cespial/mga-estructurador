@@ -16,9 +16,9 @@ export function LogoutButton() {
   return (
     <button
       onClick={handleLogout}
-      className="rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50 dark:border-gray-700 dark:text-gray-300 dark:hover:bg-gray-800"
+      className="rounded-[var(--radius-button)] border border-border px-3 py-1.5 text-sm text-text-secondary hover:bg-white/5 hover:text-text-primary transition-colors"
     >
-      Cerrar sesión
+      Cerrar sesion
     </button>
   );
 }

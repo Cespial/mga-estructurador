@@ -2,9 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Estructurador MGA por Convocatorias",
+  title: "Publitec — Plataforma de Convocatorias con IA",
   description:
-    "Plataforma para estructurar proyectos MGA en el marco de convocatorias gubernamentales",
+    "Plataforma donde entidades crean convocatorias con rubricas y municipios estructuran proyectos con asistencia de inteligencia artificial. Reportes Excel y PDF profesionales.",
+  openGraph: {
+    title: "Publitec — Plataforma de Convocatorias con IA",
+    description:
+      "Gestiona convocatorias, estructura proyectos con IA y genera reportes profesionales.",
+    type: "website",
+    locale: "es_CO",
+  },
 };
 
 export default function RootLayout({
@@ -14,7 +21,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es">
-      <body className="antialiased">{children}</body>
+      <body className="bg-bg-app text-text-primary antialiased">
+        {children}
+      </body>
     </html>
   );
 }

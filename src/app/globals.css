@@ -1,8 +1,135 @@
 @import "tailwindcss";
 
-@custom-variant dark (&:where(.dark, .dark *));
+/* ── Publitec Dark Premium Theme ── */
 
-/* ── Wave 4: Microinteraction animations ── */
+@theme {
+  /* Background palette */
+  --color-bg-app: #39352f;
+  --color-bg-sidebar: #413e37;
+  --color-bg-card: #363533;
+  --color-bg-elevated: #4a463e;
+  --color-bg-input: #2e2b27;
+
+  /* Text palette */
+  --color-text-primary: #e2ddd5;
+  --color-text-secondary: #a39a88;
+  --color-text-muted: #7c6f5e;
+  --color-text-inverse: #1a1816;
+
+  /* Accent colors */
+  --color-accent: #fb7117;
+  --color-accent-hover: #e5650f;
+  --color-accent-muted: rgba(251, 113, 23, 0.15);
+  --color-success: #22795b;
+  --color-success-muted: rgba(34, 121, 91, 0.15);
+  --color-danger: #dc2626;
+  --color-danger-muted: rgba(220, 38, 38, 0.15);
+  --color-warning: #f59e0b;
+  --color-info: #3b82f6;
+
+  /* Border */
+  --color-border: rgba(226, 221, 213, 0.12);
+  --color-border-hover: rgba(226, 221, 213, 0.25);
+  --color-border-accent: rgba(251, 113, 23, 0.4);
+
+  /* Radius */
+  --radius-card: 14px;
+  --radius-shell: 18px;
+  --radius-pill: 999px;
+  --radius-input: 10px;
+  --radius-button: 10px;
+
+  /* Shadows */
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3), 0 1px 2px rgba(0, 0, 0, 0.2);
+  --shadow-elevated: 0 4px 12px rgba(0, 0, 0, 0.4), 0 2px 4px rgba(0, 0, 0, 0.3);
+  --shadow-glow: 0 0 20px rgba(251, 113, 23, 0.15);
+}
+
+/* ── Scrollbar styling ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(226, 221, 213, 0.15);
+  border-radius: 999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(226, 221, 213, 0.25);
+}
+
+/* ── Utility classes ── */
+.glass {
+  background: rgba(54, 53, 51, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(226, 221, 213, 0.08);
+}
+
+.card-premium {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  box-shadow: var(--shadow-card);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card-premium:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--shadow-elevated);
+}
+
+.glow-accent {
+  box-shadow: var(--shadow-glow);
+}
+
+/* ── Animations ── */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 8px rgba(251, 113, 23, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px rgba(251, 113, 23, 0.4);
+  }
+}
 
 @keyframes score-reveal {
   0% {
@@ -27,15 +154,29 @@
   }
 }
 
-@keyframes fade-in-up {
-  0% {
-    opacity: 0;
-    transform: translateY(8px);
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
   }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
+  to {
+    transform: rotate(360deg);
   }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out both;
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out both;
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out both;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
 }
 
 .animate-score-reveal {
@@ -46,30 +187,55 @@
   background-image: linear-gradient(
     90deg,
     transparent 0%,
-    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.06) 50%,
     transparent 100%
   );
   background-size: 200% 100%;
   animation: shimmer 2s ease-in-out infinite;
 }
 
-.animate-fade-in-up {
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Stagger children animations */
+.stagger-children > * {
   animation: fade-in-up 0.4s ease-out both;
 }
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 60ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 180ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 240ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 300ms; }
 
 /* Respect reduced motion */
 @media (prefers-reduced-motion: reduce) {
+  .animate-fade-in,
+  .animate-fade-in-up,
+  .animate-slide-in-right,
+  .animate-pulse-glow,
   .animate-score-reveal,
   .animate-shimmer,
-  .animate-fade-in-up {
+  .animate-spin-slow,
+  .stagger-children > * {
     animation: none;
-  }
-  .animate-score-reveal {
     opacity: 1;
     transform: none;
   }
-  .animate-fade-in-up {
-    opacity: 1;
-    transform: none;
-  }
+}
+
+/* ── Focus ring utility ── */
+.focus-ring {
+  outline: none;
+}
+.focus-ring:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+/* ── Selection ── */
+::selection {
+  background: rgba(251, 113, 23, 0.3);
+  color: var(--color-text-primary);
 }

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { updateConvocatoria, deleteConvocatoria } from "../actions";
-import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails, Document, Rubric } from "@/lib/types/database";
+import type { Convocatoria, MgaTemplate, ConvocatoriaMunicipioWithDetails, Document, LegacyRubric as Rubric } from "@/lib/types/database";
 
 export default async function ConvocatoriaDetailPage({
   params,

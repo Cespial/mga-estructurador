@@ -1,56 +1,45 @@
 import Link from "next/link";
 import type { Metadata } from "next";
-import { InteractiveDemo } from "@/components/landing/interactive-demo";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 export const metadata: Metadata = {
-  title: "Estructurador MGA — Estructura, evalua y evidencia proyectos MGA",
+  title: "Publitec — Gestiona convocatorias con inteligencia artificial",
   description:
-    "Plataforma para estructurar proyectos MGA por convocatorias. Configura etapas, recibe informacion, evalua con rubricas ponderadas y exporta resultados en PDF con asistente IA.",
+    "Plataforma donde entidades crean convocatorias con rubricas y municipios estructuran proyectos con asistencia IA. Reportes Excel y PDF profesionales con analisis de pre-factibilidad.",
   openGraph: {
-    title: "Estructurador MGA",
-    description:
-      "Estructura, recibe, evalua y evidencia proyectos MGA — sin friccion.",
+    title: "Publitec",
+    description: "Gestiona convocatorias con inteligencia artificial.",
     type: "website",
     locale: "es_CO",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Estructurador MGA",
-    description:
-      "Estructura, recibe, evalua y evidencia proyectos MGA — sin friccion.",
   },
 };
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-950">
+    <div className="min-h-screen bg-bg-app">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm dark:border-gray-800 dark:bg-gray-950/90">
+      <nav className="sticky top-0 z-50 glass border-b border-border">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
-            Estructurador MGA
-          </span>
-          <div className="flex items-center gap-4">
-            <a href="#demo" className="text-sm text-gray-600 hover:text-gray-900">
-              Demo
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
+              <span className="text-sm font-bold text-white">P</span>
+            </div>
+            <span className="text-lg font-bold text-text-primary">
+              Publi<span className="text-accent">tec</span>
+            </span>
+          </div>
+          <div className="flex items-center gap-6">
+            <a href="#features" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+              Funcionalidades
             </a>
-            <a href="#como-funciona" className="text-sm text-gray-600 hover:text-gray-900">
-              Flujo
+            <a href="#como-funciona" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+              Como funciona
             </a>
-            <Link href="/casos" className="text-sm text-gray-600 hover:text-gray-900">
-              Casos
-            </Link>
-            <Link href="/implementacion" className="text-sm text-gray-600 hover:text-gray-900">
-              Implementacion
-            </Link>
-            <Link href="/contacto" className="text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-200">
-              Contacto
-            </Link>
-            <ThemeToggle />
+            <a href="#entidades" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+              Entidades
+            </a>
             <Link
               href="/login"
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
             >
               Entrar
             </Link>
@@ -59,222 +48,224 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="relative overflow-hidden px-4 pb-16 pt-20">
-        <div className="mx-auto max-w-6xl">
+      <section className="relative overflow-hidden px-4 pb-20 pt-24">
+        {/* Glow effect */}
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-accent/5 blur-[120px]" />
+        <div className="relative mx-auto max-w-6xl">
           <div className="text-center">
-            <div className="mb-4 inline-flex rounded-full bg-blue-50 px-4 py-1.5 text-xs font-medium text-blue-700">
-              Plataforma de gestion MGA por convocatorias
+            <div className="mb-6 inline-flex rounded-[var(--radius-pill)] border border-accent/20 bg-accent-muted px-4 py-1.5 text-xs font-medium text-accent">
+              Plataforma de convocatorias con IA
             </div>
-            <h1 className="mx-auto max-w-3xl text-4xl font-bold tracking-tight text-gray-900 dark:text-gray-100 sm:text-5xl">
-              Estructura, recibe, evalua y{" "}
-              <span className="text-blue-600">evidencia en PDF</span>
-              {" "}&mdash; sin friccion
+            <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
+              Gestiona convocatorias con{" "}
+              <span className="text-accent">inteligencia artificial</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-gray-600 dark:text-gray-400">
-              Configura convocatorias con etapas y campos. Los municipios
-              diligencian con asistente IA. Evalua con rubricas ponderadas.
-              Exporta todo en PDF auditables.
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary">
+              Entidades crean convocatorias con rubricas. Municipios estructuran
+              proyectos con asistente IA. Genera reportes Excel y PDF
+              profesionales con analisis de pre-factibilidad.
             </p>
-            <div className="mt-8 flex items-center justify-center gap-4">
-              <a
-                href="#demo"
-                className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
-              >
-                Ver demo guiada
-              </a>
+            <div className="mt-10 flex items-center justify-center gap-4">
               <Link
-                href="/login"
-                className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+                href="/login?action=signup"
+                className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all glow-accent"
               >
-                Iniciar sesion
+                Crear Convocatoria
+              </Link>
+              <Link
+                href="/dashboard/convocatorias"
+                className="rounded-[var(--radius-button)] border border-border-hover bg-transparent px-6 py-3 text-sm font-semibold text-text-primary hover:bg-white/5 transition-colors"
+              >
+                Explorar Demo
               </Link>
             </div>
           </div>
 
-          {/* Flow visualization */}
-          <div className="mt-16">
-            <FlowSteps />
+          {/* Dashboard preview mockup */}
+          <div className="mt-16 rounded-[var(--radius-shell)] border border-border bg-bg-card p-2 shadow-[var(--shadow-elevated)]">
+            <div className="rounded-[var(--radius-card)] bg-bg-sidebar p-6">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="h-3 w-3 rounded-full bg-danger/60" />
+                <div className="h-3 w-3 rounded-full bg-warning/60" />
+                <div className="h-3 w-3 rounded-full bg-success/60" />
+                <div className="ml-auto h-6 w-32 rounded bg-white/5" />
+              </div>
+              <div className="grid grid-cols-4 gap-4 mb-6">
+                {[
+                  { label: "Convocatorias Activas", value: "12" },
+                  { label: "Proyectos Recibidos", value: "47" },
+                  { label: "Evaluados", value: "31" },
+                  { label: "Puntaje Promedio", value: "78.4" },
+                ].map((stat) => (
+                  <div key={stat.label} className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4">
+                    <p className="text-xs text-text-muted">{stat.label}</p>
+                    <p className="mt-1 text-2xl font-bold text-text-primary">{stat.value}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4 h-32">
+                  <p className="text-xs text-text-muted mb-3">Convocatorias Recientes</p>
+                  <div className="space-y-2">
+                    <div className="h-4 w-3/4 rounded bg-white/5" />
+                    <div className="h-4 w-1/2 rounded bg-white/5" />
+                    <div className="h-4 w-2/3 rounded bg-white/5" />
+                  </div>
+                </div>
+                <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4 h-32">
+                  <p className="text-xs text-text-muted mb-3">Proyectos Recientes</p>
+                  <div className="space-y-2">
+                    <div className="h-4 w-2/3 rounded bg-accent/10" />
+                    <div className="h-4 w-3/4 rounded bg-accent/10" />
+                    <div className="h-4 w-1/2 rounded bg-accent/10" />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Problem */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            El problema que resolvemos
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            <ProblemCard
-              title="Informacion dispersa"
-              description="Cada municipio envia proyectos en formatos diferentes. No hay estructura estandar ni trazabilidad."
-            />
-            <ProblemCard
-              title="Evaluacion manual"
-              description="Evaluar decenas de proyectos MGA toma semanas. Los criterios varian entre evaluadores."
-            />
-            <ProblemCard
-              title="Sin evidencia auditable"
-              description="No hay registro claro de que se evaluo, con que criterios y que puntaje obtuvo cada proyecto."
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Solution */}
-      <section id="como-funciona" className="scroll-mt-16 border-t border-gray-100 px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Como lo resolvemos
-          </h2>
-          <p className="mx-auto mt-3 max-w-2xl text-gray-600">
-            Un flujo estructurado de punta a punta: desde la configuracion
-            hasta el PDF de resultados.
-          </p>
-          <div className="mt-10 grid gap-8 sm:grid-cols-3">
-            <SolutionCard
-              step="1"
-              title="La entidad configura"
-              items={[
-                "Crea la convocatoria",
-                "Define etapas y campos MGA",
-                "Sube documentos de soporte",
-                "Configura rubrica ponderada",
-              ]}
-            />
-            <SolutionCard
-              step="2"
-              title="El municipio diligencia"
-              items={[
-                "Accede a convocatorias asignadas",
-                "Completa el wizard por etapas",
-                "Usa el asistente IA para mejorar",
-                "Progreso guardado automaticamente",
-              ]}
-            />
-            <SolutionCard
-              step="3"
-              title="Evaluacion y evidencia"
-              items={[
-                "Scoring automatico con IA",
-                "Desglose por criterio y peso",
-                "Recomendaciones de mejora",
-                "Export PDF por municipio",
-              ]}
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* Interactive Demo */}
-      <section id="demo" className="scroll-mt-16 border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-4xl">
+      {/* Features */}
+      <section id="features" className="scroll-mt-16 border-t border-border px-4 py-20">
+        <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-              Demo interactiva
+            <h2 className="text-3xl font-bold text-text-primary">
+              Todo lo que necesitas para gestionar convocatorias
             </h2>
-            <p className="mt-3 text-gray-600">
-              Experimenta el flujo completo: diligencia campos, ve el scoring
-              ponderado y el resumen ejecutivo.
+            <p className="mt-4 text-text-secondary">
+              Desde la creacion hasta el reporte final, todo en un solo lugar.
             </p>
           </div>
-          <div className="mt-8">
-            <InteractiveDemo />
-          </div>
-        </div>
-      </section>
-
-      {/* Benefits */}
-      <section id="beneficios" className="scroll-mt-16 border-t border-gray-100 px-4 py-16">
-        <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Beneficios medibles
-          </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
-            <BenefitCard
-              title="Estandarizacion"
-              description="Todos los municipios siguen la misma estructura MGA definida por la entidad."
+          <div className="mt-12 grid gap-6 sm:grid-cols-3 stagger-children">
+            <FeatureCard
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                </svg>
+              }
+              title="Convocatorias Inteligentes"
+              description="Crea convocatorias con formularios personalizables, etapas configurables y rubricas de evaluacion detalladas."
             />
-            <BenefitCard
-              title="Evaluacion objetiva"
-              description="Rubricas ponderadas con criterios claros. Score reproducible y auditable."
-            />
-            <BenefitCard
+            <FeatureCard
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 00-2.455 2.456z" />
+                </svg>
+              }
               title="Asistente IA"
-              description="Sugerencias contextuales basadas en documentos de la convocatoria (RAG)."
+              description="Claude asiste a municipios campo por campo. Sugiere textos, identifica riesgos y completa secciones con informacion contextual."
             />
-            <BenefitCard
-              title="Evidencia en PDF"
-              description="Exporta respuestas, evaluaciones y recomendaciones por municipio."
+            <FeatureCard
+              icon={
+                <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z" />
+                </svg>
+              }
+              title="Reportes Profesionales"
+              description="Genera reportes Excel y PDF con scoring detallado, justificaciones por criterio y analisis comparativo."
             />
           </div>
         </div>
       </section>
 
-      {/* Evidence / Trust */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16 dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-4xl">
-          <h2 className="text-center text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Auditable por diseno
+      {/* How it works */}
+      <section id="como-funciona" className="scroll-mt-16 border-t border-border px-4 py-20">
+        <div className="mx-auto max-w-6xl">
+          <div className="text-center">
+            <h2 className="text-3xl font-bold text-text-primary">Como funciona</h2>
+            <p className="mt-4 text-text-secondary">
+              Un flujo claro de punta a punta, desde la convocatoria hasta el reporte.
+            </p>
+          </div>
+          <div className="mt-12 grid gap-0 sm:grid-cols-4">
+            {[
+              { step: "1", label: "Crear Convocatoria", desc: "La entidad define formulario, etapas y rubrica de evaluacion." },
+              { step: "2", label: "Estructurar Proyecto", desc: "El municipio completa el wizard con asistencia IA paso a paso." },
+              { step: "3", label: "Evaluar con IA", desc: "Claude evalua cada criterio de la rubrica y genera puntajes justificados." },
+              { step: "4", label: "Descargar Reporte", desc: "Exporta resultados en Excel y PDF profesional con pre-factibilidad." },
+            ].map((item, i) => (
+              <div key={item.step} className="relative flex flex-col items-center text-center px-4">
+                {i > 0 && (
+                  <div className="absolute left-0 top-6 hidden h-0.5 w-full -translate-x-1/2 bg-border sm:block" />
+                )}
+                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-lg font-bold text-white shadow-[var(--shadow-glow)]">
+                  {item.step}
+                </div>
+                <h3 className="mt-4 text-sm font-semibold text-text-primary">{item.label}</h3>
+                <p className="mt-2 text-xs text-text-secondary max-w-[180px]">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Entities section */}
+      <section id="entidades" className="scroll-mt-16 border-t border-border px-4 py-20">
+        <div className="mx-auto max-w-4xl text-center">
+          <h2 className="text-3xl font-bold text-text-primary">
+            Construido para entidades publicas
           </h2>
-          <div className="mt-8 grid gap-6 sm:grid-cols-3">
-            <TrustCard
-              title="Rubrica ponderada"
-              description="Criterios con pesos, niveles de evaluacion (1-4) y score calculado transparentemente."
-            />
-            <TrustCard
-              title="Export PDF completo"
-              description="Nombre, progreso, campos por etapa, evaluacion con desglose y recomendaciones."
-            />
-            <TrustCard
-              title="Control de acceso"
-              description="Roles separados (entidad/municipio), aislamiento por tenant, sesiones seguras."
-            />
+          <p className="mt-4 text-text-secondary">
+            Disenado para gobernaciones, institutos de desarrollo y entidades que gestionan convocatorias con municipios.
+          </p>
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
+            {["IDEA", "Gobernacion de Antioquia", "EAFIT", "Argos"].map((entity) => (
+              <div
+                key={entity}
+                className="rounded-[var(--radius-card)] border border-border bg-bg-card px-6 py-4 text-sm font-medium text-text-secondary"
+              >
+                {entity}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="border-t border-gray-100 px-4 py-20">
+      <section className="border-t border-border px-4 py-20">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
-            Listo para estructurar tus convocatorias?
+          <h2 className="text-3xl font-bold text-text-primary">
+            Listo para transformar tus convocatorias?
           </h2>
-          <p className="mt-3 text-gray-600">
-            Empieza a configurar convocatorias, recibir proyectos MGA y
-            evaluar con criterios claros.
+          <p className="mt-4 text-text-secondary">
+            Empieza a gestionar convocatorias, recibir proyectos estructurados y
+            evaluar con inteligencia artificial.
           </p>
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
-              href="/login"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+              href="/login?action=signup"
+              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all glow-accent"
             >
               Comenzar ahora
             </Link>
-            <a
-              href="#demo"
-              className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+            <Link
+              href="/dashboard/convocatorias"
+              className="rounded-[var(--radius-button)] border border-border-hover bg-transparent px-6 py-3 text-sm font-semibold text-text-primary hover:bg-white/5 transition-colors"
             >
-              Ver demo
-            </a>
+              Explorar Demo
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-gray-50 px-4 py-8 dark:border-gray-800 dark:bg-gray-900">
-        <div className="mx-auto max-w-6xl text-center text-sm text-gray-500 dark:text-gray-400">
-          <p>
-            Estructurador MGA &mdash; Plataforma de gestion de proyectos MGA
-            por convocatorias.
-          </p>
-          <div className="mt-2 flex items-center justify-center gap-4 text-xs">
-            <a href="#demo" className="hover:text-gray-700">Demo</a>
-            <Link href="/casos" className="hover:text-gray-700">Casos</Link>
-            <Link href="/implementacion" className="hover:text-gray-700">Implementacion</Link>
-            <Link href="/contacto" className="hover:text-gray-700">Contacto</Link>
-            <Link href="/login" className="hover:text-gray-700">Entrar</Link>
+      <footer className="border-t border-border px-4 py-8">
+        <div className="mx-auto max-w-6xl">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <div className="flex h-6 w-6 items-center justify-center rounded bg-accent text-xs font-bold text-white">P</div>
+              <span className="text-sm font-semibold text-text-secondary">Publitec</span>
+            </div>
+            <div className="flex items-center gap-6 text-xs text-text-muted">
+              <a href="#features" className="hover:text-text-secondary transition-colors">Funcionalidades</a>
+              <a href="#como-funciona" className="hover:text-text-secondary transition-colors">Como funciona</a>
+              <Link href="/login" className="hover:text-text-secondary transition-colors">Entrar</Link>
+            </div>
           </div>
+          <p className="mt-6 text-center text-xs text-text-muted">
+            Publitec &mdash; Plataforma de convocatorias con inteligencia artificial.
+          </p>
         </div>
       </footer>
     </div>
@@ -283,92 +274,22 @@ export default function LandingPage() {
 
 /* ── Sub-components ── */
 
-function FlowSteps() {
-  const steps = [
-    { label: "Configurar", desc: "Convocatoria + plantilla + rubrica", color: "bg-blue-600" },
-    { label: "Diligenciar", desc: "Wizard por etapas + asistente IA", color: "bg-indigo-600" },
-    { label: "Evaluar", desc: "Scoring ponderado automatico", color: "bg-violet-600" },
-    { label: "Evidenciar", desc: "Export PDF auditable", color: "bg-purple-600" },
-  ];
-
-  return (
-    <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center sm:gap-0">
-      {steps.map((step, i) => (
-        <div key={step.label} className="flex items-center">
-          <div className="flex flex-col items-center">
-            <div
-              className={`flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold text-white ${step.color}`}
-            >
-              {i + 1}
-            </div>
-            <p className="mt-2 text-sm font-semibold text-gray-900 dark:text-gray-100">
-              {step.label}
-            </p>
-            <p className="mt-0.5 max-w-[140px] text-center text-xs text-gray-500 dark:text-gray-400">
-              {step.desc}
-            </p>
-          </div>
-          {i < steps.length - 1 && (
-            <div className="mx-4 hidden h-0.5 w-12 bg-gray-300 sm:block" />
-          )}
-        </div>
-      ))}
-    </div>
-  );
-}
-
-function ProblemCard({ title, description }: { title: string; description: string }) {
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
-      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
-    </div>
-  );
-}
-
-function SolutionCard({
-  step,
+function FeatureCard({
+  icon,
   title,
-  items,
+  description,
 }: {
-  step: string;
+  icon: React.ReactNode;
   title: string;
-  items: string[];
+  description: string;
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
-      <div className="mb-3 flex items-center gap-2">
-        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700 dark:bg-blue-900 dark:text-blue-300">
-          {step}
-        </span>
-        <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
+    <div className="card-premium p-6">
+      <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-input)] bg-accent-muted text-accent">
+        {icon}
       </div>
-      <ul className="space-y-1.5">
-        {items.map((item) => (
-          <li key={item} className="flex items-start gap-2 text-sm text-gray-600 dark:text-gray-400">
-            <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-blue-400" />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function BenefitCard({ title, description }: { title: string; description: string }) {
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
-      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
-    </div>
-  );
-}
-
-function TrustCard({ title, description }: { title: string; description: string }) {
-  return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5 text-left dark:border-gray-700 dark:bg-gray-800">
-      <h3 className="text-sm font-semibold text-gray-900 dark:text-gray-100">{title}</h3>
-      <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">{description}</p>
+      <h3 className="mt-4 text-base font-semibold text-text-primary">{title}</h3>
+      <p className="mt-2 text-sm text-text-secondary">{description}</p>
     </div>
   );
 }

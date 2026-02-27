@@ -2,7 +2,7 @@ import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import type { Convocatoria, MgaTemplate, Rubric } from "@/lib/types/database";
+import type { Convocatoria, MgaTemplate, LegacyRubric as Rubric } from "@/lib/types/database";
 import { RubricEditor } from "./rubric-editor";
 import { HelpButton } from "@/components/help-button";
 

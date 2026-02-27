@@ -2,10 +2,6 @@
 
 import Link from "next/link";
 
-/**
- * Contextual help button that links to a specific section in the Help Center.
- * Usage: <HelpButton section="rubricas" label="Ayuda con rúbricas" />
- */
 export function HelpButton({
   section,
   label = "Ayuda",
@@ -16,7 +12,7 @@ export function HelpButton({
   return (
     <Link
       href={`/dashboard/ayuda#${section}`}
-      className="inline-flex items-center gap-1 rounded-md border border-gray-200 px-2 py-1 text-xs text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+      className="inline-flex items-center gap-1 rounded-[var(--radius-button)] border border-border px-2 py-1 text-xs text-text-muted hover:bg-white/5 hover:text-text-secondary transition-colors"
       aria-label={label}
     >
       <svg

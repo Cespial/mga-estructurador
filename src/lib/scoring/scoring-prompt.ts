@@ -1,5 +1,5 @@
 import type {
-  PublitecConvocatoria,
+  PolytechConvocatoria,
   ProjectForm,
   RubricCriterion,
 } from "@/lib/types/database";
@@ -41,7 +41,7 @@ Responde UNICAMENTE con un objeto JSON valido (sin markdown, sin backticks, sin 
 // ---------------------------------------------------------------------------
 
 export interface ScoringPromptInput {
-  convocatoria: PublitecConvocatoria;
+  convocatoria: PolytechConvocatoria;
   projectTitle: string;
   projectDescription: string | null;
   forms: ProjectForm[];

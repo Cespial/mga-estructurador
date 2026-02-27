@@ -9,10 +9,10 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { EmptyState } from "@/components/ui/empty-state";
 import { RubricEditor } from "./rubric-editor-client";
 import { updateConvocatoriaStatus } from "./actions";
-import type { PublitecConvocatoria, RubricCriterion, Project, Rubric, ConvocatoriaStatus } from "@/lib/types/database";
+import type { PolytechConvocatoria, RubricCriterion, Project, Rubric, ConvocatoriaStatus } from "@/lib/types/database";
 
 interface DetailClientProps {
-  convocatoria: PublitecConvocatoria;
+  convocatoria: PolytechConvocatoria;
   rubric: (Rubric & { rubric_criteria: RubricCriterion[] }) | null;
   criteria: RubricCriterion[];
   projects: Project[];

@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Publitec — Gestiona convocatorias con inteligencia artificial",
+  title: "Polytech — Gestiona convocatorias con inteligencia artificial",
   description:
     "Plataforma donde entidades crean convocatorias con rubricas y municipios estructuran proyectos con asistencia IA. Reportes Excel y PDF profesionales con analisis de pre-factibilidad.",
   openGraph: {
-    title: "Publitec",
+    title: "Polytech",
     description: "Gestiona convocatorias con inteligencia artificial.",
     type: "website",
     locale: "es_CO",
@@ -255,7 +255,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="flex h-6 w-6 items-center justify-center rounded bg-accent text-xs font-bold text-white">P</div>
-              <span className="text-sm font-semibold text-text-secondary">Publitec</span>
+              <span className="text-sm font-semibold text-text-secondary">Polytech</span>
             </div>
             <div className="flex items-center gap-6 text-xs text-text-muted">
               <a href="#features" className="hover:text-text-secondary transition-colors">Funcionalidades</a>
@@ -264,7 +264,7 @@ export default function LandingPage() {
             </div>
           </div>
           <p className="mt-6 text-center text-xs text-text-muted">
-            Publitec &mdash; Plataforma de convocatorias con inteligencia artificial.
+            Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.
           </p>
         </div>
       </footer>

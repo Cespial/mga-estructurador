@@ -14,7 +14,7 @@ export type ConvocatoriaEstado = "borrador" | "abierta" | "cerrada" | "evaluacio
 export type ConvocatoriaMunicipioEstado = "invitado" | "activo" | "completado" | "retirado";
 export type DocumentStatus = "pending" | "processing" | "ready" | "error";
 
-// ── New Publitec Domain Models ──
+// ── New Polytech Domain Models ──
 export interface Organization {
   id: string;
   owner_id: string;
@@ -28,7 +28,7 @@ export interface Organization {
   updated_at: string;
 }
 
-export interface PublitecConvocatoria {
+export interface PolytechConvocatoria {
   id: string;
   organization_id: string;
   name: string;
@@ -196,7 +196,7 @@ export interface WizardStepDefinition {
 }
 
 // ── Joined Types ──
-export interface ConvocatoriaWithRubric extends PublitecConvocatoria {
+export interface ConvocatoriaWithRubric extends PolytechConvocatoria {
   rubrics_v2: (Rubric & { rubric_criteria: RubricCriterion[] })[];
   organization?: Organization;
 }
@@ -205,7 +205,7 @@ export interface ProjectWithDetails extends Project {
   project_forms: ProjectForm[];
   project_documents: ProjectDocument[];
   project_scores: ProjectScore[];
-  convocatorias_v2?: PublitecConvocatoria;
+  convocatorias_v2?: PolytechConvocatoria;
   organization?: Organization;
 }
 

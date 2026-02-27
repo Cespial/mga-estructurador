@@ -5,7 +5,7 @@ import type { LlmMessage } from "@/lib/ai/adapter";
 import type {
   Project,
   ProjectForm,
-  PublitecConvocatoria,
+  PolytechConvocatoria,
   WizardStepDefinition,
   AiChatMessage,
 } from "@/lib/types/database";
@@ -71,7 +71,7 @@ export async function POST(request: Request) {
       .from("convocatorias_v2")
       .select("*")
       .eq("id", project.convocatoria_id)
-      .single<PublitecConvocatoria>();
+      .single<PolytechConvocatoria>();
 
     // Fetch current step data
     const { data: currentForm } = await supabase
@@ -178,7 +178,7 @@ export async function POST(request: Request) {
 // ---------------------------------------------------------------------------
 
 function getStepDefinition(
-  convocatoria: PublitecConvocatoria | null,
+  convocatoria: PolytechConvocatoria | null,
   stepNumber: number,
 ): WizardStepDefinition | null {
   if (!convocatoria?.form_schema) return null;
@@ -188,7 +188,7 @@ function getStepDefinition(
 }
 
 function buildChatSystemPrompt(
-  convocatoria: PublitecConvocatoria | null,
+  convocatoria: PolytechConvocatoria | null,
   project: Project,
   stepDef: WizardStepDefinition | null,
   currentForm: ProjectForm | null,

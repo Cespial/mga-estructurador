@@ -12,7 +12,7 @@ import type {
   Organization,
 } from "@/lib/types/database";
 
-// Publitec brand orange
+// Polytech brand orange
 const BRAND_ORANGE: [number, number, number] = [245, 124, 0];
 const DARK_TEXT: [number, number, number] = [33, 33, 33];
 const GRAY_TEXT: [number, number, number] = [100, 100, 100];
@@ -118,7 +118,7 @@ export async function GET(
     doc.setTextColor(255, 255, 255);
     doc.setFontSize(18);
     doc.setFont("helvetica", "bold");
-    doc.text("PUBLITEC", margin, 12);
+    doc.text("POLYTECH", margin, 12);
 
     doc.setFontSize(10);
     doc.setFont("helvetica", "normal");
@@ -370,7 +370,7 @@ export async function GET(
       doc.setFontSize(7);
       doc.setTextColor(150, 150, 150);
       doc.text(
-        `Publitec - Reporte generado automaticamente | Pagina ${i} de ${pageCount}`,
+        `Polytech - Reporte generado automaticamente | Pagina ${i} de ${pageCount}`,
         pageWidth / 2,
         doc.internal.pageSize.getHeight() - 8,
         { align: "center" },
@@ -386,7 +386,7 @@ export async function GET(
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="publitec-reporte-${projectId}.pdf"`,
+        "Content-Disposition": `attachment; filename="polytech-reporte-${projectId}.pdf"`,
       },
     });
   } catch (error) {

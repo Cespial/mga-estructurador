@@ -5,14 +5,14 @@ import { parseScoringResponse } from "./parse-scoring";
 import type {
   Project,
   ProjectForm,
-  PublitecConvocatoria,
+  PolytechConvocatoria,
   RubricCriterion,
   Rubric,
   ScoringJob,
   ProjectScore,
 } from "@/lib/types/database";
 
-const ENGINE_VERSION = "publitec-scoring-v1";
+const ENGINE_VERSION = "polytech-scoring-v1";
 
 // ---------------------------------------------------------------------------
 // Main orchestrator
@@ -170,7 +170,7 @@ interface ScoringData {
   projectScore: ProjectScore;
   project: Project;
   forms: ProjectForm[];
-  convocatoria: PublitecConvocatoria;
+  convocatoria: PolytechConvocatoria;
   rubric: Rubric;
   criteria: RubricCriterion[];
 }
@@ -223,7 +223,7 @@ async function fetchScoringData(
     .from("convocatorias_v2")
     .select("*")
     .eq("id", project.convocatoria_id)
-    .single<PublitecConvocatoria>();
+    .single<PolytechConvocatoria>();
 
   if (convError || !convocatoria) {
     throw new Error(

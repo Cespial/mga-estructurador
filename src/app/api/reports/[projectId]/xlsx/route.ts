@@ -12,7 +12,7 @@ import type {
   ScoringJob,
 } from "@/lib/types/database";
 
-// Publitec brand orange
+// Polytech brand orange
 const BRAND_ORANGE_ARGB = "FFF57C00";
 const WHITE_ARGB = "FFFFFFFF";
 const LIGHT_GRAY_ARGB = "FFF5F5F5";
@@ -117,7 +117,7 @@ export async function GET(
     // Build workbook
     // ------------------------------------------------------------------
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = "Publitec";
+    workbook.creator = "Polytech";
     workbook.created = new Date();
 
     // ====================== RESUMEN sheet ======================
@@ -126,7 +126,7 @@ export async function GET(
     // Title row
     resumenSheet.mergeCells("A1:F1");
     const titleCell = resumenSheet.getCell("A1");
-    titleCell.value = "PUBLITEC - Reporte de Evaluacion";
+    titleCell.value = "POLYTECH - Reporte de Evaluacion";
     titleCell.font = { bold: true, size: 16, color: { argb: WHITE_ARGB } };
     titleCell.fill = {
       type: "pattern",
@@ -425,7 +425,7 @@ export async function GET(
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Disposition": `attachment; filename="publitec-reporte-${projectId}.xlsx"`,
+        "Content-Disposition": `attachment; filename="polytech-reporte-${projectId}.xlsx"`,
       },
     });
   } catch (error) {

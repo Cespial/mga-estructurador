@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { createOrganizationSchema } from "@/lib/validators/publitec";
+import { createOrganizationSchema } from "@/lib/validators/polytech";
 
 export interface OnboardingState {
   error?: string;

@@ -39,7 +39,7 @@ export default async function OrganizacionPage() {
             </Badge>
           </div>
           <CardDescription>
-            Estos datos identifican tu organizacion en la plataforma Publitec.
+            Estos datos identifican tu organizacion en la plataforma Polytech.
           </CardDescription>
         </CardHeader>
 
@@ -84,7 +84,7 @@ export default async function OrganizacionPage() {
           </CardDescription>
         </CardHeader>
         <p className="text-sm text-text-muted">
-          Si necesitas eliminar tu organizacion o transferir la propiedad, contacta al equipo de soporte de Publitec.
+          Si necesitas eliminar tu organizacion o transferir la propiedad, contacta al equipo de soporte de Polytech.
         </p>
       </Card>
     </div>

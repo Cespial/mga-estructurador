@@ -100,7 +100,7 @@ export default async function LoginPage({
         </div>
 
         <p className="mt-6 text-center text-xs text-text-muted">
-          Al registrarte, aceptas los terminos de uso de Publitec.
+          Al registrarte, aceptas los terminos de uso de Polytech.
         </p>
       </div>
     </main>

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import type { PublitecConvocatoria, ProjectForm } from "@/lib/types/database";
+import type { PolytechConvocatoria, ProjectForm } from "@/lib/types/database";
 
 /**
  * POST /api/wizard/submit
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
       .from("convocatorias_v2")
       .select("*")
       .eq("id", project.convocatoria_id)
-      .single<PublitecConvocatoria>();
+      .single<PolytechConvocatoria>();
 
     if (convError || !convocatoria) {
       return NextResponse.json(

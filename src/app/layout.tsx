@@ -1,5 +1,12 @@
 import type { Metadata } from "next";
+import { Inter } from "next/font/google";
 import "./globals.css";
+
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
 
 export const metadata: Metadata = {
   title: "Polytech — Plataforma de Convocatorias con IA",
@@ -20,8 +27,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="es">
-      <body className="bg-bg-app text-text-primary antialiased">
+    <html lang="es" className={inter.variable}>
+      <body className="font-sans bg-bg-app text-text-primary antialiased">
         {children}
       </body>
     </html>

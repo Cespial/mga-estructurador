@@ -3,7 +3,7 @@ import { type ReactNode } from "react";
 type BadgeVariant = "default" | "accent" | "success" | "danger" | "warning" | "info";
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-slate-100 text-slate-600 border-slate-200",
+  default: "bg-gray-50 text-gray-600 border-gray-200",
   accent: "bg-blue-50 text-blue-700 border-blue-100",
   success: "bg-emerald-50 text-emerald-700 border-emerald-100",
   danger: "bg-red-50 text-red-700 border-red-100",
@@ -11,7 +11,6 @@ const variantStyles: Record<BadgeVariant, string> = {
   info: "bg-sky-50 text-sky-700 border-sky-100",
 };
 
-// Map project/convocatoria statuses to badge variants
 const statusVariantMap: Record<string, BadgeVariant> = {
   draft: "default",
   open: "success",
@@ -61,7 +60,7 @@ export function Badge({ children, variant, status, className = "" }: BadgeProps)
   const resolvedVariant = variant ?? (status ? statusVariantMap[status] ?? "default" : "default");
   const label = children ?? (status ? statusLabelMap[status] ?? status : "");
   return (
-    <span className={`inline-flex items-center rounded-[var(--radius-pill)] border px-2 py-0.5 text-[11px] font-medium ${variantStyles[resolvedVariant]} ${className}`}>
+    <span className={`inline-flex items-center rounded-[var(--radius-pill)] border px-2.5 py-0.5 text-[11px] font-medium ${variantStyles[resolvedVariant]} ${className}`}>
       {label}
     </span>
   );

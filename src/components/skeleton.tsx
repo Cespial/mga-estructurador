@@ -1,6 +1,6 @@
 export function Skeleton({ className = "" }: { className?: string }) {
   return (
-    <div className={`rounded bg-slate-100 animate-shimmer ${className}`} />
+    <div className={`rounded bg-gray-100 animate-shimmer ${className}`} />
   );
 }
 
@@ -17,16 +17,16 @@ export function CardSkeleton() {
 export function TableSkeleton({ rows = 5, cols = 4 }: { rows?: number; cols?: number }) {
   return (
     <div className="card-premium overflow-hidden">
-      <div className="border-b border-border px-4 py-3">
+      <div className="border-b border-border px-5 py-3.5">
         <div className="flex gap-4">
           {Array.from({ length: cols }).map((_, i) => (
             <Skeleton key={i} className="h-3 w-20" />
           ))}
         </div>
       </div>
-      <div className="divide-y divide-border/50">
+      <div className="divide-y divide-border">
         {Array.from({ length: rows }).map((_, i) => (
-          <div key={i} className="flex gap-4 px-4 py-3">
+          <div key={i} className="flex gap-4 px-5 py-3.5">
             {Array.from({ length: cols }).map((_, j) => (
               <Skeleton key={j} className="h-3 w-20" />
             ))}

@@ -16,7 +16,8 @@ interface SidebarProps {
   orgType?: "entity" | "municipality";
 }
 
-// SVG icons inline for zero-dependency
+/* ── Outline icons — 1.5px stroke, matching Inter's weight ── */
+
 function IconDashboard() {
   return (
     <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
@@ -96,7 +97,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
     return (
       <Link
         href={item.href}
-        className={`flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors duration-150 ${
+        className={`flex items-center gap-3 rounded-[8px] px-3 py-2 text-[13px] font-medium transition-all duration-150 ${
           isActive
             ? "bg-sidebar-active text-accent"
             : "text-sidebar-text-muted hover:bg-sidebar-hover hover:text-sidebar-text"
@@ -109,21 +110,23 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
   }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 flex-col bg-bg-sidebar">
-      {/* Logo */}
+    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col bg-bg-sidebar">
+      {/* Logo area */}
       <div className="flex items-center gap-2.5 px-5 py-5">
-        <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
+        <div className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-accent">
           <span className="text-sm font-bold text-white">P</span>
         </div>
-        <span className="text-lg font-semibold text-sidebar-text">
-          Poly<span className="text-accent">tech</span>
-        </span>
+        <div>
+          <span className="text-[15px] font-semibold text-sidebar-text">
+            Poly<span className="text-accent">tech</span>
+          </span>
+        </div>
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-6 overflow-y-auto px-3 py-2">
+      <nav className="flex-1 space-y-7 overflow-y-auto px-3 pt-2 pb-4">
         <div>
-          <p className="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-sidebar-text-muted">
+          <p className="mb-2.5 px-3 text-[11px] font-medium uppercase tracking-[0.08em] text-sidebar-text-muted">
             Principal
           </p>
           <div className="space-y-0.5">
@@ -135,7 +138,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
 
         {evalNav.length > 0 && (
           <div>
-            <p className="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-sidebar-text-muted">
+            <p className="mb-2.5 px-3 text-[11px] font-medium uppercase tracking-[0.08em] text-sidebar-text-muted">
               Evaluacion
             </p>
             <div className="space-y-0.5">
@@ -147,7 +150,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
         )}
 
         <div>
-          <p className="mb-2 px-3 text-[11px] font-medium uppercase tracking-wider text-sidebar-text-muted">
+          <p className="mb-2.5 px-3 text-[11px] font-medium uppercase tracking-[0.08em] text-sidebar-text-muted">
             Configuracion
           </p>
           <div className="space-y-0.5">
@@ -158,10 +161,10 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
         </div>
       </nav>
 
-      {/* Footer */}
-      <div className="border-t border-white/10 p-4">
+      {/* Footer — user info */}
+      <div className="border-t border-white/[0.08] px-4 py-4">
         <div className="flex items-center gap-3">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-accent/20 text-xs font-semibold text-accent">
+          <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/15 text-[11px] font-semibold text-accent">
             {userName.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
           </div>
           <div className="min-w-0 flex-1">
@@ -171,7 +174,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
           <form action="/auth/signout" method="post">
             <button
               type="submit"
-              className="rounded-lg p-1.5 text-sidebar-text-muted hover:bg-sidebar-hover hover:text-sidebar-text transition-colors"
+              className="rounded-[6px] p-1.5 text-sidebar-text-muted hover:bg-sidebar-hover hover:text-sidebar-text transition-colors"
               title="Cerrar sesion"
             >
               <IconLogout />

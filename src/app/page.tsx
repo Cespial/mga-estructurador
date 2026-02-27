@@ -15,10 +15,10 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-bg-app">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-sm">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <nav className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-md">
+        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3.5">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
               <span className="text-sm font-bold text-white">P</span>
@@ -28,18 +28,18 @@ export default function LandingPage() {
             </span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#features" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+            <a href="#features" className="text-[13px] text-text-secondary hover:text-text-primary transition-colors">
               Funcionalidades
             </a>
-            <a href="#como-funciona" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+            <a href="#como-funciona" className="text-[13px] text-text-secondary hover:text-text-primary transition-colors">
               Como funciona
             </a>
-            <a href="#entidades" className="text-sm text-text-secondary hover:text-text-primary transition-colors">
+            <a href="#entidades" className="text-[13px] text-text-secondary hover:text-text-primary transition-colors">
               Entidades
             </a>
             <Link
               href="/login"
-              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
+              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors"
             >
               Entrar
             </Link>
@@ -55,11 +55,11 @@ export default function LandingPage() {
             <div className="mb-6 inline-flex rounded-[var(--radius-pill)] border border-accent/20 bg-accent-muted px-4 py-1.5 text-xs font-medium text-accent">
               Plataforma de convocatorias con IA
             </div>
-            <h1 className="mx-auto max-w-4xl text-4xl font-bold tracking-tight text-text-primary sm:text-5xl lg:text-6xl">
+            <h1 className="mx-auto max-w-4xl text-4xl font-semibold tracking-tight text-text-primary sm:text-5xl lg:text-[56px] lg:leading-[1.1]">
               Gestiona convocatorias con{" "}
               <span className="text-accent">inteligencia artificial</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary leading-relaxed">
+            <p className="mx-auto mt-6 max-w-2xl text-[16px] text-text-secondary leading-relaxed">
               Entidades crean convocatorias con rubricas. Municipios estructuran
               proyectos con asistente IA. Genera reportes Excel y PDF
               profesionales con analisis de pre-factibilidad.

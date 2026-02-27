@@ -221,7 +221,7 @@ export function MonitoreoTable({
                               )
                             }
                             disabled={evaluating !== null}
-                            className="rounded bg-indigo-50 px-1.5 py-0.5 text-[10px] font-medium text-indigo-600 hover:bg-indigo-100 disabled:opacity-50"
+                            className="rounded bg-purple-50 px-1.5 py-0.5 text-[10px] font-medium text-purple-600 hover:bg-purple-100 disabled:opacity-50"
                           >
                             {evaluating ===
                             `${row.submissionId}:${ep.etapaId}`
@@ -238,7 +238,7 @@ export function MonitoreoTable({
                     {Math.round(row.overallProgress)}%
                   </span>
                   {weightedScore !== null && (
-                    <p className="text-[10px] text-indigo-600">
+                    <p className="text-[10px] text-purple-600">
                       {Math.round(weightedScore)}pts
                     </p>
                   )}

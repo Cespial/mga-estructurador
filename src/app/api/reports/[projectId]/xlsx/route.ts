@@ -12,8 +12,8 @@ import type {
   ScoringJob,
 } from "@/lib/types/database";
 
-// Polytech brand orange
-const BRAND_ORANGE_ARGB = "FFF57C00";
+// Polytech brand blue (EAFIT)
+const BRAND_BLUE_ARGB = "FF2563EB";
 const WHITE_ARGB = "FFFFFFFF";
 const LIGHT_GRAY_ARGB = "FFF5F5F5";
 
@@ -131,7 +131,7 @@ export async function GET(
     titleCell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: BRAND_ORANGE_ARGB },
+      fgColor: { argb: BRAND_BLUE_ARGB },
     };
     titleCell.alignment = { horizontal: "center", vertical: "middle" };
     resumenSheet.getRow(1).height = 30;
@@ -205,7 +205,7 @@ export async function GET(
     detTitleCell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: BRAND_ORANGE_ARGB },
+      fgColor: { argb: BRAND_BLUE_ARGB },
     };
     detTitleCell.alignment = { horizontal: "center", vertical: "middle" };
     detalleSheet.getRow(1).height = 28;
@@ -229,7 +229,7 @@ export async function GET(
       cell.fill = {
         type: "pattern",
         pattern: "solid",
-        fgColor: { argb: BRAND_ORANGE_ARGB },
+        fgColor: { argb: BRAND_BLUE_ARGB },
       };
       cell.alignment = { horizontal: "center", vertical: "middle" };
     });
@@ -284,7 +284,7 @@ export async function GET(
     projTitleCell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: BRAND_ORANGE_ARGB },
+      fgColor: { argb: BRAND_BLUE_ARGB },
     };
     projTitleCell.alignment = { horizontal: "center", vertical: "middle" };
     proyectoSheet.getRow(1).height = 28;
@@ -334,7 +334,7 @@ export async function GET(
     metaTitleCell.fill = {
       type: "pattern",
       pattern: "solid",
-      fgColor: { argb: BRAND_ORANGE_ARGB },
+      fgColor: { argb: BRAND_BLUE_ARGB },
     };
     metaTitleCell.alignment = { horizontal: "center", vertical: "middle" };
     metaSheet.getRow(1).height = 28;

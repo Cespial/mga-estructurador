@@ -12,8 +12,8 @@ import type {
   Organization,
 } from "@/lib/types/database";
 
-// Polytech brand orange
-const BRAND_ORANGE: [number, number, number] = [245, 124, 0];
+// Polytech brand blue (EAFIT)
+const BRAND_BLUE: [number, number, number] = [37, 99, 235];
 const DARK_TEXT: [number, number, number] = [33, 33, 33];
 const GRAY_TEXT: [number, number, number] = [100, 100, 100];
 
@@ -112,7 +112,7 @@ export async function GET(
     let y = margin;
 
     // ---- Header bar ----
-    doc.setFillColor(...BRAND_ORANGE);
+    doc.setFillColor(...BRAND_BLUE);
     doc.rect(0, 0, pageWidth, 28, "F");
 
     doc.setTextColor(255, 255, 255);
@@ -141,7 +141,7 @@ export async function GET(
     doc.text("Informacion del Proyecto", margin, y);
     y += 2;
 
-    doc.setDrawColor(...BRAND_ORANGE);
+    doc.setDrawColor(...BRAND_BLUE);
     doc.setLineWidth(0.5);
     doc.line(margin, y, pageWidth - margin, y);
     y += 6;
@@ -190,7 +190,7 @@ export async function GET(
     doc.text("Detalle de Evaluacion", margin, y);
     y += 2;
 
-    doc.setDrawColor(...BRAND_ORANGE);
+    doc.setDrawColor(...BRAND_BLUE);
     doc.line(margin, y, pageWidth - margin, y);
     y += 4;
 
@@ -228,7 +228,7 @@ export async function GET(
         textColor: DARK_TEXT,
       },
       headStyles: {
-        fillColor: BRAND_ORANGE,
+        fillColor: BRAND_BLUE,
         textColor: [255, 255, 255],
         fontStyle: "bold",
         fontSize: 8,
@@ -291,7 +291,7 @@ export async function GET(
       doc.text("Resumen de la Evaluacion (IA)", margin, y);
       y += 2;
 
-      doc.setDrawColor(...BRAND_ORANGE);
+      doc.setDrawColor(...BRAND_BLUE);
       doc.line(margin, y, pageWidth - margin, y);
       y += 5;
 
@@ -320,7 +320,7 @@ export async function GET(
       doc.text("Datos del Formulario", margin, y);
       y += 2;
 
-      doc.setDrawColor(...BRAND_ORANGE);
+      doc.setDrawColor(...BRAND_BLUE);
       doc.line(margin, y, pageWidth - margin, y);
       y += 5;
 

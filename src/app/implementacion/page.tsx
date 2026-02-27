@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Plan de implementacion — Estructurador MGA",
+  title: "Plan de implementacion — Polytech",
   description:
-    "Checklist y pasos para implementar el Estructurador MGA en tu entidad territorial. Desde la configuracion inicial hasta la evaluacion y evidencia.",
+    "Checklist y pasos para implementar el Polytech en tu entidad territorial. Desde la configuracion inicial hasta la evaluacion y evidencia.",
 };
 
 export default function ImplementacionPage() {
@@ -13,8 +13,9 @@ export default function ImplementacionPage() {
       {/* Navbar */}
       <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-          <Link href="/" className="text-lg font-bold text-gray-900">
-            Estructurador MGA
+          <Link href="/" className="flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">P</div>
+            <span className="text-lg font-semibold text-text-primary">Poly<span className="text-accent">tech</span></span>
           </Link>
           <div className="flex items-center gap-4">
             <Link href="/#demo" className="text-sm text-gray-600 hover:text-gray-900">
@@ -28,7 +29,7 @@ export default function ImplementacionPage() {
             </Link>
             <Link
               href="/login"
-              className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
             >
               Entrar
             </Link>
@@ -43,7 +44,7 @@ export default function ImplementacionPage() {
             Plan de implementacion
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-gray-600">
-            Pasos para poner en marcha el Estructurador MGA en tu entidad.
+            Pasos para poner en marcha el Polytech en tu entidad.
             Sin fechas fijas — cada entidad avanza a su ritmo.
           </p>
         </div>
@@ -179,7 +180,7 @@ export default function ImplementacionPage() {
           <div className="mt-6 flex items-center justify-center gap-4">
             <Link
               href="/#demo"
-              className="rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-700"
+              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-colors"
             >
               Ver demo
             </Link>
@@ -196,7 +197,7 @@ export default function ImplementacionPage() {
       {/* Footer */}
       <footer className="border-t border-gray-200 bg-gray-50 px-4 py-8">
         <div className="mx-auto max-w-6xl text-center text-sm text-gray-500">
-          <p>Estructurador MGA &mdash; Plataforma de gestion de proyectos MGA por convocatorias.</p>
+          <p>Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
           <div className="mt-2 flex items-center justify-center gap-4 text-xs">
             <Link href="/" className="hover:text-gray-700">Inicio</Link>
             <Link href="/casos" className="hover:text-gray-700">Casos</Link>

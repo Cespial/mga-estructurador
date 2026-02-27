@@ -1,7 +1,7 @@
 import { HelpCenter } from "./help-center";
 
 export const metadata = {
-  title: "Ayuda — Estructurador MGA",
+  title: "Ayuda — Polytech",
 };
 
 export default function AyudaPage() {

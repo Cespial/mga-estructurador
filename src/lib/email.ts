@@ -10,7 +10,7 @@ function getResend(): Resend | null {
   return resendClient;
 }
 
-const FROM_EMAIL = "Estructurador MGA <onboarding@resend.dev>";
+const FROM_EMAIL = "Polytech <onboarding@resend.dev>";
 
 /**
  * Send an email notification. Returns silently if Resend is not configured.
@@ -59,7 +59,7 @@ export function contactNotificationEmail(data: {
   mensaje: string;
 }): { subject: string; html: string } {
   return {
-    subject: `[MGA] Nuevo mensaje de contacto: ${data.nombre}`,
+    subject: `[Polytech] Nuevo mensaje de contacto: ${data.nombre}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #1e40af;">Nuevo mensaje de contacto</h2>
@@ -82,7 +82,7 @@ export function contactNotificationEmail(data: {
           </tr>
         </table>
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;">
-        <p style="font-size: 12px; color: #9ca3af;">Estructurador MGA — Formulario de contacto</p>
+        <p style="font-size: 12px; color: #9ca3af;">Polytech — Formulario de contacto</p>
       </div>
     `,
   };
@@ -94,7 +94,7 @@ export function wizardCompleteEmail(data: {
   progress: number;
 }): { subject: string; html: string } {
   return {
-    subject: `[MGA] ${data.municipioNombre} completo el diligenciamiento — ${data.convocatoriaNombre}`,
+    subject: `[Polytech] ${data.municipioNombre} completo el diligenciamiento — ${data.convocatoriaNombre}`,
     html: `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
         <h2 style="color: #1e40af;">Diligenciamiento completado</h2>
@@ -112,7 +112,7 @@ export function wizardCompleteEmail(data: {
           Puedes revisar el avance en la seccion de Monitoreo y ejecutar la evaluacion.
         </p>
         <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;">
-        <p style="font-size: 12px; color: #9ca3af;">Estructurador MGA — Notificacion automatica</p>
+        <p style="font-size: 12px; color: #9ca3af;">Polytech — Notificacion automatica</p>
       </div>
     `,
   };

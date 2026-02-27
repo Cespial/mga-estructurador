@@ -3,12 +3,12 @@ import { type ReactNode } from "react";
 type BadgeVariant = "default" | "accent" | "success" | "danger" | "warning" | "info";
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-white/8 text-text-secondary border-border",
-  accent: "bg-accent-muted text-accent border-accent/20",
-  success: "bg-success-muted text-success border-success/20",
-  danger: "bg-danger-muted text-danger border-danger/20",
-  warning: "bg-warning/10 text-warning border-warning/20",
-  info: "bg-info/10 text-info border-info/20",
+  default: "bg-slate-100 text-slate-600 border-slate-200",
+  accent: "bg-blue-50 text-blue-700 border-blue-100",
+  success: "bg-emerald-50 text-emerald-700 border-emerald-100",
+  danger: "bg-red-50 text-red-700 border-red-100",
+  warning: "bg-amber-50 text-amber-700 border-amber-100",
+  info: "bg-sky-50 text-sky-700 border-sky-100",
 };
 
 // Map project/convocatoria statuses to badge variants
@@ -61,7 +61,7 @@ export function Badge({ children, variant, status, className = "" }: BadgeProps)
   const resolvedVariant = variant ?? (status ? statusVariantMap[status] ?? "default" : "default");
   const label = children ?? (status ? statusLabelMap[status] ?? status : "");
   return (
-    <span className={`inline-flex items-center rounded-[var(--radius-pill)] border px-2.5 py-0.5 text-xs font-medium ${variantStyles[resolvedVariant]} ${className}`}>
+    <span className={`inline-flex items-center rounded-[var(--radius-pill)] border px-2 py-0.5 text-[11px] font-medium ${variantStyles[resolvedVariant]} ${className}`}>
       {label}
     </span>
   );

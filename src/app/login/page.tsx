@@ -9,15 +9,15 @@ export default async function LoginPage({
   const params = await searchParams;
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-bg-app p-4">
+    <main className="flex min-h-screen items-center justify-center bg-bg-elevated p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
           <Link href="/" className="inline-flex items-center gap-2.5">
             <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-accent">
               <span className="text-lg font-bold text-white">P</span>
             </div>
-            <span className="text-2xl font-bold text-text-primary">
-              Publi<span className="text-accent">tec</span>
+            <span className="text-2xl font-semibold text-text-primary">
+              Poly<span className="text-accent">tech</span>
             </span>
           </Link>
           <p className="mt-3 text-sm text-text-secondary">
@@ -26,21 +26,21 @@ export default async function LoginPage({
         </div>
 
         {params.error && (
-          <div className="mb-4 rounded-[var(--radius-input)] border border-danger/30 bg-danger-muted p-3 text-sm text-danger">
+          <div className="mb-4 rounded-[var(--radius-input)] border border-red-200 bg-red-50 p-3 text-sm text-red-700">
             {params.error}
           </div>
         )}
 
         {params.message && (
-          <div className="mb-4 rounded-[var(--radius-input)] border border-success/30 bg-success-muted p-3 text-sm text-success">
+          <div className="mb-4 rounded-[var(--radius-input)] border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">
             {params.message}
           </div>
         )}
 
-        <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-6 shadow-[var(--shadow-card)]">
+        <div className="rounded-[var(--radius-card)] border border-border bg-white p-6 shadow-[var(--shadow-elevated)]">
           <form className="space-y-4">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-text-secondary">
+              <label htmlFor="email" className="block text-sm font-medium text-text-primary">
                 Correo electronico
               </label>
               <input
@@ -48,13 +48,13 @@ export default async function LoginPage({
                 name="email"
                 type="email"
                 required
-                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/10"
                 placeholder="usuario@ejemplo.com"
               />
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-text-secondary">
+              <label htmlFor="password" className="block text-sm font-medium text-text-primary">
                 Contrasena
               </label>
               <input
@@ -63,13 +63,13 @@ export default async function LoginPage({
                 type="password"
                 required
                 minLength={6}
-                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/10"
                 placeholder="••••••••"
               />
             </div>
 
             <div>
-              <label htmlFor="full_name" className="block text-sm font-medium text-text-secondary">
+              <label htmlFor="full_name" className="block text-sm font-medium text-text-primary">
                 Nombre completo{" "}
                 <span className="text-text-muted">(solo registro)</span>
               </label>
@@ -77,7 +77,7 @@ export default async function LoginPage({
                 id="full_name"
                 name="full_name"
                 type="text"
-                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent/30"
+                className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2 text-sm text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/10"
                 placeholder="Juan Perez"
               />
             </div>
@@ -85,13 +85,13 @@ export default async function LoginPage({
             <div className="flex gap-3 pt-2">
               <button
                 formAction={login}
-                className="flex-1 rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-bg-app"
+                className="flex-1 rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
               >
                 Iniciar sesion
               </button>
               <button
                 formAction={signup}
-                className="flex-1 rounded-[var(--radius-button)] border border-border bg-transparent px-4 py-2 text-sm font-medium text-text-primary hover:bg-white/5 transition-colors focus:outline-none focus:ring-2 focus:ring-accent/50 focus:ring-offset-2 focus:ring-offset-bg-app"
+                className="flex-1 rounded-[var(--radius-button)] border border-border bg-white px-4 py-2 text-sm font-medium text-text-primary hover:bg-bg-elevated transition-colors"
               >
                 Registrarse
               </button>

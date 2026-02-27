@@ -98,7 +98,7 @@ export default async function ExplorarConvocatoriasPage({
               className={`rounded-[var(--radius-button)] px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
                 activeStatus === filter.value
                   ? "bg-accent text-white shadow-sm"
-                  : "bg-white/5 text-text-muted hover:bg-white/10 hover:text-text-secondary"
+                  : "bg-slate-100 text-text-muted hover:bg-slate-200 hover:text-text-secondary"
               }`}
             >
               {filter.label}
@@ -212,7 +212,7 @@ export default async function ExplorarConvocatoriasPage({
                     </Link>
                   ) : (
                     <Link href={`/dashboard/convocatorias/${conv.id}`} className="block">
-                      <button className="w-full rounded-[var(--radius-button)] bg-white/5 px-4 py-2 text-sm font-medium text-text-secondary hover:bg-white/10 transition-all duration-200">
+                      <button className="w-full rounded-[var(--radius-button)] bg-slate-100 px-4 py-2 text-sm font-medium text-text-secondary hover:bg-slate-200 transition-all duration-200">
                         Ver detalles
                       </button>
                     </Link>

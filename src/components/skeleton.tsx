@@ -1,6 +1,6 @@
 export function Skeleton({ className = "" }: { className?: string }) {
   return (
-    <div className={`rounded bg-white/5 animate-shimmer ${className}`} />
+    <div className={`rounded bg-slate-100 animate-shimmer ${className}`} />
   );
 }
 

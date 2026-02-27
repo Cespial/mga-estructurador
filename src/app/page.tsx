@@ -15,16 +15,16 @@ export const metadata: Metadata = {
 
 export default function LandingPage() {
   return (
-    <div className="min-h-screen bg-bg-app">
+    <div className="min-h-screen bg-white">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 glass border-b border-border">
+      <nav className="sticky top-0 z-50 border-b border-border bg-white/80 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <div className="flex items-center gap-2.5">
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-accent">
               <span className="text-sm font-bold text-white">P</span>
             </div>
-            <span className="text-lg font-bold text-text-primary">
-              Publi<span className="text-accent">tec</span>
+            <span className="text-lg font-semibold text-text-primary">
+              Poly<span className="text-accent">tech</span>
             </span>
           </div>
           <div className="flex items-center gap-6">
@@ -49,8 +49,7 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden px-4 pb-20 pt-24">
-        {/* Glow effect */}
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-accent/5 blur-[120px]" />
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 h-[500px] w-[800px] rounded-full bg-accent/[0.03] blur-[100px]" />
         <div className="relative mx-auto max-w-6xl">
           <div className="text-center">
             <div className="mb-6 inline-flex rounded-[var(--radius-pill)] border border-accent/20 bg-accent-muted px-4 py-1.5 text-xs font-medium text-accent">
@@ -60,7 +59,7 @@ export default function LandingPage() {
               Gestiona convocatorias con{" "}
               <span className="text-accent">inteligencia artificial</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary">
+            <p className="mx-auto mt-6 max-w-2xl text-lg text-text-secondary leading-relaxed">
               Entidades crean convocatorias con rubricas. Municipios estructuran
               proyectos con asistente IA. Genera reportes Excel y PDF
               profesionales con analisis de pre-factibilidad.
@@ -68,13 +67,13 @@ export default function LandingPage() {
             <div className="mt-10 flex items-center justify-center gap-4">
               <Link
                 href="/login?action=signup"
-                className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all glow-accent"
+                className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all"
               >
                 Crear Convocatoria
               </Link>
               <Link
                 href="/dashboard/convocatorias"
-                className="rounded-[var(--radius-button)] border border-border-hover bg-transparent px-6 py-3 text-sm font-semibold text-text-primary hover:bg-white/5 transition-colors"
+                className="rounded-[var(--radius-button)] border border-border bg-white px-6 py-3 text-sm font-semibold text-text-primary hover:bg-bg-elevated transition-colors"
               >
                 Explorar Demo
               </Link>
@@ -82,42 +81,42 @@ export default function LandingPage() {
           </div>
 
           {/* Dashboard preview mockup */}
-          <div className="mt-16 rounded-[var(--radius-shell)] border border-border bg-bg-card p-2 shadow-[var(--shadow-elevated)]">
-            <div className="rounded-[var(--radius-card)] bg-bg-sidebar p-6">
+          <div className="mt-16 rounded-[var(--radius-shell)] border border-border bg-[#1c1c28] p-2 shadow-[var(--shadow-elevated)]">
+            <div className="rounded-[var(--radius-card)] bg-[#22222e] p-6">
               <div className="flex items-center gap-3 mb-6">
-                <div className="h-3 w-3 rounded-full bg-danger/60" />
-                <div className="h-3 w-3 rounded-full bg-warning/60" />
-                <div className="h-3 w-3 rounded-full bg-success/60" />
+                <div className="h-3 w-3 rounded-full bg-red-400/60" />
+                <div className="h-3 w-3 rounded-full bg-amber-400/60" />
+                <div className="h-3 w-3 rounded-full bg-emerald-400/60" />
                 <div className="ml-auto h-6 w-32 rounded bg-white/5" />
               </div>
               <div className="grid grid-cols-4 gap-4 mb-6">
                 {[
-                  { label: "Convocatorias Activas", value: "12" },
-                  { label: "Proyectos Recibidos", value: "47" },
-                  { label: "Evaluados", value: "31" },
-                  { label: "Puntaje Promedio", value: "78.4" },
+                  { label: "CONVOCATORIAS ACTIVAS", value: "12" },
+                  { label: "PROYECTOS RECIBIDOS", value: "47" },
+                  { label: "EVALUADOS", value: "31" },
+                  { label: "PUNTAJE PROMEDIO", value: "78.4" },
                 ].map((stat) => (
-                  <div key={stat.label} className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4">
-                    <p className="text-xs text-text-muted">{stat.label}</p>
-                    <p className="mt-1 text-2xl font-bold text-text-primary">{stat.value}</p>
+                  <div key={stat.label} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400">{stat.label}</p>
+                    <p className="mt-2 text-2xl font-bold text-white">{stat.value}</p>
                   </div>
                 ))}
               </div>
               <div className="grid grid-cols-2 gap-4">
-                <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4 h-32">
-                  <p className="text-xs text-text-muted mb-3">Convocatorias Recientes</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4 h-28">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-3">Convocatorias Recientes</p>
                   <div className="space-y-2">
-                    <div className="h-4 w-3/4 rounded bg-white/5" />
-                    <div className="h-4 w-1/2 rounded bg-white/5" />
-                    <div className="h-4 w-2/3 rounded bg-white/5" />
+                    <div className="h-3 w-3/4 rounded bg-white/5" />
+                    <div className="h-3 w-1/2 rounded bg-white/5" />
+                    <div className="h-3 w-2/3 rounded bg-white/5" />
                   </div>
                 </div>
-                <div className="rounded-[var(--radius-card)] border border-border bg-bg-card p-4 h-32">
-                  <p className="text-xs text-text-muted mb-3">Proyectos Recientes</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-4 h-28">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-slate-400 mb-3">Proyectos Recientes</p>
                   <div className="space-y-2">
-                    <div className="h-4 w-2/3 rounded bg-accent/10" />
-                    <div className="h-4 w-3/4 rounded bg-accent/10" />
-                    <div className="h-4 w-1/2 rounded bg-accent/10" />
+                    <div className="h-3 w-2/3 rounded bg-accent/20" />
+                    <div className="h-3 w-3/4 rounded bg-accent/20" />
+                    <div className="h-3 w-1/2 rounded bg-accent/20" />
                   </div>
                 </div>
               </div>
@@ -127,7 +126,7 @@ export default function LandingPage() {
       </section>
 
       {/* Features */}
-      <section id="features" className="scroll-mt-16 border-t border-border px-4 py-20">
+      <section id="features" className="scroll-mt-16 border-t border-border px-4 py-20 bg-bg-elevated">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
             <h2 className="text-3xl font-bold text-text-primary">
@@ -187,9 +186,9 @@ export default function LandingPage() {
             ].map((item, i) => (
               <div key={item.step} className="relative flex flex-col items-center text-center px-4">
                 {i > 0 && (
-                  <div className="absolute left-0 top-6 hidden h-0.5 w-full -translate-x-1/2 bg-border sm:block" />
+                  <div className="absolute left-0 top-6 hidden h-px w-full -translate-x-1/2 bg-border sm:block" />
                 )}
-                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-lg font-bold text-white shadow-[var(--shadow-glow)]">
+                <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-accent text-lg font-bold text-white shadow-sm">
                   {item.step}
                 </div>
                 <h3 className="mt-4 text-sm font-semibold text-text-primary">{item.label}</h3>
@@ -201,7 +200,7 @@ export default function LandingPage() {
       </section>
 
       {/* Entities section */}
-      <section id="entidades" className="scroll-mt-16 border-t border-border px-4 py-20">
+      <section id="entidades" className="scroll-mt-16 border-t border-border px-4 py-20 bg-bg-elevated">
         <div className="mx-auto max-w-4xl text-center">
           <h2 className="text-3xl font-bold text-text-primary">
             Construido para entidades publicas
@@ -209,11 +208,11 @@ export default function LandingPage() {
           <p className="mt-4 text-text-secondary">
             Disenado para gobernaciones, institutos de desarrollo y entidades que gestionan convocatorias con municipios.
           </p>
-          <div className="mt-12 flex flex-wrap items-center justify-center gap-8">
+          <div className="mt-12 flex flex-wrap items-center justify-center gap-6">
             {["IDEA", "Gobernacion de Antioquia", "EAFIT", "Argos"].map((entity) => (
               <div
                 key={entity}
-                className="rounded-[var(--radius-card)] border border-border bg-bg-card px-6 py-4 text-sm font-medium text-text-secondary"
+                className="rounded-[var(--radius-card)] border border-border bg-white px-6 py-4 text-sm font-medium text-text-secondary shadow-sm"
               >
                 {entity}
               </div>
@@ -235,13 +234,13 @@ export default function LandingPage() {
           <div className="mt-8 flex items-center justify-center gap-4">
             <Link
               href="/login?action=signup"
-              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all glow-accent"
+              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-all"
             >
               Comenzar ahora
             </Link>
             <Link
               href="/dashboard/convocatorias"
-              className="rounded-[var(--radius-button)] border border-border-hover bg-transparent px-6 py-3 text-sm font-semibold text-text-primary hover:bg-white/5 transition-colors"
+              className="rounded-[var(--radius-button)] border border-border bg-white px-6 py-3 text-sm font-semibold text-text-primary hover:bg-bg-elevated transition-colors"
             >
               Explorar Demo
             </Link>
@@ -250,7 +249,7 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-border px-4 py-8">
+      <footer className="border-t border-border px-4 py-8 bg-bg-elevated">
         <div className="mx-auto max-w-6xl">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
@@ -284,12 +283,12 @@ function FeatureCard({
   description: string;
 }) {
   return (
-    <div className="card-premium p-6">
-      <div className="flex h-12 w-12 items-center justify-center rounded-[var(--radius-input)] bg-accent-muted text-accent">
+    <div className="rounded-[var(--radius-card)] border border-border bg-white p-6 shadow-sm hover:shadow-md transition-shadow">
+      <div className="flex h-11 w-11 items-center justify-center rounded-lg bg-accent-muted text-accent">
         {icon}
       </div>
       <h3 className="mt-4 text-base font-semibold text-text-primary">{title}</h3>
-      <p className="mt-2 text-sm text-text-secondary">{description}</p>
+      <p className="mt-2 text-sm text-text-secondary leading-relaxed">{description}</p>
     </div>
   );
 }

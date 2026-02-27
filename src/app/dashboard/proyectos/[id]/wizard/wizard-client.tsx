@@ -586,16 +586,16 @@ export function WizardClient({
                         ? "bg-accent text-white shadow-sm"
                         : isCompleted
                           ? "bg-success-muted text-success hover:bg-success-muted/80"
-                          : "bg-white/5 text-text-muted hover:bg-white/10 hover:text-text-secondary"
+                          : "bg-slate-100 text-text-muted hover:bg-slate-200 hover:text-text-secondary"
                     }`}
                   >
                     <span
                       className={`flex h-5 w-5 items-center justify-center rounded-full text-[10px] font-bold ${
                         isCurrent
-                          ? "bg-white/20 text-white"
+                          ? "bg-white/30 text-white"
                           : isCompleted
                             ? "bg-success/20 text-success"
-                            : "bg-white/10 text-text-muted"
+                            : "bg-slate-200 text-text-muted"
                       }`}
                     >
                       {isCompleted ? (

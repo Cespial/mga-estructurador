@@ -12,7 +12,7 @@ export function HelpButton({
   return (
     <Link
       href={`/dashboard/ayuda#${section}`}
-      className="inline-flex items-center gap-1 rounded-[var(--radius-button)] border border-border px-2 py-1 text-xs text-text-muted hover:bg-white/5 hover:text-text-secondary transition-colors"
+      className="inline-flex items-center gap-1 rounded-[var(--radius-button)] border border-border px-2 py-1 text-xs text-text-muted hover:bg-bg-hover hover:text-text-secondary transition-colors"
       aria-label={label}
     >
       <svg

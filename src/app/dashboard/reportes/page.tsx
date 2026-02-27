@@ -114,7 +114,7 @@ export default async function ReportesPage() {
               </thead>
               <tbody>
                 {scoredProjects.map((proj) => (
-                  <tr key={proj.id} className="border-b border-border/50 hover:bg-white/3 transition-colors">
+                  <tr key={proj.id} className="border-b border-border/50 hover:bg-bg-hover transition-colors">
                     <td className="py-3">
                       <Link href={`/dashboard/evaluaciones/${proj.id}`} className="text-text-primary hover:text-accent font-medium transition-colors">
                         {proj.title}

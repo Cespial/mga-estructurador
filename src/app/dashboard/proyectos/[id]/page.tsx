@@ -294,7 +294,7 @@ function FormularioTab({
                   className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
                     form.completed
                       ? "bg-success-muted text-success"
-                      : "bg-white/5 text-text-muted"
+                      : "bg-slate-100 text-text-muted"
                   }`}
                 >
                   {form.step_number}
@@ -482,7 +482,7 @@ function CalificacionTab({
                       {cs.score}/{cs.max_score}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full rounded-full bg-white/5 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
                     <div
                       className="h-1.5 rounded-full bg-accent transition-all duration-500"
                       style={{

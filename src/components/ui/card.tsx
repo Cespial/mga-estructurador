@@ -11,8 +11,8 @@ export function Card({ children, className = "", variant = "default", padding = 
   const base = "rounded-[var(--radius-card)] border border-border";
   const variants = {
     default: "bg-bg-card shadow-[var(--shadow-card)]",
-    elevated: "bg-bg-elevated shadow-[var(--shadow-elevated)]",
-    interactive: "bg-bg-card shadow-[var(--shadow-card)] hover:border-border-hover hover:shadow-[var(--shadow-elevated)] transition-all duration-200 cursor-pointer",
+    elevated: "bg-bg-card shadow-[var(--shadow-elevated)]",
+    interactive: "bg-bg-card shadow-[var(--shadow-card)] hover:border-border-hover hover:shadow-[var(--shadow-elevated)] transition-all duration-150 cursor-pointer",
   };
   const paddings = { sm: "p-3", md: "p-5", lg: "p-6" };
   return <div className={`${base} ${variants[variant]} ${paddings[padding]} ${className}`}>{children}</div>;

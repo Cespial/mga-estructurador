@@ -123,7 +123,7 @@ export default async function EvaluacionesPage() {
                 {projects.map((proj) => {
                   const score = scores.find(s => s.project_id === proj.id);
                   return (
-                    <tr key={proj.id} className="border-b border-border/50 hover:bg-white/3 transition-colors">
+                    <tr key={proj.id} className="border-b border-border/50 hover:bg-bg-hover transition-colors">
                       <td className="py-3 text-text-primary font-medium">{proj.title}</td>
                       <td className="py-3 text-text-secondary">
                         {proj.budget_requested

@@ -162,7 +162,7 @@ export default async function DashboardPage() {
                 <Link
                   key={conv.id}
                   href={`/dashboard/convocatorias/${conv.id}`}
-                  className="flex items-center justify-between rounded-[var(--radius-input)] p-3 hover:bg-white/5 transition-colors"
+                  className="flex items-center justify-between rounded-[var(--radius-input)] p-3 hover:bg-bg-hover transition-colors"
                 >
                   <div>
                     <p className="text-sm font-medium text-text-primary">{conv.name}</p>
@@ -193,7 +193,7 @@ export default async function DashboardPage() {
                 <Link
                   key={proj.id}
                   href={`/dashboard/proyectos/${proj.id}`}
-                  className="flex items-center justify-between rounded-[var(--radius-input)] p-3 hover:bg-white/5 transition-colors"
+                  className="flex items-center justify-between rounded-[var(--radius-input)] p-3 hover:bg-bg-hover transition-colors"
                 >
                   <div>
                     <p className="text-sm font-medium text-text-primary">{proj.title}</p>

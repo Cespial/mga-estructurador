@@ -16,12 +16,12 @@ export function DashboardShell({ children, userName, userEmail, orgType }: Dashb
       <Sidebar userName={userName} userEmail={userEmail} orgType={orgType} />
       <main className="ml-64">
         {/* Header bar */}
-        <header className="glass sticky top-0 z-30 flex items-center justify-between border-b border-border px-6 py-3">
-          <div className="text-sm text-text-muted">
+        <header className="sticky top-0 z-30 flex items-center justify-between border-b border-border bg-white/80 backdrop-blur-sm px-6 py-3">
+          <div className="text-xs font-medium uppercase tracking-wide text-text-muted">
             {orgType === "entity" ? "Entidad" : orgType === "municipality" ? "Municipio" : ""}
           </div>
-          <div className="flex items-center gap-3">
-            <div className="h-2 w-2 rounded-full bg-success animate-pulse" title="Conectado" />
+          <div className="flex items-center gap-2">
+            <div className="h-2 w-2 rounded-full bg-success" />
             <span className="text-xs text-text-muted">Conectado</span>
           </div>
         </header>

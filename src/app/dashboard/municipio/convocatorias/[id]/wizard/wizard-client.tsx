@@ -173,16 +173,16 @@ export function WizardClient({
         <div className="sticky top-6">
           {/* Progress bar */}
           <div className="mb-4">
-            <div className="flex items-center justify-between text-xs text-gray-500">
+            <div className="flex items-center justify-between text-xs text-text-muted">
               <span>Progreso general</span>
-              <span className="font-semibold text-gray-900">{progress}%</span>
+              <span className="font-semibold text-text-primary">{progress}%</span>
             </div>
-            <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-200">
+            <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   progress === 100
                     ? "bg-green-500 animate-shimmer"
-                    : "bg-blue-600"
+                    : "bg-accent"
                 }`}
                 style={{ width: `${progress}%` }}
               />
@@ -207,10 +207,10 @@ export function WizardClient({
                 <button
                   key={etapa.id}
                   onClick={() => goToEtapa(i)}
-                  className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition ${
+                  className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-left text-[13px] transition ${
                     isCurrent
-                      ? "bg-blue-50 font-medium text-blue-700"
-                      : "text-gray-600 hover:bg-gray-50"
+                      ? "bg-accent/5 font-medium text-accent"
+                      : "text-text-secondary hover:bg-bg-hover"
                   }`}
                 >
                   <span
@@ -220,8 +220,8 @@ export function WizardClient({
                         : status === "partial"
                           ? "bg-yellow-100 text-yellow-700"
                           : isCurrent
-                            ? "bg-blue-100 text-blue-700"
-                            : "bg-gray-100 text-gray-500"
+                            ? "bg-accent/8 text-accent"
+                            : "bg-gray-100 text-text-muted"
                     }`}
                   >
                     {status === "complete" ? "\u2713" : etapa.orden}
@@ -233,9 +233,9 @@ export function WizardClient({
           </nav>
 
           {/* Save status */}
-          <div className="mt-4 text-xs text-gray-400">
+          <div className="mt-4 text-xs text-text-muted">
             {saving ? (
-              <span className="text-blue-500">Guardando...</span>
+              <span className="text-accent">Guardando...</span>
             ) : lastSaved ? (
               <span>Guardado a las {lastSaved}</span>
             ) : (
@@ -247,17 +247,17 @@ export function WizardClient({
 
       {/* Main content: current etapa fields */}
       <div className="min-w-0 flex-1">
-        <div className="rounded-lg border border-gray-200 bg-white">
-          <div className="border-b border-gray-100 px-6 py-4">
+        <div className="rounded-[14px] border border-border bg-bg-card">
+          <div className="border-b border-border px-6 py-4">
             <div className="flex items-center gap-3">
-              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-accent/8 text-sm font-bold text-accent">
                 {currentEtapa.orden}
               </span>
               <div>
-                <h3 className="text-base font-semibold text-gray-900">
+                <h3 className="text-base font-semibold text-text-primary">
                   {currentEtapa.nombre}
                 </h3>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-text-muted">
                   {currentEtapa.campos.length} campo
                   {currentEtapa.campos.length !== 1 ? "s" : ""}
                   {validationErrors.length > 0 && (
@@ -271,13 +271,13 @@ export function WizardClient({
             </div>
           </div>
 
-          <div className="divide-y divide-gray-50 px-6">
+          <div className="divide-y divide-border px-6">
             {currentEtapa.campos.map((campo) => (
               <div key={campo.id} className="py-4">
                 <div className="mb-1 flex items-center justify-between">
                   <label
                     htmlFor={campo.id}
-                    className="flex items-center gap-2 text-sm font-medium text-gray-700"
+                    className="flex items-center gap-2 text-[13px] font-medium text-text-primary"
                   >
                     {campo.nombre}
                     {campo.requerido && (
@@ -318,7 +318,7 @@ export function WizardClient({
                   )}
                 </div>
                 {campo.descripcion && (
-                  <p className="mb-2 text-xs text-gray-500">
+                  <p className="mb-2 text-xs text-text-muted">
                     {campo.descripcion}
                   </p>
                 )}
@@ -351,17 +351,17 @@ export function WizardClient({
           <button
             onClick={() => goToEtapa(currentEtapaIndex - 1)}
             disabled={currentEtapaIndex === 0}
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-30"
+            className="rounded-[var(--radius-button)] border border-border px-4 py-2 text-[13px] font-medium text-text-secondary hover:bg-bg-hover transition-colors disabled:cursor-not-allowed disabled:opacity-30"
           >
             &larr; Anterior
           </button>
-          <span className="text-xs text-gray-400">
+          <span className="text-xs text-text-muted">
             Etapa {currentEtapaIndex + 1} de {etapas.length}
           </span>
           <button
             onClick={() => goToEtapa(currentEtapaIndex + 1)}
             disabled={currentEtapaIndex === etapas.length - 1}
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-30"
+            className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors disabled:cursor-not-allowed disabled:opacity-30"
           >
             Siguiente &rarr;
           </button>
@@ -427,7 +427,7 @@ function AiResponsePanel({
           <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-purple-500">
             Texto sugerido
           </p>
-          <div className="rounded-md bg-white p-3 text-sm text-gray-800 shadow-sm">
+          <div className="rounded-md bg-bg-card p-3 text-[13px] text-text-primary shadow-sm">
             {response.suggested_text}
           </div>
         </div>
@@ -442,7 +442,7 @@ function AiResponsePanel({
               {response.bullets.map((b, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-1.5 text-xs text-gray-700"
+                  className="flex items-start gap-1.5 text-xs text-text-secondary"
                 >
                   <span className="mt-0.5 text-purple-400">&bull;</span>
                   {b}
@@ -475,14 +475,14 @@ function AiResponsePanel({
         {/* Missing info questions */}
         {response.missing_info_questions.length > 0 && (
           <div>
-            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-blue-600">
+            <p className="mb-1 text-[10px] font-semibold uppercase tracking-wider text-accent">
               Informacion faltante
             </p>
             <ul className="space-y-1">
               {response.missing_info_questions.map((q, i) => (
                 <li
                   key={i}
-                  className="flex items-start gap-1.5 text-xs text-blue-700"
+                  className="flex items-start gap-1.5 text-xs text-accent"
                 >
                   <span className="mt-0.5">?</span>
                   {q}
@@ -533,7 +533,7 @@ function AiResponsePanel({
           </button>
           <button
             onClick={onDismiss}
-            className="rounded-md border border-gray-300 px-3 py-1.5 text-xs font-medium text-gray-600 hover:bg-gray-50"
+            className="rounded-[var(--radius-button)] border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-bg-hover transition-colors"
           >
             Descartar
           </button>
@@ -557,7 +557,7 @@ function FieldInput({
   onChange: (val: string) => void;
 }) {
   const baseClass =
-    "block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500";
+    "block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8";
 
   switch (campo.tipo) {
     case "textarea":

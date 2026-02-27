@@ -38,7 +38,7 @@ export function HelpCenter() {
       {/* Sidebar */}
       <nav className="hidden w-56 shrink-0 lg:block" aria-label="Indice de ayuda">
         <div className="sticky top-6">
-          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-400">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
             Contenido
           </p>
           <ul className="space-y-1">
@@ -46,7 +46,7 @@ export function HelpCenter() {
               <li key={s.id}>
                 <a
                   href={`#${s.id}`}
-                  className="block truncate rounded px-2 py-1 text-xs text-gray-600 hover:bg-gray-100 hover:text-gray-900"
+                  className="block truncate rounded px-2 py-1 text-xs text-text-secondary hover:bg-bg-hover hover:text-text-primary"
                 >
                   {s.title}
                 </a>
@@ -69,13 +69,13 @@ export function HelpCenter() {
             placeholder="Buscar..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="block w-full rounded-lg border border-gray-300 px-4 py-2.5 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-4 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
           />
         </div>
 
         {filtered.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-[14px] border border-border bg-bg-app p-6 text-center">
+            <p className="text-[13px] text-text-muted">
               No se encontraron resultados para &quot;{search}&quot;
             </p>
           </div>
@@ -108,16 +108,16 @@ function SectionCard({
   return (
     <section
       id={section.id}
-      className="scroll-mt-6 rounded-lg border border-gray-200 bg-white"
+      className="scroll-mt-6 rounded-[14px] border border-border bg-bg-card"
     >
-      <div className="flex items-center justify-between border-b border-gray-100 px-5 py-3">
-        <h2 className="text-base font-semibold text-gray-900">
+      <div className="flex items-center justify-between border-b border-border px-5 py-3">
+        <h2 className="text-base font-semibold text-text-primary">
           {section.title}
         </h2>
         <button
           onClick={() => onCopyLink(section.id)}
           aria-label={`Copiar link a ${section.title}`}
-          className="rounded px-2 py-1 text-[10px] font-medium text-gray-400 hover:bg-gray-100 hover:text-gray-600"
+          className="rounded px-2 py-1 text-[10px] font-medium text-text-muted hover:bg-bg-hover hover:text-text-secondary"
         >
           {copiedId === section.id ? "Copiado" : "Copiar link"}
         </button>
@@ -125,7 +125,7 @@ function SectionCard({
 
       <div className="px-5 py-4">
         {section.content && (
-          <div className="whitespace-pre-line text-sm leading-relaxed text-gray-700">
+          <div className="whitespace-pre-line text-[13px] leading-relaxed text-text-secondary">
             {section.content}
           </div>
         )}
@@ -136,12 +136,12 @@ function SectionCard({
               <div
                 key={sub.id}
                 id={sub.id}
-                className="scroll-mt-6 rounded-md bg-gray-50 px-4 py-3"
+                className="scroll-mt-6 rounded-[8px] bg-bg-app px-4 py-3"
               >
-                <h3 className="text-sm font-medium text-gray-900">
+                <h3 className="text-[13px] font-medium text-text-primary">
                   {sub.title}
                 </h3>
-                <p className="mt-1 text-sm text-gray-600">{sub.content}</p>
+                <p className="mt-1 text-[13px] text-text-secondary">{sub.content}</p>
               </div>
             ))}
           </div>

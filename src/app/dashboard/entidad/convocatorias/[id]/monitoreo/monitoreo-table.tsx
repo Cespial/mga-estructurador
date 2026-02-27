@@ -123,47 +123,47 @@ export function MonitoreoTable({
   }
 
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-      <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto rounded-[14px] border border-border bg-bg-card">
+      <table className="min-w-full divide-y divide-border">
+        <thead className="bg-bg-app">
           <tr>
-            <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+            <th className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider text-text-muted">
               Municipio
             </th>
-            <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+            <th className="px-4 py-3 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted">
               Estado
             </th>
             {etapas.map((etapa) => (
               <th
                 key={etapa.id}
-                className="px-3 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500"
+                className="px-3 py-3 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted"
               >
                 {etapa.nombre}
               </th>
             ))}
-            <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+            <th className="px-4 py-3 text-center text-[11px] font-medium uppercase tracking-wider text-text-muted">
               Total
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-200">
+        <tbody className="divide-y divide-border">
           {localRows.map((row, rowIndex) => {
             const weightedScore = computeWeightedScore(row.perEtapa);
 
             return (
               <tr key={row.municipio.id}>
                 <td className="px-4 py-3">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-[13px] font-medium text-text-primary">
                     {row.municipio.nombre}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-xs text-text-muted">
                     {row.municipio.departamento}
                   </p>
                   {row.submissionId && (
                     <a
                       href={`/api/submissions/${row.submissionId}/pdf`}
                       download
-                      className="mt-0.5 inline-block text-[10px] font-medium text-blue-600 hover:text-blue-800"
+                      className="mt-0.5 inline-block text-[10px] font-medium text-accent hover:text-accent-hover"
                     >
                       PDF
                     </a>
@@ -175,7 +175,7 @@ export function MonitoreoTable({
                       En curso
                     </span>
                   ) : (
-                    <span className="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-gray-500">
+                    <span className="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-text-muted">
                       Sin iniciar
                     </span>
                   )}
@@ -234,7 +234,7 @@ export function MonitoreoTable({
                   );
                 })}
                 <td className="px-4 py-3 text-center">
-                  <span className="text-sm font-bold text-gray-900">
+                  <span className="text-[13px] font-bold text-text-primary">
                     {Math.round(row.overallProgress)}%
                   </span>
                   {weightedScore !== null && (
@@ -262,17 +262,17 @@ function ScorePopover({
   return (
     <>
       <div className="fixed inset-0 z-10" onClick={onClose} aria-hidden="true" />
-      <div role="dialog" aria-label="Desglose por criterio" className="absolute left-1/2 z-20 mt-1 w-56 -translate-x-1/2 rounded-lg border border-gray-200 bg-white p-3 shadow-lg">
-        <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-gray-500">
+      <div role="dialog" aria-label="Desglose por criterio" className="absolute left-1/2 z-20 mt-1 w-56 -translate-x-1/2 rounded-[8px] border border-border bg-bg-card p-3 shadow-lg">
+        <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-text-muted">
           Desglose por criterio
         </p>
         <div className="space-y-1.5">
           {scores.map((s) => (
             <div key={s.campo_id} className="flex items-center justify-between gap-2">
-              <span className="truncate text-xs text-gray-700">
+              <span className="truncate text-xs text-text-secondary">
                 {s.campo_nombre}
               </span>
-              <span className="shrink-0 text-xs font-bold text-gray-900">
+              <span className="shrink-0 text-xs font-bold text-text-primary">
                 {s.score}/{s.max_score}
               </span>
             </div>
@@ -284,7 +284,7 @@ function ScorePopover({
 }
 
 function ProgressPill({ value }: { value: number }) {
-  let bg = "bg-gray-100 text-gray-500";
+  let bg = "bg-gray-100 text-text-muted";
   if (value === 100) bg = "bg-green-100 text-green-700";
   else if (value > 0) bg = "bg-yellow-100 text-yellow-700";
 

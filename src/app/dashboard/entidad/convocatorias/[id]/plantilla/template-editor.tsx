@@ -135,11 +135,11 @@ export function TemplateEditor({
         {etapas.map((etapa) => (
           <div
             key={etapa.id}
-            className="rounded-lg border border-gray-200 bg-white"
+            className="rounded-[14px] border border-border bg-bg-card"
           >
             {/* Etapa header */}
-            <div className="flex items-center gap-3 border-b border-gray-100 px-4 py-3">
-              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+            <div className="flex items-center gap-3 border-b border-border px-4 py-3">
+              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent/8 text-xs font-bold text-accent">
                 {etapa.orden}
               </span>
               <input
@@ -147,7 +147,7 @@ export function TemplateEditor({
                 value={etapa.nombre}
                 onChange={(e) => updateEtapa(etapa.id, "nombre", e.target.value)}
                 placeholder="Nombre de la etapa (ej: Identificación)"
-                className="flex-1 border-0 bg-transparent text-sm font-semibold text-gray-900 placeholder:text-gray-400 focus:outline-none focus:ring-0"
+                className="flex-1 border-0 bg-transparent text-[13px] font-semibold text-text-primary placeholder:text-text-muted focus:outline-none focus:ring-0"
               />
               {etapas.length > 1 && (
                 <button
@@ -165,10 +165,10 @@ export function TemplateEditor({
                 {etapa.campos.map((campo, ci) => (
                   <div
                     key={campo.id}
-                    className="rounded-md border border-gray-100 bg-gray-50 p-3"
+                    className="rounded-[8px] border border-border bg-bg-app p-3"
                   >
                     <div className="flex items-start gap-3">
-                      <span className="mt-1 text-xs text-gray-400">
+                      <span className="mt-1 text-xs text-text-muted">
                         {ci + 1}.
                       </span>
                       <div className="flex-1 space-y-2">
@@ -180,14 +180,14 @@ export function TemplateEditor({
                               updateCampo(etapa.id, campo.id, "nombre", e.target.value)
                             }
                             placeholder="Nombre del campo"
-                            className="flex-1 rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="flex-1 rounded-[var(--radius-input)] border border-border bg-bg-input px-2 py-1.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                           />
                           <select
                             value={campo.tipo}
                             onChange={(e) =>
                               updateCampo(etapa.id, campo.id, "tipo", e.target.value)
                             }
-                            className="rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                            className="rounded-[var(--radius-input)] border border-border bg-bg-input px-2 py-1.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                           >
                             <option value="textarea">Texto largo</option>
                             <option value="text">Texto corto</option>
@@ -202,17 +202,17 @@ export function TemplateEditor({
                             updateCampo(etapa.id, campo.id, "descripcion", e.target.value)
                           }
                           placeholder="Descripción / instrucciones para el municipio"
-                          className="w-full rounded-md border border-gray-200 px-2 py-1.5 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                          className="w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-2 py-1.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                         />
                         <div className="flex items-center justify-between">
-                          <label className="flex items-center gap-2 text-xs text-gray-600">
+                          <label className="flex items-center gap-2 text-xs text-text-secondary">
                             <input
                               type="checkbox"
                               checked={campo.requerido}
                               onChange={(e) =>
                                 updateCampo(etapa.id, campo.id, "requerido", e.target.checked)
                               }
-                              className="rounded border-gray-300"
+                              className="rounded border-border"
                             />
                             Requerido
                           </label>
@@ -232,7 +232,7 @@ export function TemplateEditor({
               </div>
               <button
                 onClick={() => addCampo(etapa.id)}
-                className="mt-3 text-sm text-blue-600 hover:text-blue-800"
+                className="mt-3 text-[13px] text-accent hover:text-accent-hover"
               >
                 + Agregar campo
               </button>
@@ -244,14 +244,14 @@ export function TemplateEditor({
       <div className="mt-6 flex items-center justify-between">
         <button
           onClick={addEtapa}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+          className="rounded-[var(--radius-button)] border border-border px-4 py-2 text-[13px] font-medium text-text-secondary hover:bg-bg-hover transition-colors"
         >
           + Agregar etapa
         </button>
         <button
           onClick={handleSave}
           disabled={saving}
-          className="rounded-md bg-blue-600 px-6 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-[var(--radius-button)] bg-accent px-6 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
           {saving ? "Guardando..." : "Guardar plantilla"}
         </button>

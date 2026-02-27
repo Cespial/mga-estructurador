@@ -294,7 +294,7 @@ function KpiCard({
 
 function EstadoBadge({ estado }: { estado: string }) {
   const colors: Record<string, string> = {
-    borrador: "bg-gray-50 text-gray-600",
+    borrador: "bg-gray-50 text-text-muted",
     abierta: "bg-emerald-50 text-emerald-600",
     cerrada: "bg-red-50 text-red-600",
     evaluacion: "bg-amber-50 text-amber-600",
@@ -302,7 +302,7 @@ function EstadoBadge({ estado }: { estado: string }) {
   return (
     <span
       className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
-        colors[estado] ?? "bg-gray-50 text-gray-600"
+        colors[estado] ?? "bg-gray-50 text-text-muted"
       }`}
     >
       {estado}
@@ -311,7 +311,7 @@ function EstadoBadge({ estado }: { estado: string }) {
 }
 
 function ProgressBar({ value }: { value: number }) {
-  let color = "bg-gray-300";
+  let color = "bg-gray-200";
   if (value === 100) color = "bg-emerald-500";
   else if (value >= 60) color = "bg-accent";
   else if (value > 0) color = "bg-amber-500";

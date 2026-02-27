@@ -27,7 +27,7 @@ export function ContactForm() {
         <h3 className="text-lg font-semibold text-green-900">
           Mensaje enviado
         </h3>
-        <p className="mt-1 text-sm text-green-700">
+        <p className="mt-1 text-[13px] text-green-700">
           Gracias por tu interes. Te responderemos pronto.
         </p>
       </div>
@@ -39,7 +39,7 @@ export function ContactForm() {
       {state?.error && (
         <div
           role="alert"
-          className="rounded-md bg-red-50 px-4 py-3 text-sm text-red-700"
+          className="rounded-md bg-red-50 px-4 py-3 text-[13px] text-red-700"
         >
           {state.error}
         </div>
@@ -49,7 +49,7 @@ export function ContactForm() {
         <div>
           <label
             htmlFor="contact-nombre"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-[13px] font-medium text-text-secondary"
           >
             Nombre *
           </label>
@@ -58,14 +58,14 @@ export function ContactForm() {
             name="nombre"
             type="text"
             required
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             placeholder="Tu nombre"
           />
         </div>
         <div>
           <label
             htmlFor="contact-email"
-            className="block text-sm font-medium text-gray-700"
+            className="block text-[13px] font-medium text-text-secondary"
           >
             Correo electronico *
           </label>
@@ -74,7 +74,7 @@ export function ContactForm() {
             name="email"
             type="email"
             required
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             placeholder="correo@ejemplo.com"
           />
         </div>
@@ -83,16 +83,16 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="contact-entidad"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-[13px] font-medium text-text-secondary"
         >
           Entidad u organizacion{" "}
-          <span className="text-gray-400">(opcional)</span>
+          <span className="text-text-muted">(opcional)</span>
         </label>
         <input
           id="contact-entidad"
           name="entidad"
           type="text"
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
           placeholder="Gobernacion, Alcaldia, Secretaria..."
         />
       </div>
@@ -100,7 +100,7 @@ export function ContactForm() {
       <div>
         <label
           htmlFor="contact-mensaje"
-          className="block text-sm font-medium text-gray-700"
+          className="block text-[13px] font-medium text-text-secondary"
         >
           Mensaje *
         </label>
@@ -109,7 +109,7 @@ export function ContactForm() {
           name="mensaje"
           required
           rows={5}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
           placeholder="Cuentanos que necesitas..."
         />
       </div>
@@ -118,7 +118,7 @@ export function ContactForm() {
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-blue-600 px-6 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-[var(--radius-button)] bg-accent px-6 py-2.5 text-[13px] font-medium text-white shadow-sm hover:bg-accent-hover disabled:opacity-50 transition-colors"
         >
           {pending ? "Enviando..." : "Enviar mensaje"}
         </button>

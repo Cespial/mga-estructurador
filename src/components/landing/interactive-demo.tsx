@@ -120,9 +120,9 @@ export function InteractiveDemo() {
   const progress = Math.round((filledCount / totalFields) * 100);
 
   return (
-    <div className="rounded-xl border border-gray-200 bg-white shadow-lg">
+    <div className="rounded-[14px] border border-border bg-bg-card shadow-lg">
       {/* Tab bar */}
-      <div className="flex border-b border-gray-100">
+      <div className="flex border-b border-border">
         <StepTab
           label="1. Diligenciar"
           active={step === "wizard"}
@@ -186,12 +186,12 @@ function StepTab({
 }) {
   return (
     <div
-      className={`flex-1 px-4 py-3 text-center text-xs font-medium ${
+      className={`flex-1 px-4 py-3 text-center text-[11px] font-medium ${
         active
-          ? "border-b-2 border-blue-600 text-blue-700"
+          ? "border-b-2 border-accent text-accent"
           : done
-            ? "text-green-600"
-            : "text-gray-400"
+            ? "text-emerald-600"
+            : "text-text-muted"
       }`}
     >
       {done ? `${label} ✓` : label}
@@ -226,23 +226,23 @@ function WizardStep({
     <div>
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <p className="text-xs text-gray-400">
+          <p className="text-[11px] text-text-muted">
             Etapa {etapaIdx + 1} de {totalEtapas}
           </p>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-[15px] font-semibold text-text-primary">
             {etapa.nombre}
           </h3>
         </div>
         <div className="text-right">
-          <p className="text-2xl font-bold text-blue-600">{progress}%</p>
-          <p className="text-[10px] text-gray-400">progreso</p>
+          <p className="text-[22px] font-semibold text-accent tabular-nums">{progress}%</p>
+          <p className="text-[10px] text-text-muted">progreso</p>
         </div>
       </div>
 
       {/* Progress bar */}
       <div className="mb-6 h-1.5 overflow-hidden rounded-full bg-gray-100">
         <div
-          className="h-full rounded-full bg-blue-600 transition-all duration-500"
+          className="h-full rounded-full bg-accent transition-all duration-500"
           style={{ width: `${progress}%` }}
         />
       </div>
@@ -252,7 +252,7 @@ function WizardStep({
           <div key={campo.id}>
             <label
               htmlFor={`demo-${campo.id}`}
-              className="block text-sm font-medium text-gray-700"
+              className="block text-[13px] font-medium text-text-primary"
             >
               {campo.label}
             </label>
@@ -262,7 +262,7 @@ function WizardStep({
                 value={values[campo.id] ?? ""}
                 onChange={(e) => onChange(campo.id, e.target.value)}
                 rows={3}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                 placeholder="Escribe aqui..."
               />
             ) : (
@@ -271,7 +271,7 @@ function WizardStep({
                 type="text"
                 value={values[campo.id] ?? ""}
                 onChange={(e) => onChange(campo.id, e.target.value)}
-                className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                 placeholder="Escribe aqui..."
               />
             )}
@@ -284,21 +284,21 @@ function WizardStep({
           {etapaIdx > 0 && (
             <button
               onClick={onPrev}
-              className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              className="rounded-[var(--radius-button)] border border-border px-4 py-2 text-[13px] text-text-secondary hover:bg-bg-hover transition-colors"
             >
               Anterior
             </button>
           )}
           <button
             onClick={onFill}
-            className="rounded-md border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-700 hover:bg-blue-100"
+            className="rounded-[var(--radius-button)] border border-accent/20 bg-accent/5 px-4 py-2 text-[13px] text-accent hover:bg-accent/10 transition-colors"
           >
             Llenar ejemplo
           </button>
         </div>
         <button
           onClick={onNext}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
+          className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors"
         >
           {isLast ? "Evaluar con IA" : "Siguiente etapa"}
         </button>
@@ -320,10 +320,10 @@ function ScoringStep({
 }) {
   return (
     <div>
-      <h3 className="text-lg font-semibold text-gray-900">
+      <h3 className="text-[15px] font-semibold text-text-primary">
         Evaluacion con rubrica ponderada
       </h3>
-      <p className="mt-1 text-sm text-gray-500">
+      <p className="mt-1 text-[13px] text-text-muted">
         La IA evalua cada criterio segun el contenido enviado.
       </p>
 
@@ -336,34 +336,34 @@ function ScoringStep({
           return (
             <div
               key={c.campo_id}
-              className="rounded-md border border-gray-100 bg-gray-50 px-4 py-3"
+              className="rounded-[8px] border border-border bg-bg-app px-4 py-3"
             >
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-[13px] font-medium text-text-primary">
                     {c.nombre}
                   </p>
-                  <p className="text-xs text-gray-400">
+                  <p className="text-[11px] text-text-muted">
                     Peso: {c.peso} &middot; Max: {c.maxScore}
                   </p>
                 </div>
                 <div className="text-right">
                   {hasScore ? (
                     <span
-                      className={`animate-score-reveal text-lg font-bold ${
-                        pct >= 75 ? "text-green-600" : pct >= 50 ? "text-yellow-600" : "text-red-600"
+                      className={`animate-score-reveal text-[15px] font-semibold tabular-nums ${
+                        pct >= 75 ? "text-emerald-600" : pct >= 50 ? "text-amber-600" : "text-red-600"
                       }`}
                     >
                       {score}/{c.maxScore}
                     </span>
                   ) : (
-                    <span className="inline-block h-4 w-10 animate-pulse rounded bg-gray-200" />
+                    <span className="inline-block h-4 w-10 animate-pulse rounded bg-gray-100" />
                   )}
                 </div>
               </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-gray-200">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-gray-100">
                 <div
-                  className="h-full rounded-full bg-blue-500 transition-all duration-700"
+                  className="h-full rounded-full bg-accent transition-all duration-700"
                   style={{ width: `${pct}%` }}
                 />
               </div>
@@ -374,11 +374,11 @@ function ScoringStep({
 
       {/* Overall score */}
       {weightedScore != null && (
-        <div className="animate-fade-in-up mt-6 rounded-lg border border-blue-100 bg-blue-50 p-4 text-center">
-          <p className="text-xs font-medium uppercase tracking-wider text-blue-600">
+        <div className="animate-fade-in-up mt-6 rounded-[10px] border border-accent/20 bg-accent/5 p-4 text-center">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-accent">
             Score ponderado total
           </p>
-          <p className="mt-1 text-3xl font-bold text-blue-700">
+          <p className="mt-1 text-[28px] font-semibold text-accent tabular-nums">
             {weightedScore.toFixed(1)}%
           </p>
         </div>
@@ -388,7 +388,7 @@ function ScoringStep({
         <button
           onClick={onNext}
           disabled={animating}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover disabled:opacity-50 transition-colors"
         >
           Ver resumen ejecutivo
         </button>
@@ -414,16 +414,16 @@ function SummaryStep({
     <div>
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">
+          <h3 className="text-[15px] font-semibold text-text-primary">
             Resumen ejecutivo
           </h3>
-          <p className="text-sm text-gray-500">
+          <p className="text-[13px] text-text-muted">
             Asi se veria el PDF exportable de este municipio.
           </p>
         </div>
-        <div className="animate-score-reveal rounded-lg bg-blue-50 px-3 py-1.5 text-center">
-          <p className="text-xs text-blue-600">Score</p>
-          <p className="text-xl font-bold text-blue-700">
+        <div className="animate-score-reveal rounded-[10px] bg-accent/5 px-3 py-1.5 text-center">
+          <p className="text-[11px] text-accent">Score</p>
+          <p className="text-[22px] font-semibold text-accent tabular-nums">
             {weightedScore?.toFixed(1) ?? "—"}%
           </p>
         </div>
@@ -433,30 +433,30 @@ function SummaryStep({
       <BeforeAfterToggle showImproved={showImproved} onToggle={setShowImproved} />
 
       {/* Mock PDF preview */}
-      <div className="animate-fade-in-up rounded-lg border border-gray-200 bg-gray-50 p-5">
-        <div className="mb-4 border-b border-gray-200 pb-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-400">
+      <div className="animate-fade-in-up rounded-[10px] border border-border bg-bg-app p-5">
+        <div className="mb-4 border-b border-border pb-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Convocatoria de ejemplo
           </p>
-          <p className="text-sm font-medium text-gray-900">
+          <p className="text-[13px] font-medium text-text-primary">
             Municipio de San Pedro
           </p>
-          <p className="text-xs text-gray-500">
+          <p className="text-[11px] text-text-muted">
             Fecha: {new Date().toLocaleDateString("es-CO")}
           </p>
         </div>
 
         {DEMO_ETAPAS.map((etapa) => (
           <div key={etapa.id} className="mb-4">
-            <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+            <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
               {etapa.nombre}
             </p>
             {etapa.campos.map((campo) => (
               <div key={campo.id} className="mt-2">
-                <p className="text-xs font-medium text-gray-700">
+                <p className="text-[11px] font-medium text-text-secondary">
                   {campo.label}
                 </p>
-                <p className="mt-0.5 text-sm text-gray-600">
+                <p className="mt-0.5 text-[13px] text-text-primary">
                   {values[campo.id] || "(sin respuesta)"}
                 </p>
               </div>
@@ -464,35 +464,35 @@ function SummaryStep({
           </div>
         ))}
 
-        <div className="mt-4 border-t border-gray-200 pt-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+        <div className="mt-4 border-t border-border pt-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Evaluacion
           </p>
           <div className="mt-2 space-y-1">
             {DEMO_CRITERIOS.map((c) => (
               <div
                 key={c.campo_id}
-                className="flex items-center justify-between text-sm"
+                className="flex items-center justify-between text-[13px]"
               >
-                <span className="text-gray-700">{c.nombre}</span>
-                <span className="font-medium text-gray-900">
+                <span className="text-text-secondary">{c.nombre}</span>
+                <span className="font-medium text-text-primary tabular-nums">
                   {scores[c.campo_id] ?? "—"}/{c.maxScore}
                 </span>
               </div>
             ))}
           </div>
-          <div className="mt-3 rounded bg-blue-50 px-3 py-2 text-center">
-            <span className="text-sm font-semibold text-blue-700">
+          <div className="mt-3 rounded-[8px] bg-accent/5 px-3 py-2 text-center">
+            <span className="text-[13px] font-semibold text-accent tabular-nums">
               Score ponderado: {weightedScore?.toFixed(1) ?? "—"}%
             </span>
           </div>
         </div>
 
-        <div className="mt-4 border-t border-gray-200 pt-3">
-          <p className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+        <div className="mt-4 border-t border-border pt-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Recomendaciones
           </p>
-          <ul className="mt-2 space-y-1 text-sm text-gray-600">
+          <ul className="mt-2 space-y-1 text-[13px] text-text-secondary">
             <li>• Ampliar la descripcion del problema con datos cuantitativos adicionales.</li>
             <li>• Incluir cronograma estimado de ejecucion del proyecto.</li>
             <li>• Detallar las fuentes de financiacion disponibles.</li>
@@ -503,11 +503,11 @@ function SummaryStep({
       <div className="mt-6 flex items-center justify-between">
         <button
           onClick={onRestart}
-          className="rounded-md border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+          className="rounded-[var(--radius-button)] border border-border px-4 py-2 text-[13px] text-text-secondary hover:bg-bg-hover transition-colors"
         >
           Reiniciar demo
         </button>
-        <p className="text-xs text-gray-400">
+        <p className="text-[11px] text-text-muted">
           En la app real, este resumen se exporta como PDF.
         </p>
       </div>
@@ -531,39 +531,39 @@ function BeforeAfterToggle({
   onToggle: (v: boolean) => void;
 }) {
   return (
-    <div className="mb-4 rounded-lg border border-purple-100 bg-purple-50/30 p-4">
+    <div className="mb-4 rounded-[10px] border border-purple-200/50 bg-purple-50/30 p-4">
       <div className="mb-3 flex items-center justify-between">
-        <p className="text-xs font-semibold uppercase tracking-wider text-purple-600">
+        <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-purple-600">
           Antes vs Despues del Asistente IA
         </p>
         <div className="flex items-center gap-2">
           <button
             onClick={() => onToggle(false)}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+            className={`rounded-[var(--radius-button)] px-2.5 py-1 text-[11px] font-medium transition-colors ${
               !showImproved
-                ? "bg-gray-200 text-gray-800"
-                : "text-gray-400 hover:text-gray-600"
+                ? "bg-gray-100 text-text-primary"
+                : "text-text-muted hover:text-text-secondary"
             }`}
           >
             Antes
           </button>
           <button
             onClick={() => onToggle(true)}
-            className={`rounded-md px-2.5 py-1 text-xs font-medium transition ${
+            className={`rounded-[var(--radius-button)] px-2.5 py-1 text-[11px] font-medium transition-colors ${
               showImproved
                 ? "bg-purple-600 text-white"
-                : "text-gray-400 hover:text-gray-600"
+                : "text-text-muted hover:text-text-secondary"
             }`}
           >
             Despues
           </button>
         </div>
       </div>
-      <div className="overflow-hidden rounded-md border border-gray-200 bg-white px-4 py-3">
-        <p className="text-xs font-medium text-gray-500">Problema central</p>
+      <div className="overflow-hidden rounded-[8px] border border-border bg-bg-card px-4 py-3">
+        <p className="text-[11px] font-medium text-text-muted">Problema central</p>
         <p
-          className={`mt-1 text-sm transition-all duration-300 ${
-            showImproved ? "text-gray-800" : "italic text-gray-500"
+          className={`mt-1 text-[13px] transition-all duration-300 ${
+            showImproved ? "text-text-primary" : "italic text-text-muted"
           }`}
         >
           {showImproved ? AFTER_TEXT : BEFORE_TEXT}

@@ -4,7 +4,7 @@ export default function MunicipioConvocatoriaLoading() {
   return (
     <div className="mx-auto max-w-3xl">
       <PageHeaderSkeleton />
-      <div className="mt-6 rounded-lg border border-gray-200 bg-white p-5">
+      <div className="mt-6 rounded-lg border border-border bg-white p-5">
         <div className="flex items-center justify-between">
           <Skeleton className="h-4 w-24" />
           <Skeleton className="h-6 w-12" />

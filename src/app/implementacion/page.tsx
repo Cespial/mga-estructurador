@@ -11,25 +11,25 @@ export default function ImplementacionPage() {
   return (
     <div className="min-h-screen bg-white">
       {/* Navbar */}
-      <nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
+      <nav className="sticky top-0 z-50 border-b border-border bg-white/90 backdrop-blur-sm">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
           <Link href="/" className="flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-xs font-bold text-white">P</div>
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-accent text-[11px] font-bold text-white">P</div>
             <span className="text-lg font-semibold text-text-primary">Poly<span className="text-accent">tech</span></span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link href="/#demo" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/#demo" className="text-[13px] text-text-secondary hover:text-text-primary">
               Demo
             </Link>
-            <Link href="/casos" className="text-sm text-gray-600 hover:text-gray-900">
+            <Link href="/casos" className="text-[13px] text-text-secondary hover:text-text-primary">
               Casos
             </Link>
-            <Link href="/implementacion" className="text-sm font-medium text-gray-900">
+            <Link href="/implementacion" className="text-[13px] font-medium text-text-primary">
               Implementacion
             </Link>
             <Link
               href="/login"
-              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-colors"
+              className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors"
             >
               Entrar
             </Link>
@@ -40,10 +40,10 @@ export default function ImplementacionPage() {
       {/* Header */}
       <section className="px-4 pb-12 pt-16">
         <div className="mx-auto max-w-4xl text-center">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+          <h1 className="text-3xl font-bold tracking-tight text-text-primary sm:text-4xl">
             Plan de implementacion
           </h1>
-          <p className="mx-auto mt-4 max-w-2xl text-gray-600">
+          <p className="mx-auto mt-4 max-w-2xl text-text-secondary">
             Pasos para poner en marcha el Polytech en tu entidad.
             Sin fechas fijas — cada entidad avanza a su ritmo.
           </p>
@@ -138,12 +138,12 @@ export default function ImplementacionPage() {
       </section>
 
       {/* Kit summary */}
-      <section className="border-t border-gray-100 bg-gray-50 px-4 py-16">
+      <section className="border-t border-border bg-bg-app px-4 py-16">
         <div className="mx-auto max-w-4xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-text-primary">
             Que incluye la plataforma
           </h2>
-          <p className="mt-3 text-gray-600">
+          <p className="mt-3 text-text-secondary">
             Todo lo que necesitas para gestionar convocatorias MGA de punta a punta.
           </p>
           <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -170,23 +170,23 @@ export default function ImplementacionPage() {
       {/* CTA */}
       <section className="px-4 py-16">
         <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-2xl font-bold text-gray-900">
+          <h2 className="text-2xl font-bold text-text-primary">
             Listo para implementar?
           </h2>
-          <p className="mt-3 text-gray-600">
+          <p className="mt-3 text-text-secondary">
             Prueba la demo interactiva o inicia sesion para configurar tu
             primera convocatoria.
           </p>
           <div className="mt-6 flex items-center justify-center gap-4">
             <Link
               href="/#demo"
-              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-sm font-semibold text-white shadow-sm hover:bg-accent-hover transition-colors"
+              className="rounded-[var(--radius-button)] bg-accent px-6 py-3 text-[13px] font-semibold text-white shadow-sm hover:bg-accent-hover transition-colors"
             >
               Ver demo
             </Link>
             <Link
               href="/login"
-              className="rounded-lg border border-gray-300 px-6 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50"
+              className="rounded-[var(--radius-button)] border border-border px-6 py-3 text-[13px] font-semibold text-text-secondary hover:bg-bg-hover transition-colors"
             >
               Iniciar sesion
             </Link>
@@ -195,14 +195,14 @@ export default function ImplementacionPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-200 bg-gray-50 px-4 py-8">
-        <div className="mx-auto max-w-6xl text-center text-sm text-gray-500">
+      <footer className="border-t border-border bg-bg-app px-4 py-8">
+        <div className="mx-auto max-w-6xl text-center text-[13px] text-text-muted">
           <p>Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
-          <div className="mt-2 flex items-center justify-center gap-4 text-xs">
-            <Link href="/" className="hover:text-gray-700">Inicio</Link>
-            <Link href="/casos" className="hover:text-gray-700">Casos</Link>
-            <Link href="/implementacion" className="hover:text-gray-700">Implementacion</Link>
-            <Link href="/login" className="hover:text-gray-700">Entrar</Link>
+          <div className="mt-2 flex items-center justify-center gap-4 text-[11px]">
+            <Link href="/" className="hover:text-text-secondary">Inicio</Link>
+            <Link href="/casos" className="hover:text-text-secondary">Casos</Link>
+            <Link href="/implementacion" className="hover:text-text-secondary">Implementacion</Link>
+            <Link href="/login" className="hover:text-text-secondary">Entrar</Link>
           </div>
         </div>
       </footer>
@@ -229,7 +229,7 @@ function Phase({
     <div className="relative flex gap-4">
       {/* Timeline line */}
       <div className="flex flex-col items-center">
-        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-blue-600 text-sm font-bold text-white">
+        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-bold text-white">
           {number}
         </div>
         {!isLast && <div className="w-0.5 flex-1 bg-gray-200" />}
@@ -237,19 +237,19 @@ function Phase({
 
       {/* Content */}
       <div className={`min-w-0 flex-1 ${isLast ? "pb-0" : "pb-8"}`}>
-        <h3 className="text-base font-semibold text-gray-900">{title}</h3>
-        <p className="mt-0.5 text-sm text-gray-500">{description}</p>
+        <h3 className="text-base font-semibold text-text-primary">{title}</h3>
+        <p className="mt-0.5 text-[13px] text-text-muted">{description}</p>
         <div className="mt-3 space-y-2">
           {items.map((item) => (
             <div
               key={item.task}
-              className="flex items-start gap-3 rounded-md border border-gray-100 bg-gray-50 px-3 py-2"
+              className="flex items-start gap-3 rounded-md border border-border bg-bg-app px-3 py-2"
             >
               <div className="mt-0.5 h-4 w-4 shrink-0 rounded border border-gray-300 bg-white" />
               <div className="min-w-0 flex-1">
-                <p className="text-sm text-gray-700">{item.task}</p>
+                <p className="text-[13px] text-text-secondary">{item.task}</p>
               </div>
-              <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-gray-500">
+              <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-text-muted">
                 {item.role}
               </span>
             </div>
@@ -262,15 +262,15 @@ function Phase({
 
 function KitItem({ title, items }: { title: string; items: string[] }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-4 text-left">
-      <h3 className="text-sm font-semibold text-gray-900">{title}</h3>
+    <div className="rounded-lg border border-border bg-white p-4 text-left">
+      <h3 className="text-[13px] font-semibold text-text-primary">{title}</h3>
       <ul className="mt-2 space-y-1">
         {items.map((item) => (
           <li
             key={item}
-            className="flex items-center gap-2 text-xs text-gray-600"
+            className="flex items-center gap-2 text-[11px] text-text-secondary"
           >
-            <span className="block h-1 w-1 shrink-0 rounded-full bg-blue-400" />
+            <span className="block h-1 w-1 shrink-0 rounded-full bg-accent" />
             {item}
           </li>
         ))}

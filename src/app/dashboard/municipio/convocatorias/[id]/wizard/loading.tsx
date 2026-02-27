@@ -5,7 +5,7 @@ export default function WizardLoading() {
     <div className="mx-auto max-w-3xl">
       <Skeleton className="mb-1 h-3 w-32" />
       <Skeleton className="mb-6 h-6 w-48" />
-      <div className="rounded-lg border border-gray-200 bg-white p-6">
+      <div className="rounded-lg border border-border bg-white p-6">
         <Skeleton className="mb-2 h-4 w-40" />
         <Skeleton className="mb-4 h-3 w-full" />
         <div className="space-y-4">

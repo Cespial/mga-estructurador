@@ -119,10 +119,10 @@ function DocumentCard({
     string,
     { label: string; color: string }
   > = {
-    pending: { label: "Pendiente", color: "bg-gray-50 text-gray-600" },
+    pending: { label: "Pendiente", color: "bg-gray-50 text-text-muted" },
     processing: {
       label: "Procesando...",
-      color: "bg-blue-50 text-blue-600",
+      color: "bg-accent/5 text-accent",
     },
     ready: { label: "Listo", color: "bg-emerald-50 text-emerald-600" },
     error: { label: "Error", color: "bg-red-50 text-red-600" },
@@ -196,8 +196,8 @@ function FileIcon({ mimeType }: { mimeType: string }) {
         isPdf
           ? "bg-red-50 text-red-600"
           : isTxt
-            ? "bg-gray-50 text-gray-600"
-            : "bg-blue-50 text-blue-600"
+            ? "bg-gray-50 text-text-muted"
+            : "bg-accent/5 text-accent"
       }`}
     >
       {isPdf ? "PDF" : isTxt ? "TXT" : "DOC"}

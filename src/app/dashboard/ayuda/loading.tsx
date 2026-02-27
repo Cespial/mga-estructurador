@@ -19,7 +19,7 @@ export default function AyudaLoading() {
             {Array.from({ length: 4 }).map((_, i) => (
               <div
                 key={i}
-                className="rounded-lg border border-gray-200 bg-white p-5"
+                className="rounded-lg border border-border bg-white p-5"
               >
                 <Skeleton className="mb-3 h-5 w-1/3" />
                 <Skeleton className="mb-2 h-3 w-full" />

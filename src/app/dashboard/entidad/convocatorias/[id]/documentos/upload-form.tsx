@@ -10,11 +10,11 @@ export function UploadForm({ action }: UploadFormProps) {
   const [state, formAction, pending] = useActionState(action, null);
 
   return (
-    <div className="mt-6 rounded-lg border border-gray-200 bg-white p-6">
-      <h3 className="text-base font-semibold text-gray-900">
+    <div className="mt-6 rounded-[14px] border border-border bg-bg-card p-6">
+      <h3 className="text-base font-semibold text-text-primary">
         Subir documentos
       </h3>
-      <p className="mt-1 text-xs text-gray-500">
+      <p className="mt-1 text-xs text-text-muted">
         Formatos permitidos: PDF, TXT, DOCX. Tamaño maximo: 10MB por archivo.
       </p>
 
@@ -36,13 +36,13 @@ export function UploadForm({ action }: UploadFormProps) {
             multiple
             accept=".pdf,.txt,.docx,application/pdf,text/plain,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             required
-            className="block w-full text-sm text-gray-500 file:mr-4 file:rounded-md file:border-0 file:bg-blue-50 file:px-4 file:py-2 file:text-sm file:font-medium file:text-blue-700 hover:file:bg-blue-100"
+            className="block w-full text-[13px] text-text-muted file:mr-4 file:rounded-[var(--radius-button)] file:border-0 file:bg-accent/5 file:px-4 file:py-2 file:text-[13px] file:font-medium file:text-accent hover:file:bg-accent/8"
           />
         </div>
         <button
           type="submit"
           disabled={pending}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
           {pending ? "Subiendo..." : "Subir archivos"}
         </button>

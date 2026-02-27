@@ -112,15 +112,15 @@ export function RubricEditor({
       )}
 
       {/* Add criterion selector */}
-      <div className="mb-6 rounded-lg border border-gray-200 bg-white p-4">
+      <div className="mb-6 rounded-[14px] border border-border bg-bg-card p-4">
         <div className="flex items-end gap-3">
           <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700">
+            <label className="block text-[13px] font-medium text-text-primary">
               Agregar criterio para campo
             </label>
             <select
               id="add-campo"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
               defaultValue=""
               onChange={(e) => {
                 if (e.target.value) {
@@ -144,7 +144,7 @@ export function RubricEditor({
         </div>
         {criterios.length > 0 && (
           <div className="mt-3">
-            <p className="text-xs text-gray-500">
+            <p className="text-xs text-text-muted">
               {criterios.length} criterio{criterios.length !== 1 ? "s" : ""} · Peso
               total: {totalPeso}
             </p>
@@ -155,7 +155,7 @@ export function RubricEditor({
                   {criterios.map((c, i) => {
                     const pct = (c.peso / totalPeso) * 100;
                     const colors = [
-                      "bg-blue-500", "bg-emerald-500", "bg-amber-500",
+                      "bg-accent", "bg-emerald-500", "bg-amber-500",
                       "bg-purple-500", "bg-rose-500", "bg-cyan-500",
                       "bg-orange-500", "bg-indigo-500",
                     ];
@@ -174,12 +174,12 @@ export function RubricEditor({
                     const campo = allCampos.find((ac) => ac.id === c.campo_id);
                     const pct = (c.peso / totalPeso) * 100;
                     const dotColors = [
-                      "bg-blue-500", "bg-emerald-500", "bg-amber-500",
+                      "bg-accent", "bg-emerald-500", "bg-amber-500",
                       "bg-purple-500", "bg-rose-500", "bg-cyan-500",
                       "bg-orange-500", "bg-indigo-500",
                     ];
                     return (
-                      <span key={c.campo_id} className="flex items-center gap-1 text-[10px] text-gray-600">
+                      <span key={c.campo_id} className="flex items-center gap-1 text-[10px] text-text-secondary">
                         <span className={`inline-block h-2 w-2 rounded-full ${dotColors[i % dotColors.length]}`} />
                         {campo?.nombre ?? c.campo_id}: {pct.toFixed(1)}%
                       </span>
@@ -194,11 +194,11 @@ export function RubricEditor({
 
       {/* Criterios list */}
       {criterios.length === 0 ? (
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-[14px] border border-border bg-bg-app p-6 text-center">
+          <p className="text-[13px] text-text-muted">
             No hay criterios de evaluación definidos.
           </p>
-          <p className="mt-1 text-xs text-gray-400">
+          <p className="mt-1 text-xs text-text-muted">
             Selecciona campos MGA para crear criterios de evaluación.
           </p>
         </div>
@@ -209,20 +209,20 @@ export function RubricEditor({
             return (
               <div
                 key={criterio.campo_id}
-                className="rounded-lg border border-gray-200 bg-white"
+                className="rounded-[14px] border border-border bg-bg-card"
               >
                 {/* Header */}
-                <div className="flex items-center justify-between border-b border-gray-100 px-4 py-3">
+                <div className="flex items-center justify-between border-b border-border px-4 py-3">
                   <div>
-                    <p className="text-sm font-semibold text-gray-900">
+                    <p className="text-[13px] font-semibold text-text-primary">
                       {campo?.nombre ?? criterio.campo_id}
                       {totalPeso > 0 && (
-                        <span className="ml-2 text-xs font-normal text-gray-400">
+                        <span className="ml-2 text-xs font-normal text-text-muted">
                           {((criterio.peso / totalPeso) * 100).toFixed(1)}%
                         </span>
                       )}
                     </p>
-                    <p className="text-xs text-gray-500">
+                    <p className="text-xs text-text-muted">
                       {campo?.etapa_nombre}
                     </p>
                   </div>
@@ -239,7 +239,7 @@ export function RubricEditor({
                   {/* Description + weight */}
                   <div className="grid grid-cols-4 gap-3">
                     <div className="col-span-3">
-                      <label className="block text-xs font-medium text-gray-600">
+                      <label className="block text-[11px] font-medium text-text-secondary">
                         Descripción del criterio
                       </label>
                       <input
@@ -248,11 +248,11 @@ export function RubricEditor({
                         onChange={(e) =>
                           updateCriterio(ci, { descripcion: e.target.value })
                         }
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-2.5 py-1.5 text-[13px] text-text-primary shadow-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                       />
                     </div>
                     <div>
-                      <label className="block text-xs font-medium text-gray-600">
+                      <label className="block text-[11px] font-medium text-text-secondary">
                         Peso
                       </label>
                       <input
@@ -265,23 +265,23 @@ export function RubricEditor({
                             peso: parseFloat(e.target.value) || 0,
                           })
                         }
-                        className="mt-1 block w-full rounded-md border border-gray-300 px-2.5 py-1.5 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                        className="mt-1 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-2.5 py-1.5 text-[13px] text-text-primary shadow-sm focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
                       />
                     </div>
                   </div>
 
                   {/* Niveles */}
                   <div>
-                    <p className="mb-1 text-xs font-medium text-gray-600">
+                    <p className="mb-1 text-[11px] font-medium text-text-secondary">
                       Niveles de evaluación
                     </p>
                     <div className="space-y-1.5">
                       {criterio.niveles.map((nivel, ni) => (
                         <div
                           key={ni}
-                          className="flex items-center gap-2 rounded bg-gray-50 px-2.5 py-1.5"
+                          className="flex items-center gap-2 rounded-[8px] bg-bg-app px-2.5 py-1.5"
                         >
-                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-100 text-[10px] font-bold text-blue-700">
+                          <span className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-accent/8 text-[10px] font-bold text-accent">
                             {nivel.score}
                           </span>
                           <input
@@ -291,7 +291,7 @@ export function RubricEditor({
                               updateNivel(ci, ni, { label: e.target.value })
                             }
                             placeholder="Etiqueta"
-                            className="w-28 shrink-0 rounded border border-gray-200 px-2 py-1 text-xs"
+                            className="w-28 shrink-0 rounded-[var(--radius-input)] border border-border bg-bg-input px-2 py-1 text-xs text-text-primary"
                           />
                           <input
                             type="text"
@@ -302,7 +302,7 @@ export function RubricEditor({
                               })
                             }
                             placeholder="Descripción del nivel"
-                            className="flex-1 rounded border border-gray-200 px-2 py-1 text-xs"
+                            className="flex-1 rounded-[var(--radius-input)] border border-border bg-bg-input px-2 py-1 text-xs text-text-primary"
                           />
                         </div>
                       ))}
@@ -320,7 +320,7 @@ export function RubricEditor({
         <button
           onClick={handleSave}
           disabled={saving}
-          className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-50"
+          className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
           {saving ? "Guardando..." : "Guardar rúbrica"}
         </button>

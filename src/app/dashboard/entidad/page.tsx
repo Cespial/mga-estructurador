@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import type { Convocatoria, ConvocatoriaEstado } from "@/lib/types/database";
 
 const estadoBadge: Record<ConvocatoriaEstado, string> = {
-  borrador: "bg-gray-50 text-gray-600",
+  borrador: "bg-gray-50 text-text-muted",
   abierta: "bg-emerald-50 text-emerald-600",
   cerrada: "bg-red-50 text-red-600",
   evaluacion: "bg-amber-50 text-amber-600",

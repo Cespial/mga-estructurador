@@ -213,7 +213,7 @@ function CaseStudy({
         </div>
 
         <div className="mt-5">
-          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-green-600">
+          <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-emerald-600">
             Resultados
           </p>
           <ul className="grid gap-2 sm:grid-cols-2">
@@ -222,7 +222,7 @@ function CaseStudy({
                 key={r}
                 className="flex items-start gap-2 text-[13px] text-text-secondary"
               >
-                <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-green-500" />
+                <span className="mt-1 block h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-500" />
                 {r}
               </li>
             ))}

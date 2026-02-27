@@ -8,10 +8,10 @@ export function ContactForm() {
 
   if (state?.success) {
     return (
-      <div className="animate-fade-in-up rounded-lg border border-green-200 bg-green-50 p-8 text-center">
-        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
+      <div className="animate-fade-in-up rounded-lg border border-emerald-200 bg-emerald-50 p-8 text-center">
+        <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-100">
           <svg
-            className="h-6 w-6 text-green-600"
+            className="h-6 w-6 text-emerald-600"
             fill="none"
             viewBox="0 0 24 24"
             strokeWidth={2}
@@ -24,10 +24,10 @@ export function ContactForm() {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-semibold text-green-900">
+        <h3 className="text-lg font-semibold text-emerald-900">
           Mensaje enviado
         </h3>
-        <p className="mt-1 text-[13px] text-green-700">
+        <p className="mt-1 text-[13px] text-emerald-700">
           Gracias por tu interes. Te responderemos pronto.
         </p>
       </div>

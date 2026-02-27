@@ -103,7 +103,7 @@ export function RubricEditor({
         <div
           className={`mb-4 rounded-md p-3 text-sm ${
             message.type === "success"
-              ? "bg-green-50 text-green-700"
+              ? "bg-emerald-50 text-emerald-700"
               : "bg-red-50 text-red-700"
           }`}
         >

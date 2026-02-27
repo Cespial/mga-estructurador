@@ -171,7 +171,7 @@ export function MonitoreoTable({
                 </td>
                 <td className="px-4 py-3 text-center">
                   {row.submissionId ? (
-                    <span className="inline-block rounded-full bg-green-100 px-2 py-0.5 text-xs font-medium text-green-700">
+                    <span className="inline-block rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-medium text-emerald-700">
                       En curso
                     </span>
                   ) : (
@@ -285,8 +285,8 @@ function ScorePopover({
 
 function ProgressPill({ value }: { value: number }) {
   let bg = "bg-bg-elevated text-text-muted";
-  if (value === 100) bg = "bg-green-100 text-green-700";
-  else if (value > 0) bg = "bg-yellow-100 text-yellow-700";
+  if (value === 100) bg = "bg-emerald-100 text-emerald-700";
+  else if (value > 0) bg = "bg-amber-100 text-amber-700";
 
   return (
     <span
@@ -299,8 +299,8 @@ function ProgressPill({ value }: { value: number }) {
 
 function ScoreBadge({ score, animate = false }: { score: number; animate?: boolean }) {
   let color = "bg-red-100 text-red-700";
-  if (score >= 80) color = "bg-green-100 text-green-700";
-  else if (score >= 60) color = "bg-yellow-100 text-yellow-700";
+  if (score >= 80) color = "bg-emerald-100 text-emerald-700";
+  else if (score >= 60) color = "bg-amber-100 text-amber-700";
   else if (score >= 40) color = "bg-orange-100 text-orange-700";
 
   return (

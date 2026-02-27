@@ -181,18 +181,18 @@ export function WizardClient({
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   progress === 100
-                    ? "bg-green-500 animate-shimmer"
+                    ? "bg-emerald-500 animate-shimmer"
                     : "bg-accent"
                 }`}
                 style={{ width: `${progress}%` }}
               />
             </div>
             {progress === 100 && (
-              <div className="mt-2 animate-fade-in-up rounded-md bg-green-50 px-3 py-2 text-center">
-                <p className="text-xs font-semibold text-green-700">
+              <div className="mt-2 animate-fade-in-up rounded-md bg-emerald-50 px-3 py-2 text-center">
+                <p className="text-xs font-semibold text-emerald-700">
                   Completado
                 </p>
-                <p className="text-[10px] text-green-600">
+                <p className="text-[10px] text-emerald-600">
                   Todas las etapas diligenciadas
                 </p>
               </div>
@@ -216,9 +216,9 @@ export function WizardClient({
                   <span
                     className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
                       status === "complete"
-                        ? "bg-green-100 text-green-700"
+                        ? "bg-emerald-100 text-emerald-700"
                         : status === "partial"
-                          ? "bg-yellow-100 text-yellow-700"
+                          ? "bg-amber-100 text-amber-700"
                           : isCurrent
                             ? "bg-accent/8 text-accent"
                             : "bg-bg-elevated text-text-muted"

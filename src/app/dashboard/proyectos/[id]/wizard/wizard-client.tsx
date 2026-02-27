@@ -586,7 +586,7 @@ export function WizardClient({
                         ? "bg-accent text-white shadow-sm"
                         : isCompleted
                           ? "bg-success-muted text-success hover:bg-success-muted/80"
-                          : "bg-slate-100 text-text-muted hover:bg-slate-200 hover:text-text-secondary"
+                          : "bg-bg-elevated text-text-muted hover:bg-border hover:text-text-secondary"
                     }`}
                   >
                     <span
@@ -595,7 +595,7 @@ export function WizardClient({
                           ? "bg-white/30 text-white"
                           : isCompleted
                             ? "bg-success/20 text-success"
-                            : "bg-slate-200 text-text-muted"
+                            : "bg-border text-text-muted"
                       }`}
                     >
                       {isCompleted ? (

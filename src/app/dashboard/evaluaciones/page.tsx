@@ -21,8 +21,8 @@ export default async function EvaluacionesPage() {
   if (!org || org.type !== "entity") {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center animate-fade-in">
-        <h2 className="text-xl font-bold text-text-primary">Seccion de Evaluaciones</h2>
-        <p className="mt-2 text-sm text-text-secondary">
+        <h2 className="text-[22px] font-semibold tracking-tight text-text-primary">Seccion de Evaluaciones</h2>
+        <p className="mt-2 text-[13px] text-text-muted">
           Esta seccion es exclusiva para entidades que gestionan convocatorias.
         </p>
       </div>
@@ -80,63 +80,66 @@ export default async function EvaluacionesPage() {
     : "--";
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Evaluaciones</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Evaluaciones</h1>
+        <p className="mt-1 text-[13px] text-text-muted">
           Revisa y gestiona las evaluaciones de proyectos recibidos.
         </p>
       </div>
 
       {/* Stats */}
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-3 stagger-children">
-        <div className="card-premium p-5">
-          <p className="text-sm text-text-muted">Pendientes de Evaluacion</p>
-          <p className="mt-1 text-2xl font-bold text-accent">{pendingCount}</p>
+      <div className="grid grid-cols-1 gap-5 sm:grid-cols-3 stagger-children">
+        <div className="card-premium px-5 py-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Pendientes</p>
+          <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight text-accent tabular-nums">{pendingCount}</p>
         </div>
-        <div className="card-premium p-5">
-          <p className="text-sm text-text-muted">Evaluados</p>
-          <p className="mt-1 text-2xl font-bold text-success">{scoredCount}</p>
+        <div className="card-premium px-5 py-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Evaluados</p>
+          <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight text-success tabular-nums">{scoredCount}</p>
         </div>
-        <div className="card-premium p-5">
-          <p className="text-sm text-text-muted">Puntaje Promedio</p>
-          <p className="mt-1 text-2xl font-bold text-text-primary">{avgScore}</p>
+        <div className="card-premium px-5 py-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Puntaje Promedio</p>
+          <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight text-text-primary tabular-nums">{avgScore}</p>
         </div>
       </div>
 
-      {/* Projects to evaluate */}
-      <div className="card-premium p-5">
-        <h2 className="text-base font-semibold text-text-primary mb-4">Proyectos</h2>
+      {/* Projects table */}
+      <div className="card-premium">
+        <div className="px-6 pt-5 pb-4 flex items-center justify-between">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Proyectos</p>
+          <span className="text-[12px] text-text-muted tabular-nums">{projects.length} total</span>
+        </div>
         {projects.length > 0 ? (
           <div className="overflow-x-auto">
-            <table className="w-full text-sm">
+            <table className="w-full">
               <thead>
-                <tr className="border-b border-border text-left text-text-muted">
-                  <th className="pb-3 font-medium">Proyecto</th>
-                  <th className="pb-3 font-medium">Presupuesto</th>
-                  <th className="pb-3 font-medium">Estado</th>
-                  <th className="pb-3 font-medium">Puntaje</th>
-                  <th className="pb-3 font-medium">Acciones</th>
+                <tr className="border-y border-border">
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Proyecto</th>
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Presupuesto</th>
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Estado</th>
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Puntaje</th>
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Acciones</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody className="divide-y divide-border">
                 {projects.map((proj) => {
                   const score = scores.find(s => s.project_id === proj.id);
                   return (
-                    <tr key={proj.id} className="border-b border-border/50 hover:bg-bg-hover transition-colors">
-                      <td className="py-3 text-text-primary font-medium">{proj.title}</td>
-                      <td className="py-3 text-text-secondary">
+                    <tr key={proj.id} className="hover:bg-bg-hover transition-colors">
+                      <td className="px-6 py-3.5 text-[13px] text-text-primary font-medium">{proj.title}</td>
+                      <td className="px-6 py-3.5 text-[13px] text-text-secondary tabular-nums">
                         {proj.budget_requested
                           ? `$${Number(proj.budget_requested).toLocaleString("es-CO")}`
                           : "--"}
                       </td>
-                      <td className="py-3">
+                      <td className="px-6 py-3.5">
                         <Badge status={proj.status} />
                       </td>
-                      <td className="py-3 text-text-primary font-semibold">
+                      <td className="px-6 py-3.5 text-[13px] text-text-primary font-semibold tabular-nums">
                         {score?.total_weighted_score?.toFixed(1) ?? "--"}
                       </td>
-                      <td className="py-3">
+                      <td className="px-6 py-3.5">
                         <div className="flex gap-2">
                           <Link href={`/dashboard/evaluaciones/${proj.id}`}>
                             <Button variant="ghost" size="sm">Ver</Button>
@@ -158,9 +161,11 @@ export default async function EvaluacionesPage() {
             </table>
           </div>
         ) : (
-          <p className="py-8 text-center text-sm text-text-muted">
-            No hay proyectos para evaluar aun.
-          </p>
+          <div className="px-6 pb-6">
+            <p className="py-8 text-center text-[13px] text-text-muted">
+              No hay proyectos para evaluar aun.
+            </p>
+          </div>
         )}
       </div>
     </div>

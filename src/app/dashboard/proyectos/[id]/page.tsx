@@ -58,7 +58,7 @@ export default async function ProjectDetailPage({
   const progressPct = Math.round((completedSteps / totalSteps) * 100);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
@@ -83,11 +83,11 @@ export default async function ProjectDetailPage({
             </Link>
             <Badge status={proj.status} />
           </div>
-          <h1 className="text-2xl font-bold text-text-primary truncate">
+          <h1 className="text-[22px] font-semibold tracking-tight text-text-primary truncate">
             {proj.title || "Proyecto sin titulo"}
           </h1>
           {convocatoria && (
-            <p className="mt-1 text-sm text-text-secondary">
+            <p className="mt-1 text-[13px] text-text-muted">
               Convocatoria:{" "}
               <Link
                 href={`/dashboard/convocatorias/${convocatoria.id}`}
@@ -107,7 +107,7 @@ export default async function ProjectDetailPage({
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  strokeWidth={2}
+                  strokeWidth={1.5}
                 >
                   <path
                     strokeLinecap="round"
@@ -202,13 +202,13 @@ function InfoTab({
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 stagger-children">
+    <div className="grid grid-cols-1 gap-5 md:grid-cols-2 stagger-children">
       {infoItems.map((item) => (
         <Card key={item.label} padding="sm">
-          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             {item.label}
           </p>
-          <p className="mt-1 text-sm font-semibold text-text-primary">
+          <p className="mt-1 text-[13px] font-semibold text-text-primary">
             {item.label === "Estado" ? (
               <Badge status={item.value as string} />
             ) : (
@@ -220,15 +220,15 @@ function InfoTab({
 
       {convocatoria && (
         <Card padding="sm" className="md:col-span-2">
-          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Convocatoria
           </p>
           <div className="mt-2 flex items-center justify-between">
             <div>
-              <p className="text-sm font-semibold text-text-primary">
+              <p className="text-[13px] font-semibold text-text-primary">
                 {convocatoria.name}
               </p>
-              <div className="mt-1 flex items-center gap-3 text-xs text-text-muted">
+              <div className="mt-1 flex items-center gap-3 text-[11px] text-text-muted">
                 {convocatoria.open_date && (
                   <span>
                     Apertura:{" "}
@@ -250,10 +250,10 @@ function InfoTab({
 
       {project.description && (
         <Card padding="sm" className="md:col-span-2">
-          <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Descripcion
           </p>
-          <p className="mt-1 text-sm text-text-secondary whitespace-pre-wrap">
+          <p className="mt-1 text-[13px] text-text-secondary whitespace-pre-wrap">
             {project.description}
           </p>
         </Card>
@@ -271,7 +271,7 @@ function FormularioTab({
   if (forms.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-sm text-text-muted">
+        <p className="text-[13px] text-text-muted">
           No hay datos de formulario aun.
         </p>
       </div>
@@ -291,16 +291,16 @@ function FormularioTab({
             <div className="flex items-center justify-between mb-3">
               <div className="flex items-center gap-3">
                 <div
-                  className={`flex h-8 w-8 items-center justify-center rounded-full text-xs font-bold ${
+                  className={`flex h-8 w-8 items-center justify-center rounded-full text-[11px] font-bold ${
                     form.completed
-                      ? "bg-success-muted text-success"
-                      : "bg-slate-100 text-text-muted"
+                      ? "bg-emerald-50 text-emerald-600"
+                      : "bg-gray-100 text-text-muted"
                   }`}
                 >
                   {form.step_number}
                 </div>
                 <div>
-                  <h3 className="text-sm font-semibold text-text-primary">
+                  <h3 className="text-[13px] font-semibold text-text-primary">
                     {form.step_name}
                   </h3>
                 </div>
@@ -316,17 +316,17 @@ function FormularioTab({
               <div className="space-y-2 mt-3 pt-3 border-t border-border">
                 {entries.map(([key, value]) => (
                   <div key={key}>
-                    <p className="text-xs font-medium text-text-muted capitalize">
+                    <p className="text-[11px] font-medium uppercase tracking-[0.04em] text-text-muted">
                       {key.replace(/_/g, " ")}
                     </p>
-                    <p className="mt-0.5 text-sm text-text-secondary whitespace-pre-wrap">
+                    <p className="mt-0.5 text-[13px] text-text-secondary whitespace-pre-wrap">
                       {value}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="text-xs text-text-muted mt-2">
+              <p className="text-[11px] text-text-muted mt-2">
                 Sin datos completados.
               </p>
             )}
@@ -346,7 +346,7 @@ function DocumentosTab({
   if (documents.length === 0) {
     return (
       <div className="py-12 text-center">
-        <p className="text-sm text-text-muted">
+        <p className="text-[13px] text-text-muted">
           No hay documentos cargados aun.
         </p>
       </div>
@@ -358,9 +358,9 @@ function DocumentosTab({
       {documents.map((doc) => (
         <Card key={doc.id} padding="sm" variant="interactive">
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-input)] bg-accent-muted text-accent shrink-0">
+            <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-accent/8 text-accent shrink-0">
               <svg
-                className="h-5 w-5"
+                className="h-[18px] w-[18px]"
                 fill="none"
                 viewBox="0 0 24 24"
                 stroke="currentColor"
@@ -374,13 +374,13 @@ function DocumentosTab({
               </svg>
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-text-primary truncate">
+              <p className="text-[13px] font-medium text-text-primary truncate">
                 {doc.filename}
               </p>
-              <div className="flex items-center gap-3 text-xs text-text-muted">
+              <div className="flex items-center gap-3 text-[11px] text-text-muted">
                 {doc.mime_type && <span>{doc.mime_type}</span>}
                 {doc.file_size && (
-                  <span>{(doc.file_size / 1024).toFixed(0)} KB</span>
+                  <span className="tabular-nums">{(doc.file_size / 1024).toFixed(0)} KB</span>
                 )}
                 <span>
                   {new Date(doc.created_at).toLocaleDateString("es-CO")}
@@ -416,7 +416,7 @@ function CalificacionTab({
             d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z"
           />
         </svg>
-        <p className="text-sm text-text-muted">
+        <p className="text-[13px] text-text-muted">
           Este proyecto aun no ha sido calificado.
         </p>
       </div>
@@ -430,13 +430,13 @@ function CalificacionTab({
           <div className="flex items-center justify-between mb-4">
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-semibold text-text-primary">
+                <h3 className="text-[13px] font-semibold text-text-primary">
                   Evaluacion{" "}
                   {score.evaluator_type === "ai" ? "IA" : "Humana"}
                 </h3>
                 <Badge status={score.status} />
               </div>
-              <p className="text-xs text-text-muted mt-0.5">
+              <p className="text-[11px] text-text-muted mt-0.5">
                 {new Date(score.created_at).toLocaleDateString("es-CO", {
                   day: "numeric",
                   month: "long",
@@ -446,21 +446,21 @@ function CalificacionTab({
             </div>
             {score.total_weighted_score != null && (
               <div className="text-right">
-                <p className="text-2xl font-bold text-accent">
+                <p className="text-[28px] font-semibold tracking-tight text-accent tabular-nums">
                   {score.total_weighted_score.toFixed(1)}
                 </p>
-                <p className="text-xs text-text-muted">Puntaje Total</p>
+                <p className="text-[11px] uppercase tracking-[0.08em] text-text-muted">Puntaje Total</p>
               </div>
             )}
           </div>
 
           {/* AI Summary */}
           {score.ai_summary && (
-            <div className="mb-4 rounded-[var(--radius-input)] bg-bg-input p-3">
-              <p className="text-xs font-medium text-text-muted mb-1">
+            <div className="mb-4 rounded-[8px] bg-bg-app p-3">
+              <p className="text-[11px] font-medium uppercase tracking-[0.04em] text-text-muted mb-1">
                 Resumen IA
               </p>
-              <p className="text-sm text-text-secondary whitespace-pre-wrap">
+              <p className="text-[13px] text-text-secondary whitespace-pre-wrap">
                 {score.ai_summary}
               </p>
             </div>
@@ -469,20 +469,20 @@ function CalificacionTab({
           {/* Criteria breakdown */}
           {score.criteria_scores && score.criteria_scores.length > 0 && (
             <div className="space-y-3 pt-3 border-t border-border">
-              <p className="text-xs font-medium text-text-muted uppercase tracking-wide">
+              <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                 Desglose por Criterio
               </p>
               {score.criteria_scores.map((cs) => (
                 <div key={cs.id} className="space-y-1">
-                  <div className="flex items-center justify-between text-sm">
+                  <div className="flex items-center justify-between text-[13px]">
                     <span className="text-text-secondary">
                       {cs.rubric_criteria_id}
                     </span>
-                    <span className="font-medium text-text-primary">
+                    <span className="font-medium text-text-primary tabular-nums">
                       {cs.score}/{cs.max_score}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full rounded-full bg-slate-100 overflow-hidden">
+                  <div className="h-1.5 w-full rounded-full bg-gray-100 overflow-hidden">
                     <div
                       className="h-1.5 rounded-full bg-accent transition-all duration-500"
                       style={{
@@ -491,7 +491,7 @@ function CalificacionTab({
                     />
                   </div>
                   {cs.justification && (
-                    <p className="text-xs text-text-muted">
+                    <p className="text-[11px] text-text-muted">
                       {cs.justification}
                     </p>
                   )}

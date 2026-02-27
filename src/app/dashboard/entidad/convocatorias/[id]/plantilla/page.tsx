@@ -36,28 +36,25 @@ export default async function PlantillaPage({
   const mgaTemplate = template as MgaTemplate | null;
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="mb-6">
+    <div className="mx-auto max-w-3xl space-y-8 animate-fade-in">
+      <div>
         <Link
           href={`/dashboard/entidad/convocatorias/${id}`}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver a {convocatoria.nombre}
         </Link>
+        <h1 className="mt-3 text-[22px] font-semibold tracking-tight text-text-primary">Plantilla MGA</h1>
+        <p className="mt-1 text-[13px] text-text-muted">
+          Define las etapas y campos que los municipios deben diligenciar para{" "}
+          <span className="font-medium text-text-secondary">{convocatoria.nombre}</span>.
+        </p>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900">Plantilla MGA</h2>
-      <p className="mt-1 text-sm text-gray-500">
-        Define las etapas y campos que los municipios deben diligenciar para{" "}
-        <span className="font-medium">{convocatoria.nombre}</span>.
-      </p>
-
-      <div className="mt-6">
-        <TemplateEditor
-          convocatoriaId={id}
-          initialEtapas={mgaTemplate?.etapas_json ?? []}
-        />
-      </div>
+      <TemplateEditor
+        convocatoriaId={id}
+        initialEtapas={mgaTemplate?.etapas_json ?? []}
+      />
     </div>
   );
 }

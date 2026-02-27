@@ -20,11 +20,11 @@ export default async function OrganizacionPage() {
   if (!org) redirect("/dashboard/onboarding");
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 animate-fade-in">
+    <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Organizacion</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Organizacion</h1>
+        <p className="mt-1 text-[13px] text-text-muted">
           Administra la informacion de tu organizacion.
         </p>
       </div>
@@ -44,7 +44,7 @@ export default async function OrganizacionPage() {
         </CardHeader>
 
         {/* Read-only summary */}
-        <div className="mb-6 grid grid-cols-1 gap-4 rounded-[var(--radius-input)] bg-bg-app p-4 sm:grid-cols-2">
+        <div className="mb-6 grid grid-cols-1 gap-4 rounded-[8px] bg-bg-app p-4 sm:grid-cols-2">
           <SummaryItem label="Nombre" value={org.name} />
           <SummaryItem label="Tipo" value={org.type === "entity" ? "Entidad" : "Municipio"} />
           <SummaryItem label="NIT" value={org.nit || "No registrado"} />
@@ -62,7 +62,7 @@ export default async function OrganizacionPage() {
 
         {/* Edit Form */}
         <div className="border-t border-border pt-6">
-          <h3 className="text-sm font-semibold text-text-primary mb-4">Editar Informacion</h3>
+          <h3 className="text-[13px] font-semibold text-text-primary mb-4">Editar Informacion</h3>
           <OrganizacionEditForm
             orgId={org.id}
             defaultValues={{
@@ -76,14 +76,14 @@ export default async function OrganizacionPage() {
       </Card>
 
       {/* Danger Zone */}
-      <Card variant="default" padding="lg" className="border-danger/20">
+      <Card variant="default" padding="lg" className="border-red-200">
         <CardHeader>
-          <CardTitle className="text-danger">Zona de Peligro</CardTitle>
+          <CardTitle className="text-red-600">Zona de Peligro</CardTitle>
           <CardDescription>
             Estas acciones son irreversibles. Ten cuidado al realizarlas.
           </CardDescription>
         </CardHeader>
-        <p className="text-sm text-text-muted">
+        <p className="text-[13px] text-text-muted">
           Si necesitas eliminar tu organizacion o transferir la propiedad, contacta al equipo de soporte de Polytech.
         </p>
       </Card>
@@ -94,8 +94,8 @@ export default async function OrganizacionPage() {
 function SummaryItem({ label, value }: { label: string; value: string }) {
   return (
     <div>
-      <p className="text-xs text-text-muted">{label}</p>
-      <p className="mt-0.5 text-sm font-medium text-text-primary">{value}</p>
+      <p className="text-[11px] uppercase tracking-[0.08em] text-text-muted">{label}</p>
+      <p className="mt-0.5 text-[13px] font-medium text-text-primary">{value}</p>
     </div>
   );
 }

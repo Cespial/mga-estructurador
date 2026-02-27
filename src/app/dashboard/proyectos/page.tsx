@@ -39,18 +39,18 @@ export default async function ProyectosPage() {
   const items = (projects ?? []) as ProjectWithConvocatoria[];
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold text-text-primary">Mis Proyectos</h1>
-          <p className="mt-1 text-sm text-text-secondary">
+          <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Mis Proyectos</h1>
+          <p className="mt-1 text-[13px] text-text-muted">
             Gestiona tus proyectos y aplica a nuevas convocatorias.
           </p>
         </div>
         <Link href="/dashboard/convocatorias/explorar">
           <Button variant="primary">
-            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
             Aplicar a Convocatoria
@@ -77,36 +77,38 @@ export default async function ProyectosPage() {
           }
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 stagger-children">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 stagger-children">
           {items.map((project) => (
             <Link key={project.id} href={`/dashboard/proyectos/${project.id}`}>
-              <Card variant="interactive" className="h-full group">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-input)] bg-accent-muted text-accent shrink-0">
-                    <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
-                    </svg>
+              <Card variant="interactive" padding="none" className="h-full group">
+                <div className="px-6 pt-5 pb-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-accent/8 text-accent shrink-0">
+                      <svg className="h-[18px] w-[18px]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                      </svg>
+                    </div>
+                    <Badge status={project.status} />
                   </div>
-                  <Badge status={project.status} />
+
+                  <h3 className="text-[15px] font-semibold text-text-primary line-clamp-2 group-hover:text-accent transition-colors">
+                    {project.title || "Proyecto sin titulo"}
+                  </h3>
+
+                  {project.convocatorias_v2 && (
+                    <p className="mt-1.5 text-[11px] uppercase tracking-[0.04em] text-text-muted line-clamp-1">
+                      {project.convocatorias_v2.name}
+                    </p>
+                  )}
                 </div>
 
-                <h3 className="text-base font-semibold text-text-primary line-clamp-2 group-hover:text-accent transition-colors">
-                  {project.title || "Proyecto sin titulo"}
-                </h3>
-
-                {project.convocatorias_v2 && (
-                  <p className="mt-1.5 text-xs text-text-muted line-clamp-1">
-                    {project.convocatorias_v2.name}
-                  </p>
-                )}
-
-                <div className="mt-4 flex items-center justify-between pt-3 border-t border-border">
-                  <span className="text-sm font-medium text-text-primary">
+                <div className="border-t border-border px-6 py-3 flex items-center justify-between">
+                  <span className="text-[13px] font-medium text-text-primary tabular-nums">
                     {project.budget_requested
                       ? `$${Number(project.budget_requested).toLocaleString("es-CO")}`
                       : "Sin presupuesto"}
                   </span>
-                  <span className="text-xs text-text-muted">
+                  <span className="text-[11px] text-text-muted">
                     {new Date(project.created_at).toLocaleDateString("es-CO", {
                       day: "numeric",
                       month: "short",
@@ -117,8 +119,8 @@ export default async function ProyectosPage() {
 
                 {/* Continue wizard link for drafts */}
                 {project.status === "draft" && (
-                  <div className="mt-3">
-                    <span className="inline-flex items-center gap-1.5 text-xs font-medium text-accent group-hover:underline">
+                  <div className="px-6 pb-4">
+                    <span className="inline-flex items-center gap-1.5 text-[12px] font-medium text-accent group-hover:underline">
                       Continuar estructuracion
                       <svg className="h-3 w-3 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                         <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />

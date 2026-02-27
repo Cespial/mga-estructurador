@@ -130,24 +130,24 @@ export default async function AnalyticsPage() {
   });
 
   return (
-    <div>
-      <div className="mb-6 flex items-center justify-between">
+    <div className="space-y-8 animate-fade-in">
+      <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-xl font-semibold text-gray-900">Analytics</h2>
-          <p className="mt-1 text-sm text-gray-500">
+          <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Analytics</h1>
+          <p className="mt-1 text-[13px] text-text-muted">
             Resumen general de todas tus convocatorias.
           </p>
         </div>
         <Link
           href="/dashboard/entidad"
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver al panel
         </Link>
       </div>
 
       {/* KPI cards */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard label="Convocatorias" value={totalConv} sub={`${openConv} abiertas`} />
         <KpiCard
           label="Municipios asignados"
@@ -168,61 +168,61 @@ export default async function AnalyticsPage() {
       </div>
 
       {/* Convocatoria breakdown */}
-      <div className="mt-8">
-        <h3 className="mb-3 text-base font-semibold text-gray-900">
+      <div>
+        <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted mb-4">
           Por convocatoria
-        </h3>
+        </p>
         {convBreakdown.length === 0 ? (
-          <p className="text-sm text-gray-500">No hay convocatorias.</p>
+          <p className="text-[13px] text-text-muted">No hay convocatorias.</p>
         ) : (
-          <div className="overflow-hidden rounded-lg border border-gray-200 bg-white">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
-                <tr>
-                  <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+          <div className="card-premium">
+            <table className="w-full">
+              <thead>
+                <tr className="border-b border-border">
+                  <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Convocatoria
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-center text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Estado
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-center text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Municipios
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-center text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Submissions
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-center text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Progreso
                   </th>
-                  <th className="px-4 py-3 text-center text-xs font-medium uppercase tracking-wider text-gray-500">
+                  <th className="px-6 py-3 text-center text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                     Evaluaciones
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
+              <tbody className="divide-y divide-border">
                 {convBreakdown.map((c) => (
-                  <tr key={c.id}>
-                    <td className="px-4 py-3">
+                  <tr key={c.id} className="hover:bg-bg-hover transition-colors">
+                    <td className="px-6 py-3.5">
                       <Link
                         href={`/dashboard/entidad/convocatorias/${c.id}`}
-                        className="text-sm font-medium text-blue-600 hover:text-blue-800"
+                        className="text-[13px] font-medium text-accent hover:text-accent-hover transition-colors"
                       >
                         {c.nombre}
                       </Link>
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-3.5 text-center">
                       <EstadoBadge estado={c.estado} />
                     </td>
-                    <td className="px-4 py-3 text-center text-sm text-gray-700">
+                    <td className="px-6 py-3.5 text-center text-[13px] text-text-secondary tabular-nums">
                       {c.municipios}
                     </td>
-                    <td className="px-4 py-3 text-center text-sm text-gray-700">
+                    <td className="px-6 py-3.5 text-center text-[13px] text-text-secondary tabular-nums">
                       {c.submissions}
                     </td>
-                    <td className="px-4 py-3 text-center">
+                    <td className="px-6 py-3.5 text-center">
                       <ProgressBar value={c.avgProgress} />
                     </td>
-                    <td className="px-4 py-3 text-center text-sm text-gray-700">
+                    <td className="px-6 py-3.5 text-center text-[13px] text-text-secondary tabular-nums">
                       {c.evaluaciones}
                     </td>
                   </tr>
@@ -235,24 +235,24 @@ export default async function AnalyticsPage() {
 
       {/* Top municipios */}
       {topMunicipios.length > 0 && (
-        <div className="mt-8">
-          <h3 className="mb-3 text-base font-semibold text-gray-900">
+        <div>
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted mb-4">
             Top municipios por avance
-          </h3>
+          </p>
           <div className="space-y-2">
             {topMunicipios.map((m, i) => (
               <div
                 key={m.nombre}
-                className="flex items-center gap-4 rounded-lg border border-gray-200 bg-white px-4 py-3"
+                className="flex items-center gap-4 card-premium px-5 py-3.5"
               >
-                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-blue-100 text-xs font-bold text-blue-700">
+                <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-accent/8 text-[11px] font-bold text-accent">
                   {i + 1}
                 </span>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900">
+                  <p className="text-[13px] font-medium text-text-primary">
                     {m.nombre}
                   </p>
-                  <p className="text-xs text-gray-500">{m.departamento}</p>
+                  <p className="text-[11px] text-text-muted">{m.departamento}</p>
                 </div>
                 <ProgressBar value={m.avgProgress} />
               </div>
@@ -278,31 +278,31 @@ function KpiCard({
   highlight?: boolean;
 }) {
   return (
-    <div className="rounded-lg border border-gray-200 bg-white p-5">
-      <p className="text-sm font-medium text-gray-500">{label}</p>
+    <div className="card-premium px-5 py-5">
+      <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">{label}</p>
       <p
-        className={`mt-1 text-2xl font-bold ${
-          highlight ? "text-blue-600" : "text-gray-900"
+        className={`mt-3 text-[28px] font-semibold leading-none tracking-tight tabular-nums ${
+          highlight ? "text-accent" : "text-text-primary"
         }`}
       >
         {value}
       </p>
-      <p className="mt-0.5 text-xs text-gray-400">{sub}</p>
+      <p className="mt-2 text-[11px] text-text-muted">{sub}</p>
     </div>
   );
 }
 
 function EstadoBadge({ estado }: { estado: string }) {
   const colors: Record<string, string> = {
-    borrador: "bg-gray-100 text-gray-700",
-    abierta: "bg-green-100 text-green-700",
-    cerrada: "bg-red-100 text-red-700",
-    evaluacion: "bg-yellow-100 text-yellow-700",
+    borrador: "bg-gray-50 text-gray-600",
+    abierta: "bg-emerald-50 text-emerald-600",
+    cerrada: "bg-red-50 text-red-600",
+    evaluacion: "bg-amber-50 text-amber-600",
   };
   return (
     <span
-      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${
-        colors[estado] ?? "bg-gray-100 text-gray-700"
+      className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-medium ${
+        colors[estado] ?? "bg-gray-50 text-gray-600"
       }`}
     >
       {estado}
@@ -312,19 +312,19 @@ function EstadoBadge({ estado }: { estado: string }) {
 
 function ProgressBar({ value }: { value: number }) {
   let color = "bg-gray-300";
-  if (value === 100) color = "bg-green-500";
-  else if (value >= 60) color = "bg-blue-500";
-  else if (value > 0) color = "bg-yellow-500";
+  if (value === 100) color = "bg-emerald-500";
+  else if (value >= 60) color = "bg-accent";
+  else if (value > 0) color = "bg-amber-500";
 
   return (
     <div className="flex items-center gap-2">
-      <div className="h-2 w-20 overflow-hidden rounded-full bg-gray-100">
+      <div className="h-1.5 w-20 overflow-hidden rounded-full bg-gray-100">
         <div
           className={`h-full rounded-full ${color}`}
           style={{ width: `${value}%` }}
         />
       </div>
-      <span className="text-xs font-medium text-gray-700">{value}%</span>
+      <span className="text-[11px] font-medium text-text-secondary tabular-nums">{value}%</span>
     </div>
   );
 }

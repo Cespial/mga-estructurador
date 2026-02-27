@@ -45,11 +45,11 @@ export default async function ExplorarConvocatoriasPage({
   const activeStatus = params.status ?? "all";
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-8 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Explorar Convocatorias</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Explorar Convocatorias</h1>
+        <p className="mt-1 text-[13px] text-text-muted">
           Encuentra convocatorias abiertas y comienza a estructurar tus proyectos.
         </p>
       </div>
@@ -63,7 +63,7 @@ export default async function ExplorarConvocatoriasPage({
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              strokeWidth={2}
+              strokeWidth={1.5}
             >
               <path
                 strokeLinecap="round"
@@ -76,7 +76,7 @@ export default async function ExplorarConvocatoriasPage({
               name="q"
               defaultValue={params.q ?? ""}
               placeholder="Buscar convocatorias..."
-              className="block w-full rounded-[var(--radius-input)] border border-border bg-bg-input pl-10 pr-3 py-2.5 text-sm text-text-primary placeholder:text-text-muted transition-colors duration-200 focus:outline-none focus:border-accent focus:ring-1 focus:ring-accent/30"
+              className="block w-full rounded-[var(--radius-input)] border border-border bg-bg-input pl-10 pr-3 py-2.5 text-[13px] text-text-primary placeholder:text-text-muted transition-colors duration-200 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/8"
             />
             {params.status && (
               <input type="hidden" name="status" value={params.status} />
@@ -95,10 +95,10 @@ export default async function ExplorarConvocatoriasPage({
             <Link
               key={filter.value}
               href={`/dashboard/convocatorias/explorar?status=${filter.value}${params.q ? `&q=${params.q}` : ""}`}
-              className={`rounded-[var(--radius-button)] px-3 py-1.5 text-xs font-medium transition-all duration-200 ${
+              className={`rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.04em] transition-all duration-200 ${
                 activeStatus === filter.value
                   ? "bg-accent text-white shadow-sm"
-                  : "bg-slate-100 text-text-muted hover:bg-slate-200 hover:text-text-secondary"
+                  : "bg-gray-100 text-text-muted hover:bg-gray-200 hover:text-text-secondary"
               }`}
             >
               {filter.label}
@@ -134,7 +134,7 @@ export default async function ExplorarConvocatoriasPage({
           }
         />
       ) : (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-3 stagger-children">
+        <div className="grid grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-3 stagger-children">
           {items.map((conv) => {
             const isOpen = conv.status === "open";
             const daysLeft = conv.close_date
@@ -147,46 +147,48 @@ export default async function ExplorarConvocatoriasPage({
               : null;
 
             return (
-              <Card key={conv.id} variant="interactive" className="group flex flex-col">
-                <div className="flex items-start justify-between mb-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-[var(--radius-input)] bg-accent-muted text-accent shrink-0">
-                    <svg
-                      className="h-5 w-5"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke="currentColor"
-                      strokeWidth={1.5}
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
-                      />
-                    </svg>
+              <Card key={conv.id} variant="interactive" padding="none" className="group flex flex-col">
+                <div className="px-6 pt-5 pb-4">
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="flex h-9 w-9 items-center justify-center rounded-[8px] bg-accent/8 text-accent shrink-0">
+                      <svg
+                        className="h-[18px] w-[18px]"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={1.5}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z"
+                        />
+                      </svg>
+                    </div>
+                    <Badge status={conv.status} />
                   </div>
-                  <Badge status={conv.status} />
+
+                  <h3 className="text-[15px] font-semibold text-text-primary line-clamp-2 group-hover:text-accent transition-colors">
+                    {conv.name}
+                  </h3>
+
+                  {conv.organizations && (
+                    <p className="mt-1 text-[11px] uppercase tracking-[0.04em] text-text-muted">
+                      {conv.organizations.name}
+                    </p>
+                  )}
+
+                  {conv.description && (
+                    <p className="mt-2 text-[13px] text-text-secondary line-clamp-3 flex-1">
+                      {conv.description}
+                    </p>
+                  )}
                 </div>
 
-                <h3 className="text-base font-semibold text-text-primary line-clamp-2 group-hover:text-accent transition-colors">
-                  {conv.name}
-                </h3>
-
-                {conv.organizations && (
-                  <p className="mt-1 text-xs text-text-muted">
-                    {conv.organizations.name}
-                  </p>
-                )}
-
-                {conv.description && (
-                  <p className="mt-2 text-sm text-text-secondary line-clamp-3 flex-1">
-                    {conv.description}
-                  </p>
-                )}
-
-                <div className="mt-4 flex items-center justify-between text-xs text-text-muted pt-3 border-t border-border">
+                <div className="mt-auto border-t border-border px-6 py-3 flex items-center justify-between text-[11px] text-text-muted">
                   <div className="flex items-center gap-3">
                     {conv.budget && (
-                      <span>${Number(conv.budget).toLocaleString("es-CO")}</span>
+                      <span className="tabular-nums">${Number(conv.budget).toLocaleString("es-CO")}</span>
                     )}
                     {daysLeft !== null && isOpen && (
                       <span className={daysLeft <= 7 ? "text-warning font-medium" : ""}>
@@ -203,16 +205,16 @@ export default async function ExplorarConvocatoriasPage({
                 </div>
 
                 {/* Apply button */}
-                <div className="mt-3">
+                <div className="px-6 pb-5">
                   {isOpen ? (
                     <Link href={`/dashboard/proyectos/aplicar/${conv.id}`} className="block">
-                      <button className="w-full rounded-[var(--radius-button)] bg-accent px-4 py-2 text-sm font-medium text-white hover:bg-accent-hover transition-all duration-200 group-hover:shadow-lg">
+                      <button className="w-full rounded-[var(--radius-button)] bg-accent px-4 py-2.5 text-[13px] font-medium text-white hover:bg-accent-hover transition-all duration-200">
                         Aplicar
                       </button>
                     </Link>
                   ) : (
                     <Link href={`/dashboard/convocatorias/${conv.id}`} className="block">
-                      <button className="w-full rounded-[var(--radius-button)] bg-slate-100 px-4 py-2 text-sm font-medium text-text-secondary hover:bg-slate-200 transition-all duration-200">
+                      <button className="w-full rounded-[var(--radius-button)] border border-border px-4 py-2.5 text-[13px] font-medium text-text-secondary hover:bg-bg-hover transition-all duration-200">
                         Ver detalles
                       </button>
                     </Link>

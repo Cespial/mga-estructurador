@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createConvocatoria } from "../actions";
+import { Button } from "@/components/ui/button";
 
 export default async function NuevaConvocatoriaPage({
   searchParams,
@@ -16,29 +17,28 @@ export default async function NuevaConvocatoriaPage({
   const params = await searchParams;
 
   return (
-    <div className="mx-auto max-w-2xl">
-      <div className="mb-6">
+    <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
+      <div>
         <Link
           href="/dashboard/entidad"
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver al panel
         </Link>
+        <h1 className="mt-3 text-[22px] font-semibold tracking-tight text-text-primary">
+          Nueva convocatoria
+        </h1>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900">
-        Nueva convocatoria
-      </h2>
-
       {params.error && (
-        <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <div className="rounded-[8px] border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
           {params.error}
         </div>
       )}
 
-      <form action={createConvocatoria} className="mt-6 space-y-4">
+      <form action={createConvocatoria} className="card-premium px-6 py-6 space-y-5">
         <div>
-          <label htmlFor="nombre" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="nombre" className="block text-[13px] font-medium text-text-primary">
             Nombre de la convocatoria *
           </label>
           <input
@@ -46,74 +46,66 @@ export default async function NuevaConvocatoriaPage({
             name="nombre"
             type="text"
             required
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
-            placeholder="Ej: Mejoramiento de vías terciarias 2026"
+            className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
+            placeholder="Ej: Mejoramiento de vias terciarias 2026"
           />
         </div>
 
         <div>
-          <label htmlFor="descripcion" className="block text-sm font-medium text-gray-700">
-            Descripción
+          <label htmlFor="descripcion" className="block text-[13px] font-medium text-text-primary">
+            Descripcion
           </label>
           <textarea
             id="descripcion"
             name="descripcion"
             rows={3}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             placeholder="Describa el objetivo de la convocatoria..."
           />
         </div>
 
         <div>
-          <label htmlFor="requisitos" className="block text-sm font-medium text-gray-700">
+          <label htmlFor="requisitos" className="block text-[13px] font-medium text-text-primary">
             Requisitos
           </label>
           <textarea
             id="requisitos"
             name="requisitos"
             rows={3}
-            className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             placeholder="Requisitos para participar en la convocatoria..."
           />
         </div>
 
         <div className="grid grid-cols-2 gap-4">
           <div>
-            <label htmlFor="fecha_inicio" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="fecha_inicio" className="block text-[13px] font-medium text-text-primary">
               Fecha de inicio
             </label>
             <input
               id="fecha_inicio"
               name="fecha_inicio"
               type="date"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             />
           </div>
           <div>
-            <label htmlFor="fecha_cierre" className="block text-sm font-medium text-gray-700">
+            <label htmlFor="fecha_cierre" className="block text-[13px] font-medium text-text-primary">
               Fecha de cierre
             </label>
             <input
               id="fecha_cierre"
               name="fecha_cierre"
               type="date"
-              className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="mt-1.5 block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
             />
           </div>
         </div>
 
-        <div className="flex gap-3 pt-4">
-          <button
-            type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Crear convocatoria
-          </button>
-          <Link
-            href="/dashboard/entidad"
-            className="rounded-md border border-gray-300 px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
-          >
-            Cancelar
+        <div className="flex gap-3 pt-2">
+          <Button variant="primary" type="submit">Crear convocatoria</Button>
+          <Link href="/dashboard/entidad">
+            <Button variant="secondary" type="button">Cancelar</Button>
           </Link>
         </div>
       </form>

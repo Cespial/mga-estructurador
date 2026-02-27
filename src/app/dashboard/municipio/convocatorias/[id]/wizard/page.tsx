@@ -33,20 +33,20 @@ export default async function WizardPage({
   // Check convocatoria is open
   if (convocatoria.estado !== "abierta") {
     return (
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-fade-in">
         <div className="mb-6">
           <Link
             href={`/dashboard/municipio/convocatorias/${id}`}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-[12px] text-accent hover:text-accent-hover transition-colors"
           >
             &larr; Volver
           </Link>
         </div>
-        <div className="rounded-lg border border-amber-200 bg-amber-50 p-6 text-center">
-          <p className="text-sm text-amber-800">
-            Esta convocatoria no está abierta para diligenciamiento.
+        <div className="rounded-[8px] border border-amber-200 bg-amber-50 px-5 py-5 text-center">
+          <p className="text-[13px] text-amber-800">
+            Esta convocatoria no esta abierta para diligenciamiento.
           </p>
-          <p className="mt-1 text-xs text-amber-600">
+          <p className="mt-1 text-[11px] text-amber-600">
             Estado actual: {convocatoria.estado}
           </p>
         </div>
@@ -66,18 +66,18 @@ export default async function WizardPage({
 
   if (etapas.length === 0) {
     return (
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-fade-in">
         <div className="mb-6">
           <Link
             href={`/dashboard/municipio/convocatorias/${id}`}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-[12px] text-accent hover:text-accent-hover transition-colors"
           >
             &larr; Volver
           </Link>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-          <p className="text-sm text-gray-600">
-            La entidad aún no ha configurado la plantilla MGA para esta convocatoria.
+        <div className="rounded-[8px] border border-dashed border-border p-6 text-center">
+          <p className="text-[13px] text-text-muted">
+            La entidad aun no ha configurado la plantilla MGA para esta convocatoria.
           </p>
         </div>
       </div>
@@ -88,16 +88,16 @@ export default async function WizardPage({
   const { submission, error } = await getOrCreateSubmission(id);
   if (error || !submission) {
     return (
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-3xl animate-fade-in">
         <div className="mb-6">
           <Link
             href={`/dashboard/municipio/convocatorias/${id}`}
-            className="text-sm text-blue-600 hover:text-blue-800"
+            className="text-[12px] text-accent hover:text-accent-hover transition-colors"
           >
             &larr; Volver
           </Link>
         </div>
-        <div className="rounded-md bg-red-50 p-4 text-sm text-red-700">
+        <div className="rounded-[8px] border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
           Error: {error ?? "No se pudo crear la submission"}
         </div>
       </div>
@@ -105,27 +105,27 @@ export default async function WizardPage({
   }
 
   return (
-    <div className="mx-auto max-w-5xl">
+    <div className="mx-auto max-w-5xl animate-fade-in">
       <div className="mb-6 flex items-center justify-between">
         <Link
           href={`/dashboard/municipio/convocatorias/${id}`}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver a {convocatoria.nombre}
         </Link>
       </div>
 
       <div className="flex items-center gap-3">
-        <h2 className="text-lg font-semibold text-gray-900">
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">
           Diligenciar MGA — {convocatoria.nombre}
-        </h2>
+        </h1>
         <HelpButton section="flujo-ejecucion" label="Ayuda con el wizard" />
       </div>
-      <p className="mt-1 text-sm text-gray-500">
-        Completa cada etapa. El progreso se guarda automáticamente.
+      <p className="mt-1 text-[13px] text-text-muted">
+        Completa cada etapa. El progreso se guarda automaticamente.
       </p>
 
-      <div className="mt-6">
+      <div className="mt-8">
         <WizardClient
           convocatoriaId={id}
           submissionId={submission.id}

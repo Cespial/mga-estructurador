@@ -5,10 +5,10 @@ import { createClient } from "@/lib/supabase/server";
 import type { ConvocatoriaMunicipioWithConvocatoria, ConvocatoriaEstado } from "@/lib/types/database";
 
 const estadoBadge: Record<ConvocatoriaEstado, string> = {
-  borrador: "bg-gray-100 text-gray-700",
-  abierta: "bg-green-100 text-green-700",
-  cerrada: "bg-red-100 text-red-700",
-  evaluacion: "bg-yellow-100 text-yellow-700",
+  borrador: "bg-gray-50 text-gray-600",
+  abierta: "bg-emerald-50 text-emerald-600",
+  cerrada: "bg-red-50 text-red-600",
+  evaluacion: "bg-amber-50 text-amber-600",
 };
 
 export default async function MunicipioDashboard() {
@@ -32,24 +32,26 @@ export default async function MunicipioDashboard() {
   const items = (assignments ?? []) as ConvocatoriaMunicipioWithConvocatoria[];
 
   return (
-    <div>
-      <h2 className="text-xl font-semibold text-gray-900">
-        Panel de Municipio
-      </h2>
-      <p className="mt-1 text-sm text-gray-600">
-        Diligencia proyectos MGA para las convocatorias asignadas.
-      </p>
+    <div className="space-y-8 animate-fade-in">
+      <div>
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">
+          Panel de Municipio
+        </h1>
+        <p className="mt-1 text-[13px] text-text-muted">
+          Diligencia proyectos MGA para las convocatorias asignadas.
+        </p>
+      </div>
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2">
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <p className="text-sm font-medium text-gray-500">
+      <div className="grid gap-5 sm:grid-cols-2">
+        <div className="card-premium px-5 py-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
             Convocatorias asignadas
           </p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">{items.length}</p>
+          <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight text-text-primary tabular-nums">{items.length}</p>
         </div>
-        <div className="rounded-lg border border-gray-200 bg-white p-5">
-          <p className="text-sm font-medium text-gray-500">Avance promedio</p>
-          <p className="mt-1 text-2xl font-bold text-gray-900">
+        <div className="card-premium px-5 py-5">
+          <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">Avance promedio</p>
+          <p className="mt-3 text-[28px] font-semibold leading-none tracking-tight text-text-primary tabular-nums">
             {items.length > 0
               ? Math.round(items.reduce((acc, i) => acc + i.progress, 0) / items.length) + "%"
               : "—"}
@@ -58,47 +60,47 @@ export default async function MunicipioDashboard() {
       </div>
 
       {items.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-dashed border-gray-300 p-8 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-[8px] border border-dashed border-border p-8 text-center">
+          <p className="text-[13px] text-text-muted">
             No tienes convocatorias asignadas actualmente.
           </p>
         </div>
       ) : (
-        <div className="mt-6 space-y-4">
+        <div className="space-y-3">
           {items.map((item) => (
             <Link
               key={item.id}
               href={`/dashboard/municipio/convocatorias/${item.convocatoria_id}`}
-              className="block rounded-lg border border-gray-200 bg-white p-5 transition hover:border-blue-300 hover:shadow-sm"
+              className="block card-premium hover:border-accent/30 transition-colors"
             >
-              <div className="flex items-start justify-between">
+              <div className="px-6 py-4 flex items-start justify-between">
                 <div>
-                  <h3 className="font-medium text-gray-900">
+                  <h3 className="text-[15px] font-medium text-text-primary">
                     {item.convocatorias.nombre}
                   </h3>
                   {item.convocatorias.descripcion && (
-                    <p className="mt-1 line-clamp-2 text-sm text-gray-500">
+                    <p className="mt-1 line-clamp-2 text-[13px] text-text-muted">
                       {item.convocatorias.descripcion}
                     </p>
                   )}
                   <div className="mt-2 flex items-center gap-3">
                     <span
-                      className={`inline-block rounded-full px-2.5 py-0.5 text-xs font-medium ${estadoBadge[item.convocatorias.estado]}`}
+                      className={`inline-block rounded-full px-2.5 py-0.5 text-[11px] font-medium ${estadoBadge[item.convocatorias.estado]}`}
                     >
                       {item.convocatorias.estado}
                     </span>
                     {item.convocatorias.fecha_cierre && (
-                      <span className="text-xs text-gray-400">
+                      <span className="text-[11px] text-text-muted">
                         Cierre: {item.convocatorias.fecha_cierre}
                       </span>
                     )}
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="text-2xl font-bold text-blue-600">
+                  <p className="text-[28px] font-semibold tracking-tight text-accent tabular-nums">
                     {Math.round(item.progress)}%
                   </p>
-                  <p className="text-xs text-gray-400">avance</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-text-muted">avance</p>
                 </div>
               </div>
             </Link>

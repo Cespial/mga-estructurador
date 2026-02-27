@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import { assignMunicipio, removeMunicipio } from "../../actions";
+import { Button } from "@/components/ui/button";
 import type { Convocatoria, Municipio, ConvocatoriaMunicipioWithDetails } from "@/lib/types/database";
 
 export default async function MunicipiosAssignmentPage({
@@ -53,36 +54,35 @@ export default async function MunicipiosAssignmentPage({
   const assignWithId = assignMunicipio.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="mb-6">
+    <div className="mx-auto max-w-3xl space-y-8 animate-fade-in">
+      <div>
         <Link
           href={`/dashboard/entidad/convocatorias/${id}`}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver a {convocatoria.nombre}
         </Link>
+        <h1 className="mt-3 text-[22px] font-semibold tracking-tight text-text-primary">
+          Municipios asignados
+        </h1>
+        <p className="mt-1 text-[13px] text-text-muted">
+          {convocatoria.nombre}
+        </p>
       </div>
 
-      <h2 className="text-xl font-semibold text-gray-900">
-        Municipios asignados
-      </h2>
-      <p className="mt-1 text-sm text-gray-500">
-        {convocatoria.nombre}
-      </p>
-
       {sp.error && (
-        <div className="mt-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <div className="rounded-[8px] border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
           {sp.error}
         </div>
       )}
 
       {/* Assign form */}
       {available.length > 0 && (
-        <form action={assignWithId} className="mt-6 flex gap-3">
+        <form action={assignWithId} className="flex gap-3">
           <select
             name="municipio_id"
             required
-            className="flex-1 rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="flex-1 rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8"
           >
             <option value="">Seleccionar municipio...</option>
             {available.map((m) => (
@@ -91,68 +91,63 @@ export default async function MunicipiosAssignmentPage({
               </option>
             ))}
           </select>
-          <button
-            type="submit"
-            className="rounded-md bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700"
-          >
-            Asignar
-          </button>
+          <Button variant="primary" type="submit">Asignar</Button>
         </form>
       )}
 
       {/* Assigned list */}
       {assigned.length === 0 ? (
-        <div className="mt-6 rounded-lg border border-dashed border-gray-300 p-8 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-[8px] border border-dashed border-border p-8 text-center">
+          <p className="text-[13px] text-text-muted">
             No hay municipios asignados a esta convocatoria.
           </p>
         </div>
       ) : (
-        <div className="mt-6 overflow-hidden rounded-lg border border-gray-200 bg-white">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+        <div className="card-premium">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border">
+                <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                   Municipio
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                   Departamento
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                   Estado
                 </th>
-                <th className="px-4 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-left text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                   Avance
                 </th>
-                <th className="px-4 py-3 text-right text-xs font-medium uppercase tracking-wider text-gray-500">
+                <th className="px-6 py-3 text-right text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted">
                   Acciones
                 </th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200">
+            <tbody className="divide-y divide-border">
               {assigned.map((a) => {
                 const removeWithIds = removeMunicipio.bind(null, id, a.id);
                 return (
-                  <tr key={a.id}>
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                  <tr key={a.id} className="hover:bg-bg-hover transition-colors">
+                    <td className="px-6 py-3.5 text-[13px] font-medium text-text-primary">
                       {a.municipios.nombre}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">
+                    <td className="px-6 py-3.5 text-[13px] text-text-muted">
                       {a.municipios.departamento}
                     </td>
-                    <td className="px-4 py-3">
-                      <span className="inline-block rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700">
+                    <td className="px-6 py-3.5">
+                      <span className="inline-block rounded-full bg-emerald-50 px-2.5 py-0.5 text-[11px] font-medium text-emerald-600">
                         {a.estado}
                       </span>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">
+                    <td className="px-6 py-3.5 text-[13px] text-text-secondary tabular-nums">
                       {Math.round(a.progress)}%
                     </td>
-                    <td className="px-4 py-3 text-right">
+                    <td className="px-6 py-3.5 text-right">
                       <form action={removeWithIds} className="inline">
                         <button
                           type="submit"
-                          className="text-sm text-red-600 hover:text-red-800"
+                          className="text-[12px] text-red-600 hover:text-red-800 transition-colors"
                         >
                           Remover
                         </button>

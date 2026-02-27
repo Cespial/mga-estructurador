@@ -6,8 +6,8 @@ export const metadata = {
 
 export default function AyudaPage() {
   return (
-    <div>
-      <h1 className="mb-6 text-xl font-bold text-gray-900">
+    <div className="animate-fade-in">
+      <h1 className="mb-6 text-[22px] font-semibold tracking-tight text-text-primary">
         Centro de Ayuda
       </h1>
       <HelpCenter />

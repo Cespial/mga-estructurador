@@ -149,11 +149,11 @@ export default async function MonitoreoPage({
       : 0;
 
   return (
-    <div className="mx-auto max-w-5xl">
-      <div className="mb-6">
+    <div className="mx-auto max-w-5xl space-y-8 animate-fade-in">
+      <div>
         <Link
           href={`/dashboard/entidad/convocatorias/${id}`}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver a {convocatoria.nombre}
         </Link>
@@ -162,46 +162,44 @@ export default async function MonitoreoPage({
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">
               Monitoreo de avance
-            </h2>
+            </h1>
             <HelpButton section="monitoreo" label="Ayuda con monitoreo" />
           </div>
-          <p className="mt-1 text-sm text-gray-500">{convocatoria.nombre}</p>
+          <p className="mt-1 text-[13px] text-text-muted">{convocatoria.nombre}</p>
         </div>
         <div className="text-right">
-          <p className="text-3xl font-bold text-blue-600">{avgProgress}%</p>
-          <p className="text-xs text-gray-400">avance promedio</p>
+          <p className="text-[32px] font-semibold tracking-tight text-accent tabular-nums">{avgProgress}%</p>
+          <p className="text-[11px] uppercase tracking-[0.08em] text-text-muted">avance promedio</p>
         </div>
       </div>
 
       {!hasRubric && (
-        <div className="mt-4 rounded-md bg-amber-50 px-4 py-3 text-sm text-amber-700">
-          No hay rúbrica definida.{" "}
+        <div className="rounded-[8px] border border-amber-200 bg-amber-50 px-4 py-3 text-[13px] text-amber-700">
+          No hay rubrica definida.{" "}
           <Link
             href={`/dashboard/entidad/convocatorias/${id}/rubricas`}
             className="font-medium text-amber-800 underline"
           >
-            Definir rúbrica
+            Definir rubrica
           </Link>{" "}
           para habilitar evaluaciones.
         </div>
       )}
 
       {rows.length === 0 ? (
-        <div className="mt-8 rounded-lg border border-dashed border-gray-300 p-8 text-center">
-          <p className="text-sm text-gray-500">
+        <div className="rounded-[8px] border border-dashed border-border p-8 text-center">
+          <p className="text-[13px] text-text-muted">
             No hay municipios asignados a esta convocatoria.
           </p>
         </div>
       ) : (
-        <div className="mt-6">
-          <MonitoreoTable
-            rows={rows}
-            etapas={etapas.map((e) => ({ id: e.id, nombre: e.nombre }))}
-            hasRubric={hasRubric}
-          />
-        </div>
+        <MonitoreoTable
+          rows={rows}
+          etapas={etapas.map((e) => ({ id: e.id, nombre: e.nombre }))}
+          hasRubric={hasRubric}
+        />
       )}
     </div>
   );

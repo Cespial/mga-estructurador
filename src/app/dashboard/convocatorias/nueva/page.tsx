@@ -19,11 +19,11 @@ export default async function NuevaConvocatoriaPage() {
   if (!org) redirect("/dashboard/onboarding");
 
   return (
-    <div className="mx-auto max-w-2xl space-y-6 animate-fade-in">
+    <div className="mx-auto max-w-2xl space-y-8 animate-fade-in">
       {/* Header */}
       <div>
-        <h1 className="text-2xl font-bold text-text-primary">Nueva Convocatoria</h1>
-        <p className="mt-1 text-sm text-text-secondary">
+        <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">Nueva Convocatoria</h1>
+        <p className="mt-1 text-[13px] text-text-muted">
           Configura los detalles basicos de tu convocatoria. Podras agregar la rubrica y formularios despues.
         </p>
       </div>

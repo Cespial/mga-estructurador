@@ -44,18 +44,18 @@ export default async function DocumentosPage({
   const uploadAction = uploadDocuments.bind(null, id);
 
   return (
-    <div className="mx-auto max-w-3xl">
-      <div className="mb-6">
+    <div className="mx-auto max-w-3xl space-y-8 animate-fade-in">
+      <div>
         <Link
           href={`/dashboard/entidad/convocatorias/${id}`}
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-[12px] text-accent hover:text-accent-hover transition-colors"
         >
           &larr; Volver a {convocatoria.nombre}
         </Link>
       </div>
 
       {sp.error && (
-        <div className="mb-4 rounded-md bg-red-50 p-3 text-sm text-red-700">
+        <div className="rounded-[8px] border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
           {sp.error}
         </div>
       )}
@@ -63,12 +63,12 @@ export default async function DocumentosPage({
       <div className="flex items-start justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <h2 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-[22px] font-semibold tracking-tight text-text-primary">
               Documentos — {convocatoria.nombre}
-            </h2>
+            </h1>
             <HelpButton section="documentos" label="Ayuda con documentos" />
           </div>
-          <p className="mt-1 text-sm text-gray-500">
+          <p className="mt-1 text-[13px] text-text-muted">
             Sube documentos de la convocatoria para que el asistente IA los use
             como contexto (RAG).
           </p>
@@ -78,13 +78,13 @@ export default async function DocumentosPage({
       <UploadForm action={uploadAction} />
 
       {/* Documents list */}
-      <div className="mt-6">
+      <div>
         {documents.length === 0 ? (
-          <div className="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
-            <p className="text-sm text-gray-500">
+          <div className="rounded-[8px] border border-dashed border-border p-6 text-center">
+            <p className="text-[13px] text-text-muted">
               No hay documentos subidos para esta convocatoria.
             </p>
-            <p className="mt-1 text-xs text-gray-400">
+            <p className="mt-1 text-[11px] text-text-muted">
               Sube documentos PDF, TXT o DOCX para enriquecer las respuestas del
               asistente IA.
             </p>
@@ -119,25 +119,25 @@ function DocumentCard({
     string,
     { label: string; color: string }
   > = {
-    pending: { label: "Pendiente", color: "bg-gray-100 text-gray-700" },
+    pending: { label: "Pendiente", color: "bg-gray-50 text-gray-600" },
     processing: {
       label: "Procesando...",
-      color: "bg-blue-100 text-blue-700",
+      color: "bg-blue-50 text-blue-600",
     },
-    ready: { label: "Listo", color: "bg-green-100 text-green-700" },
-    error: { label: "Error", color: "bg-red-100 text-red-700" },
+    ready: { label: "Listo", color: "bg-emerald-50 text-emerald-600" },
+    error: { label: "Error", color: "bg-red-50 text-red-600" },
   };
 
   const status = statusConfig[doc.status] ?? statusConfig.pending;
   const fileSizeKb = (doc.file_size / 1024).toFixed(0);
 
   return (
-    <div className="rounded-lg border border-gray-200 bg-white px-5 py-4">
+    <div className="card-premium px-5 py-4">
       <div className="flex items-start justify-between">
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
             <FileIcon mimeType={doc.mime_type} />
-            <p className="truncate text-sm font-medium text-gray-900">
+            <p className="truncate text-[13px] font-medium text-text-primary">
               {doc.file_name}
             </p>
             <span
@@ -146,8 +146,8 @@ function DocumentCard({
               {status.label}
             </span>
           </div>
-          <div className="mt-1 flex items-center gap-3 text-xs text-gray-500">
-            <span>{fileSizeKb} KB</span>
+          <div className="mt-1 flex items-center gap-3 text-[11px] text-text-muted">
+            <span className="tabular-nums">{fileSizeKb} KB</span>
             {doc.status === "ready" && (
               <span>{doc.chunk_count} fragmentos</span>
             )}
@@ -156,7 +156,7 @@ function DocumentCard({
             </span>
           </div>
           {doc.status === "error" && doc.error_message && (
-            <p className="mt-1 text-xs text-red-600">{doc.error_message}</p>
+            <p className="mt-1 text-[11px] text-red-600">{doc.error_message}</p>
           )}
         </div>
 
@@ -166,7 +166,7 @@ function DocumentCard({
               <button
                 type="submit"
                 aria-label={`Procesar ${doc.file_name}`}
-                className="rounded-md border border-blue-200 bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-700 hover:bg-blue-100"
+                className="rounded-[var(--radius-button)] border border-accent/20 bg-accent/5 px-3 py-1.5 text-[11px] font-medium text-accent hover:bg-accent/10 transition-colors"
               >
                 Procesar
               </button>
@@ -176,7 +176,7 @@ function DocumentCard({
             <button
               type="submit"
               aria-label={`Eliminar ${doc.file_name}`}
-              className="rounded-md border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-medium text-red-700 hover:bg-red-100"
+              className="rounded-[var(--radius-button)] border border-red-200 bg-red-50 px-3 py-1.5 text-[11px] font-medium text-red-700 hover:bg-red-100 transition-colors"
             >
               Eliminar
             </button>
@@ -192,12 +192,12 @@ function FileIcon({ mimeType }: { mimeType: string }) {
   const isTxt = mimeType === "text/plain";
   return (
     <span
-      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded text-[10px] font-bold ${
+      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[4px] text-[10px] font-bold ${
         isPdf
-          ? "bg-red-100 text-red-600"
+          ? "bg-red-50 text-red-600"
           : isTxt
-            ? "bg-gray-100 text-gray-600"
-            : "bg-blue-100 text-blue-600"
+            ? "bg-gray-50 text-gray-600"
+            : "bg-blue-50 text-blue-600"
       }`}
     >
       {isPdf ? "PDF" : isTxt ? "TXT" : "DOC"}

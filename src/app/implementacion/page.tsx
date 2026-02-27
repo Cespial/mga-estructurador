@@ -232,7 +232,7 @@ function Phase({
         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-accent text-[13px] font-bold text-white">
           {number}
         </div>
-        {!isLast && <div className="w-0.5 flex-1 bg-gray-200" />}
+        {!isLast && <div className="w-0.5 flex-1 bg-border" />}
       </div>
 
       {/* Content */}
@@ -245,11 +245,11 @@ function Phase({
               key={item.task}
               className="flex items-start gap-3 rounded-md border border-border bg-bg-app px-3 py-2"
             >
-              <div className="mt-0.5 h-4 w-4 shrink-0 rounded border border-gray-300 bg-white" />
+              <div className="mt-0.5 h-4 w-4 shrink-0 rounded border border-border-hover bg-white" />
               <div className="min-w-0 flex-1">
                 <p className="text-[13px] text-text-secondary">{item.task}</p>
               </div>
-              <span className="shrink-0 rounded-full bg-gray-100 px-2 py-0.5 text-[10px] font-medium text-text-muted">
+              <span className="shrink-0 rounded-full bg-bg-elevated px-2 py-0.5 text-[10px] font-medium text-text-muted">
                 {item.role}
               </span>
             </div>

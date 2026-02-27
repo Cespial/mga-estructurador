@@ -240,7 +240,7 @@ function WizardStep({
       </div>
 
       {/* Progress bar */}
-      <div className="mb-6 h-1.5 overflow-hidden rounded-full bg-gray-100">
+      <div className="mb-6 h-1.5 overflow-hidden rounded-full bg-bg-elevated">
         <div
           className="h-full rounded-full bg-accent transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -357,11 +357,11 @@ function ScoringStep({
                       {score}/{c.maxScore}
                     </span>
                   ) : (
-                    <span className="inline-block h-4 w-10 animate-pulse rounded bg-gray-100" />
+                    <span className="inline-block h-4 w-10 animate-pulse rounded bg-bg-elevated" />
                   )}
                 </div>
               </div>
-              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-gray-100">
+              <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-bg-elevated">
                 <div
                   className="h-full rounded-full bg-accent transition-all duration-700"
                   style={{ width: `${pct}%` }}
@@ -541,7 +541,7 @@ function BeforeAfterToggle({
             onClick={() => onToggle(false)}
             className={`rounded-[var(--radius-button)] px-2.5 py-1 text-[11px] font-medium transition-colors ${
               !showImproved
-                ? "bg-gray-100 text-text-primary"
+                ? "bg-bg-elevated text-text-primary"
                 : "text-text-muted hover:text-text-secondary"
             }`}
           >

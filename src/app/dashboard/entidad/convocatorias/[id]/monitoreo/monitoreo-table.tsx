@@ -175,7 +175,7 @@ export function MonitoreoTable({
                       En curso
                     </span>
                   ) : (
-                    <span className="inline-block rounded-full bg-gray-100 px-2 py-0.5 text-xs font-medium text-text-muted">
+                    <span className="inline-block rounded-full bg-bg-elevated px-2 py-0.5 text-xs font-medium text-text-muted">
                       Sin iniciar
                     </span>
                   )}
@@ -284,7 +284,7 @@ function ScorePopover({
 }
 
 function ProgressPill({ value }: { value: number }) {
-  let bg = "bg-gray-100 text-text-muted";
+  let bg = "bg-bg-elevated text-text-muted";
   if (value === 100) bg = "bg-green-100 text-green-700";
   else if (value > 0) bg = "bg-yellow-100 text-yellow-700";
 

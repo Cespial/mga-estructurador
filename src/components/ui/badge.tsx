@@ -3,7 +3,7 @@ import { type ReactNode } from "react";
 type BadgeVariant = "default" | "accent" | "success" | "danger" | "warning" | "info";
 
 const variantStyles: Record<BadgeVariant, string> = {
-  default: "bg-gray-50 text-text-muted border-border",
+  default: "bg-bg-app text-text-muted border-border",
   accent: "bg-accent/5 text-accent border-accent/20",
   success: "bg-emerald-50 text-emerald-700 border-emerald-100",
   danger: "bg-red-50 text-red-700 border-red-100",

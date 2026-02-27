@@ -177,7 +177,7 @@ export function WizardClient({
               <span>Progreso general</span>
               <span className="font-semibold text-text-primary">{progress}%</span>
             </div>
-            <div className="mt-1 h-2 overflow-hidden rounded-full bg-gray-100">
+            <div className="mt-1 h-2 overflow-hidden rounded-full bg-bg-elevated">
               <div
                 className={`h-full rounded-full transition-all duration-500 ${
                   progress === 100
@@ -221,7 +221,7 @@ export function WizardClient({
                           ? "bg-yellow-100 text-yellow-700"
                           : isCurrent
                             ? "bg-accent/8 text-accent"
-                            : "bg-gray-100 text-text-muted"
+                            : "bg-bg-elevated text-text-muted"
                     }`}
                   >
                     {status === "complete" ? "\u2713" : etapa.orden}

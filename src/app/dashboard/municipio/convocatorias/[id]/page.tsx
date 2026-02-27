@@ -120,7 +120,7 @@ export default async function MunicipioConvocatoriaPage({
               {Math.round(submission.progress)}%
             </p>
           </div>
-          <div className="mt-3 h-2 overflow-hidden rounded-full bg-gray-100">
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-bg-elevated">
             <div
               className="h-full rounded-full bg-accent transition-all"
               style={{ width: `${submission.progress}%` }}
@@ -181,7 +181,7 @@ export default async function MunicipioConvocatoriaPage({
                           ? "bg-emerald-50 text-emerald-600"
                           : etapaProgress > 0
                             ? "bg-amber-50 text-amber-600"
-                            : "bg-gray-100 text-text-muted"
+                            : "bg-bg-elevated text-text-muted"
                       }`}
                     >
                       {etapaProgress === 100 ? "\u2713" : etapa.orden}
@@ -212,7 +212,7 @@ export default async function MunicipioConvocatoriaPage({
                       </span>
                     )}
                     <div className="w-20">
-                      <div className="h-1.5 overflow-hidden rounded-full bg-gray-100">
+                      <div className="h-1.5 overflow-hidden rounded-full bg-bg-elevated">
                         <div
                           className={`h-full rounded-full transition-all ${
                             etapaProgress === 100

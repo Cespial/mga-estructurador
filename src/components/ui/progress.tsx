@@ -18,7 +18,7 @@ export function Progress({ value, max = 100, label, showValue = true, size = "md
           {showValue && <span className="text-text-muted tabular-nums">{Math.round(pct)}%</span>}
         </div>
       )}
-      <div className={`w-full rounded-full bg-gray-100 overflow-hidden ${heights[size]}`}>
+      <div className={`w-full rounded-full bg-bg-elevated overflow-hidden ${heights[size]}`}>
         <div
           className={`${heights[size]} rounded-full bg-accent transition-all duration-500 ease-out`}
           style={{ width: `${pct}%` }}

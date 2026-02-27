@@ -98,7 +98,7 @@ export default async function ExplorarConvocatoriasPage({
               className={`rounded-full px-3 py-1.5 text-[11px] font-medium uppercase tracking-[0.04em] transition-all duration-200 ${
                 activeStatus === filter.value
                   ? "bg-accent text-white shadow-sm"
-                  : "bg-gray-100 text-text-muted hover:bg-gray-200 hover:text-text-secondary"
+                  : "bg-bg-elevated text-text-muted hover:bg-border hover:text-text-secondary"
               }`}
             >
               {filter.label}

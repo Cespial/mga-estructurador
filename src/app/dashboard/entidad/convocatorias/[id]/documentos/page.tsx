@@ -119,7 +119,7 @@ function DocumentCard({
     string,
     { label: string; color: string }
   > = {
-    pending: { label: "Pendiente", color: "bg-gray-50 text-text-muted" },
+    pending: { label: "Pendiente", color: "bg-bg-app text-text-muted" },
     processing: {
       label: "Procesando...",
       color: "bg-accent/5 text-accent",
@@ -196,7 +196,7 @@ function FileIcon({ mimeType }: { mimeType: string }) {
         isPdf
           ? "bg-red-50 text-red-600"
           : isTxt
-            ? "bg-gray-50 text-text-muted"
+            ? "bg-bg-app text-text-muted"
             : "bg-accent/5 text-accent"
       }`}
     >

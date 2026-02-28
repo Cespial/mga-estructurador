@@ -5,6 +5,30 @@ import type { MgaEtapa, MgaCampo } from "@/lib/types/database";
 import type { AiAssistResponse } from "@/lib/ai/schemas";
 import { saveSubmissionData } from "./actions";
 
+interface PreEvalCampoScore {
+  campo_id: string;
+  campo_nombre: string;
+  score: number;
+  max_score: number;
+  justificacion: string;
+  recomendacion: string | null;
+}
+
+interface PreEvalEtapa {
+  etapa_id: string;
+  etapa_nombre: string;
+  score: number;
+  scores: PreEvalCampoScore[];
+}
+
+interface PreEvalResult {
+  total_score: number;
+  etapas: PreEvalEtapa[];
+  recomendaciones_generales: string[];
+  resumen: string;
+  _meta: { model: string; duration_ms: number };
+}
+
 interface WizardProps {
   convocatoriaId: string;
   submissionId: string;
@@ -45,6 +69,10 @@ export function WizardClient({
     data: AiAssistResponse & { _meta?: { model: string; duration_ms: number } };
   } | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+
+  // Pre-evaluation state
+  const [preEvalLoading, setPreEvalLoading] = useState(false);
+  const [preEvalResult, setPreEvalResult] = useState<PreEvalResult | null>(null);
 
   const currentEtapa = etapas[currentEtapaIndex];
 
@@ -138,6 +166,40 @@ export function WizardClient({
     if (!aiResponse) return;
     handleFieldChange(aiResponse.campoId, aiResponse.data.suggested_text);
     setAiResponse(null);
+  }
+
+  async function requestPreEvaluation() {
+    // Flush pending saves first
+    if (Object.keys(pendingFields).length > 0) {
+      const fieldsToSave = { ...pendingFields };
+      setPendingFields({});
+      await doSave(fieldsToSave, etapas[currentEtapaIndex].id);
+    }
+
+    setPreEvalLoading(true);
+    try {
+      const res = await fetch("/api/pre-evaluation/run", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          submission_id: submissionId,
+          convocatoria_id: convocatoriaId,
+        }),
+      });
+
+      const json = await res.json();
+
+      if (!res.ok) {
+        setAiError(json.error ?? "Error al pre-evaluar el proyecto");
+        return;
+      }
+
+      setPreEvalResult(json as PreEvalResult);
+    } catch {
+      setAiError("Error de conexión al pre-evaluar el proyecto");
+    } finally {
+      setPreEvalLoading(false);
+    }
   }
 
   function getEtapaStatus(etapa: MgaEtapa): "empty" | "partial" | "complete" {
@@ -346,6 +408,14 @@ export function WizardClient({
           </div>
         </div>
 
+        {/* Pre-evaluation overlay */}
+        {preEvalResult && (
+          <PreEvaluationPanel
+            result={preEvalResult}
+            onClose={() => setPreEvalResult(null)}
+          />
+        )}
+
         {/* Navigation buttons */}
         <div className="mt-4 flex items-center justify-between">
           <button
@@ -355,9 +425,41 @@ export function WizardClient({
           >
             &larr; Anterior
           </button>
-          <span className="text-xs text-text-muted">
-            Etapa {currentEtapaIndex + 1} de {etapas.length}
-          </span>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-text-muted">
+              Etapa {currentEtapaIndex + 1} de {etapas.length}
+            </span>
+            <button
+              type="button"
+              onClick={requestPreEvaluation}
+              disabled={progress < 30 || preEvalLoading}
+              className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-purple-200 bg-purple-50 px-3 py-2 text-[13px] font-medium text-purple-700 transition hover:bg-purple-100 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {preEvalLoading ? (
+                <>
+                  <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-purple-300 border-t-purple-700" />
+                  Pre-evaluando...
+                </>
+              ) : (
+                <>
+                  <svg
+                    className="h-3.5 w-3.5"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z"
+                    />
+                  </svg>
+                  Pre-evaluar
+                </>
+              )}
+            </button>
+          </div>
           <button
             onClick={() => goToEtapa(currentEtapaIndex + 1)}
             disabled={currentEtapaIndex === etapas.length - 1}
@@ -604,4 +706,196 @@ function FieldInput({
         />
       );
   }
+}
+
+// ============================================================
+// Pre-Evaluation Panel
+// ============================================================
+
+function ScoreBar({ score, max }: { score: number; max: number }) {
+  const pct = max > 0 ? (score / max) * 100 : 0;
+  return (
+    <div className="flex items-center gap-2">
+      <div className="h-2 w-20 overflow-hidden rounded-full bg-purple-100">
+        <div
+          className={`h-full rounded-full transition-all ${
+            pct >= 75
+              ? "bg-emerald-500"
+              : pct >= 50
+                ? "bg-amber-500"
+                : "bg-red-400"
+          }`}
+          style={{ width: `${pct}%` }}
+        />
+      </div>
+      <span className="text-xs tabular-nums text-text-muted">
+        {score}/{max}
+      </span>
+    </div>
+  );
+}
+
+function PreEvaluationPanel({
+  result,
+  onClose,
+}: {
+  result: PreEvalResult;
+  onClose: () => void;
+}) {
+  const scorePct = Math.round(result.total_score);
+
+  return (
+    <div className="mt-4 rounded-[14px] border border-purple-200 bg-purple-50/50">
+      {/* Header */}
+      <div className="flex items-center justify-between border-b border-purple-100 px-5 py-3">
+        <div className="flex items-center gap-2">
+          <svg
+            className="h-4 w-4 text-purple-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z"
+            />
+          </svg>
+          <span className="text-sm font-semibold text-purple-800">
+            Pre-evaluacion de tu proyecto
+          </span>
+        </div>
+        <div className="flex items-center gap-3">
+          {result._meta && (
+            <span className="text-[10px] text-purple-400">
+              {result._meta.model} &middot;{" "}
+              {(result._meta.duration_ms / 1000).toFixed(1)}s
+            </span>
+          )}
+          <button
+            onClick={onClose}
+            className="text-purple-400 hover:text-purple-600"
+          >
+            <svg
+              className="h-4 w-4"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth={1.5}
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M6 18 18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      {/* Total score */}
+      <div className="border-b border-purple-100 px-5 py-3">
+        <div className="flex items-center gap-3">
+          <span className="text-sm font-medium text-purple-700">
+            Score estimado:
+          </span>
+          <div className="flex flex-1 items-center gap-2">
+            <div className="h-3 flex-1 overflow-hidden rounded-full bg-purple-100">
+              <div
+                className={`h-full rounded-full transition-all ${
+                  scorePct >= 75
+                    ? "bg-emerald-500"
+                    : scorePct >= 50
+                      ? "bg-amber-500"
+                      : "bg-red-400"
+                }`}
+                style={{ width: `${scorePct}%` }}
+              />
+            </div>
+            <span className="text-sm font-bold tabular-nums text-purple-800">
+              {scorePct}/100
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* Etapas breakdown */}
+      <div className="divide-y divide-purple-100 px-5">
+        {result.etapas.map((etapa) => (
+          <div key={etapa.etapa_id} className="py-3">
+            <div className="mb-2 flex items-center justify-between">
+              <span className="text-[13px] font-semibold text-text-primary">
+                {etapa.etapa_nombre}
+              </span>
+              <span
+                className={`text-xs font-bold tabular-nums ${
+                  etapa.score >= 75
+                    ? "text-emerald-600"
+                    : etapa.score >= 50
+                      ? "text-amber-600"
+                      : "text-red-500"
+                }`}
+              >
+                {Math.round(etapa.score)}/100
+              </span>
+            </div>
+            <div className="space-y-2 pl-3">
+              {etapa.scores.map((s) => (
+                <div key={s.campo_id}>
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-xs text-text-secondary">
+                      {s.campo_nombre}
+                    </span>
+                    <ScoreBar score={s.score} max={s.max_score} />
+                  </div>
+                  <p className="mt-0.5 text-[11px] text-text-muted">
+                    {s.justificacion}
+                  </p>
+                  {s.recomendacion && (
+                    <p className="mt-0.5 text-[11px] text-amber-700">
+                      &#9888; {s.recomendacion}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Recomendaciones generales */}
+      {result.recomendaciones_generales.length > 0 && (
+        <div className="border-t border-purple-100 px-5 py-3">
+          <p className="mb-2 text-[10px] font-semibold uppercase tracking-wider text-purple-500">
+            Recomendaciones principales
+          </p>
+          <ol className="list-inside list-decimal space-y-1">
+            {result.recomendaciones_generales.map((rec, i) => (
+              <li key={i} className="text-xs text-text-secondary">
+                {rec}
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
+      {/* Resumen */}
+      {result.resumen && (
+        <div className="border-t border-purple-100 px-5 py-3">
+          <p className="text-xs text-purple-700">{result.resumen}</p>
+        </div>
+      )}
+
+      {/* Close button */}
+      <div className="border-t border-purple-100 px-5 py-3">
+        <button
+          onClick={onClose}
+          className="rounded-[var(--radius-button)] border border-border px-3 py-1.5 text-xs font-medium text-text-secondary hover:bg-bg-hover transition-colors"
+        >
+          Cerrar
+        </button>
+      </div>
+    </div>
+  );
 }

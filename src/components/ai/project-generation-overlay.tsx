@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface GenerationStep {
   step_number: number;
@@ -29,6 +29,17 @@ export function ProjectGenerationOverlay({
   const [completedSteps, setCompletedSteps] = useState<GenerationStep[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // ESC to close (only when not generating)
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape" && !generating) onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    dialogRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose, generating]);
 
   const startGeneration = useCallback(async () => {
     setGenerating(true);
@@ -111,8 +122,16 @@ export function ProjectGenerationOverlay({
     totalSteps > 0 ? (completedSteps.length / totalSteps) * 100 : 0;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-[14px] border border-border bg-bg-card shadow-2xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm" onClick={() => !generating && onClose()}>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Generacion de proyecto"
+        tabIndex={-1}
+        className="w-full max-w-lg rounded-[14px] border border-border bg-bg-card shadow-2xl outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="border-b border-border px-6 py-4">
           <h3 className="text-sm font-semibold text-text-primary">

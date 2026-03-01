@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 interface ImprovementStep {
   campo_id: string;
@@ -35,6 +35,17 @@ export function ImprovementWizard({
   const [pointsGained, setPointsGained] = useState(0);
   const [improving, setImproving] = useState(false);
   const [improvedText, setImprovedText] = useState<string | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
+
+  // ESC to close + focus trap
+  useEffect(() => {
+    function handleKeyDown(e: KeyboardEvent) {
+      if (e.key === "Escape") onClose();
+    }
+    document.addEventListener("keydown", handleKeyDown);
+    dialogRef.current?.focus();
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [onClose]);
 
   // Sort by impact desc
   const sortedSteps = [...steps].sort((a, b) => b.impact - a.impact);
@@ -86,8 +97,8 @@ export function ImprovementWizard({
 
   if (!step) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-        <div className="w-full max-w-lg rounded-[14px] bg-bg-card p-6 shadow-xl">
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
+        <div className="w-full max-w-lg rounded-[14px] bg-bg-card p-6 shadow-xl" role="dialog" aria-modal="true" onClick={(e) => e.stopPropagation()}>
           <p className="text-center text-sm text-text-primary">
             No hay mejoras pendientes.
           </p>
@@ -103,8 +114,16 @@ export function ImprovementWizard({
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="w-full max-w-2xl rounded-[14px] border border-border bg-bg-card shadow-xl">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50" onClick={onClose}>
+      <div
+        ref={dialogRef}
+        role="dialog"
+        aria-modal="true"
+        aria-label="Wizard de mejora"
+        tabIndex={-1}
+        className="w-full max-w-2xl rounded-[14px] border border-border bg-bg-card shadow-xl outline-none"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex items-center justify-between border-b border-border px-6 py-4">
           <div>

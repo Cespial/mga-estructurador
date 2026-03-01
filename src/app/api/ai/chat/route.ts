@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAnthropicAdapter } from "@/lib/ai/adapter";
 import { createSSEStream } from "@/lib/ai/stream-adapter";
 import { retrieveContext } from "@/lib/ai/retrieval";
+import { parseChatActions, stripChatActions } from "@/lib/ai/chat-actions-parser";
 import type { LlmMessage } from "@/lib/ai/adapter";
 import type {
   Project,
@@ -181,14 +182,22 @@ export async function POST(request: Request) {
             }
           }
         },
-        async flush() {
-          // Save the assistant message after stream completes
+        async flush(controller) {
+          // Parse chat actions from the full response
+          const actions = parseChatActions(fullResponse);
+          if (actions.length > 0) {
+            const actionsEvent = `event: actions\ndata: ${JSON.stringify({ actions })}\n\n`;
+            controller.enqueue(new TextEncoder().encode(actionsEvent));
+          }
+
+          // Save the assistant message (without action tags) after stream completes
           if (fullResponse) {
+            const cleanContent = stripChatActions(fullResponse);
             const saveSupabase = await createClient();
             await saveSupabase.from("ai_chat_messages").insert({
               project_id,
               role: "assistant" as const,
-              content: fullResponse,
+              content: cleanContent,
               step_number,
               created_at: new Date().toISOString(),
             });
@@ -208,9 +217,11 @@ export async function POST(request: Request) {
     } catch (err) {
       // Fallback to non-streaming if streaming fails
       const llmResponse = await adapter.chat(messages);
-      const assistantContent = llmResponse.content;
+      const rawContent = llmResponse.content;
+      const actions = parseChatActions(rawContent);
+      const assistantContent = stripChatActions(rawContent);
 
-      // Save assistant message
+      // Save assistant message (clean, without action tags)
       await supabase.from("ai_chat_messages").insert({
         project_id,
         role: "assistant" as const,
@@ -222,6 +233,7 @@ export async function POST(request: Request) {
       return NextResponse.json({
         role: "assistant",
         content: assistantContent,
+        actions: actions.length > 0 ? actions : undefined,
         model: llmResponse.model,
       });
     }
@@ -268,7 +280,10 @@ REGLAS IMPORTANTES:
 - No inventes datos numericos (presupuestos, poblacion) -- pide al usuario que confirme.
 - Usa un tono amigable pero profesional, tutea al usuario.
 - Tus respuestas deben ser concisas (maximo 3-4 parrafos) a menos que el usuario pida algo mas elaborado.
-- Si citas informacion de los documentos de la convocatoria, menciona la fuente.`);
+- Si citas informacion de los documentos de la convocatoria, menciona la fuente.
+- Si el usuario te pide que modifiques un campo del formulario directamente, incluye en tu respuesta una directiva asi:
+  [FIELD_UPDATE field_id="<id_del_campo>" value="<nuevo_valor>"]
+  donde <id_del_campo> es el ID del campo (no el label) y <nuevo_valor> es el texto propuesto. El sistema detectara esta directiva y le pedira confirmacion al usuario antes de aplicar el cambio. Puedes incluir varias directivas en una sola respuesta si el usuario pide cambios en multiples campos.`);
 
   // Convocatoria context
   if (convocatoria) {

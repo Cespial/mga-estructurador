@@ -81,9 +81,9 @@ CREATE POLICY "scoring_update_scoring_jobs" ON scoring_jobs
 -- Performance indexes for common query patterns
 -- ============================================================
 
--- Projects: lookup by user_id + status (dashboard queries)
-CREATE INDEX IF NOT EXISTS idx_projects_user_status
-  ON projects (user_id, status);
+-- Projects: lookup by organization + status (dashboard queries)
+CREATE INDEX IF NOT EXISTS idx_projects_org_status
+  ON projects (organization_id, status);
 
 -- Projects: lookup by convocatoria (entity admin views)
 CREATE INDEX IF NOT EXISTS idx_projects_convocatoria

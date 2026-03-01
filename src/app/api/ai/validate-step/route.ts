@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { retrieveContext } from "@/lib/ai/retrieval";
+import { validateStepSchema, parseBody } from "@/lib/ai/validation";
 import type {
   Convocatoria,
   MgaTemplate,
@@ -29,18 +30,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  let body: {
-    convocatoria_id: string;
-    submission_id: string;
-    etapa_id: string;
-  };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Request body invalido" }, { status: 400 });
+  const parsed = await parseBody(request, validateStepSchema);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  const { convocatoria_id, submission_id, etapa_id } = body;
+  const { convocatoria_id, submission_id, etapa_id } = parsed.data;
   const supabase = await createClient();
 
   // Fetch convocatoria + template

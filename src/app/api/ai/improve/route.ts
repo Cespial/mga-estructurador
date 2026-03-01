@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { retrieveContext } from "@/lib/ai/retrieval";
+import { improveSchema, parseBody } from "@/lib/ai/validation";
 
 export interface TextChange {
   type: "added" | "reworded" | "removed";
@@ -22,27 +23,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  let body: {
-    texto_actual: string;
-    campo_nombre: string;
-    campo_descripcion: string;
-    convocatoria_id?: string;
-    recomendacion?: string;
-  };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Request body invalido" }, { status: 400 });
+  const parsed = await parseBody(request, improveSchema);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  const { texto_actual, campo_nombre, campo_descripcion, convocatoria_id, recomendacion } = body;
-
-  if (!texto_actual || !campo_nombre) {
-    return NextResponse.json(
-      { error: "Faltan campos: texto_actual, campo_nombre" },
-      { status: 400 },
-    );
-  }
+  const { texto_actual, campo_nombre, campo_descripcion, convocatoria_id, recomendacion } = parsed.data;
 
   // Optional RAG context
   let ragContext = "";

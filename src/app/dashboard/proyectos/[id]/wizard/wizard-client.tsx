@@ -5,6 +5,9 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
+import { HealthScoreWidget } from "@/components/ai/health-score-widget";
+import { ProjectGenerationOverlay } from "@/components/ai/project-generation-overlay";
+import { useProjectHealth } from "@/lib/hooks/use-project-health";
 import { saveWizardStep, submitProject } from "./actions";
 import type {
   Project,
@@ -95,6 +98,9 @@ export function WizardClient({
   const chatEndRef = useRef<HTMLDivElement>(null);
   const chatInputRef = useRef<HTMLInputElement>(null);
 
+  /* ── Generation overlay state ──────────────────────── */
+  const [showGenerationOverlay, setShowGenerationOverlay] = useState(false);
+
   /* ── Derived ───────────────────────────────────────── */
   const step = wizardSteps[currentStep];
   const stepData = allFormData[step.step_number] ?? {};
@@ -102,6 +108,15 @@ export function WizardClient({
   const isFirstStep = currentStep === 0;
   const isLastStep = currentStep === totalSteps - 1;
   const completedSteps = projectForms.filter((f) => f.completed).length;
+
+  /* ── Health score ────────────────────────────────── */
+  const requiredFieldIds = step.fields.filter((f) => f.required).map((f) => f.id);
+  const { score: healthScore, tip: healthTip } = useProjectHealth(
+    stepData,
+    requiredFieldIds,
+    step.step_name,
+    project.title ?? "Proyecto",
+  );
 
   /* ── Scroll chat to bottom on new messages ─────────── */
   useEffect(() => {
@@ -373,6 +388,25 @@ export function WizardClient({
       setActiveAiFieldId(null);
     },
     [activeAiFieldId, handleFieldChange]
+  );
+
+  /* ── Handle generation overlay completion ──────────── */
+  const handleGenerationComplete = useCallback(
+    (steps: { step_number: number; step_name: string; data: Record<string, string> }[]) => {
+      // Load generated data into form state
+      setAllFormData((prev) => {
+        const updated = { ...prev };
+        for (const generated of steps) {
+          updated[generated.step_number] = {
+            ...(updated[generated.step_number] ?? {}),
+            ...generated.data,
+          };
+        }
+        return updated;
+      });
+      setShowGenerationOverlay(false);
+    },
+    [],
   );
 
   /* ── Render field ──────────────────────────────────── */
@@ -665,6 +699,16 @@ export function WizardClient({
               </div>
             )}
           </div>
+          <button
+            type="button"
+            onClick={() => setShowGenerationOverlay(true)}
+            className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-purple-200 bg-purple-50 px-2.5 py-1.5 text-xs font-medium text-purple-700 hover:bg-purple-100 transition-colors"
+          >
+            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z" />
+            </svg>
+            Generar proyecto
+          </button>
           <Badge variant="accent">
             Paso {currentStep + 1} de {totalSteps}
           </Badge>
@@ -946,6 +990,19 @@ export function WizardClient({
           </div>
         </div>
       </div>
+
+      {/* Health score floating widget */}
+      <HealthScoreWidget score={healthScore} tip={healthTip} />
+
+      {/* Project generation overlay */}
+      {showGenerationOverlay && (
+        <ProjectGenerationOverlay
+          projectId={project.id}
+          totalSteps={totalSteps}
+          onComplete={handleGenerationComplete}
+          onClose={() => setShowGenerationOverlay(false)}
+        />
+      )}
     </div>
   );
 }

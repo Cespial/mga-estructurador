@@ -49,6 +49,11 @@ export async function POST(request: Request) {
     );
   }
 
+  // Verify ownership
+  if (project.user_id !== profile.id) {
+    return NextResponse.json({ error: "No autorizado para este proyecto" }, { status: 403 });
+  }
+
   const { data: conv } = await supabase
     .from("convocatorias_v2")
     .select("*")

@@ -72,6 +72,8 @@ export function NotificationBell() {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
+        aria-label={`Notificaciones${unreadCount > 0 ? ` (${unreadCount} sin leer)` : ""}`}
+        aria-expanded={isOpen}
         className="relative rounded-[var(--radius-button)] p-2 text-text-muted hover:bg-bg-hover hover:text-text-secondary transition-colors"
       >
         <svg

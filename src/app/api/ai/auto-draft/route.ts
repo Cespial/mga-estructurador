@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { createSSEStream } from "@/lib/ai/stream-adapter";
 import { retrieveContext } from "@/lib/ai/retrieval";
+import { autoDraftSchema, parseBody } from "@/lib/ai/validation";
 import type {
   Convocatoria,
   MgaTemplate,
@@ -24,27 +25,25 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  let body: {
-    convocatoria_id: string;
-    submission_id: string;
-    etapa_id: string;
-  };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Request body invalido" }, { status: 400 });
+  const parsed = await parseBody(request, autoDraftSchema);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  const { convocatoria_id, submission_id, etapa_id } = body;
-
-  if (!convocatoria_id || !submission_id || !etapa_id) {
-    return NextResponse.json(
-      { error: "Faltan campos: convocatoria_id, submission_id, etapa_id" },
-      { status: 400 },
-    );
-  }
+  const { convocatoria_id, submission_id, etapa_id } = parsed.data;
 
   const supabase = await createClient();
+
+  // Verify ownership of submission
+  const { data: subCheck } = await supabase
+    .from("submissions")
+    .select("municipio_id")
+    .eq("id", submission_id)
+    .single();
+
+  if (!subCheck || subCheck.municipio_id !== profile.municipio_id) {
+    return NextResponse.json({ error: "No autorizado para este submission" }, { status: 403 });
+  }
 
   // Fetch convocatoria + template
   const { data: conv } = await supabase
@@ -207,9 +206,14 @@ Genera contenido para TODOS los campos vacios listados. Responde UNICAMENTE con 
 
     let draftFields: Record<string, string>;
     try {
-      draftFields = JSON.parse(llmResponse.content);
+      const jsonMatch = llmResponse.content.match(/\{[\s\S]*\}/);
+      if (!jsonMatch) throw new Error("No JSON found");
+      draftFields = JSON.parse(jsonMatch[0]);
     } catch {
-      draftFields = {};
+      return NextResponse.json(
+        { error: "La IA no genero un JSON valido. Intenta de nuevo.", raw: llmResponse.content.slice(0, 500) },
+        { status: 502 },
+      );
     }
 
     return NextResponse.json({

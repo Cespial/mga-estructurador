@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { getProfile } from "@/lib/auth";
-import { createLlmAdapter } from "@/lib/ai/adapter";
+import { nudgeSchema, parseBody } from "@/lib/ai/validation";
 
 /**
  * POST /api/ai/nudge
@@ -16,23 +16,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  let body: {
-    campo_nombre: string;
-    campo_descripcion: string;
-    texto_actual: string;
-    criterio_rubrica?: string;
-  };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Request body invalido" }, { status: 400 });
-  }
-
-  const { campo_nombre, campo_descripcion, texto_actual, criterio_rubrica } = body;
-
-  if (!campo_nombre || !texto_actual) {
+  const parsed = await parseBody(request, nudgeSchema);
+  if (!parsed.success) {
     return NextResponse.json({ nudge: null });
   }
+
+  const { campo_nombre, campo_descripcion, texto_actual, criterio_rubrica } = parsed.data;
 
   // Skip nudge for very short text (user is still typing)
   if (texto_actual.length < 15) {

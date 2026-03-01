@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
 import type { ConvocatoriaMunicipioWithConvocatoria, ConvocatoriaEstado } from "@/lib/types/database";
+import { ConvocatoriaRecommendations } from "@/components/ai/convocatoria-recommendations";
 
 const estadoBadge: Record<ConvocatoriaEstado, string> = {
   borrador: "bg-bg-app text-text-muted",
@@ -58,6 +59,9 @@ export default async function MunicipioDashboard() {
           </p>
         </div>
       </div>
+
+      {/* AI-recommended convocatorias */}
+      <ConvocatoriaRecommendations />
 
       {items.length === 0 ? (
         <div className="rounded-[8px] border border-dashed border-border p-8 text-center">

@@ -110,7 +110,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
   }
 
   return (
-    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col bg-bg-sidebar">
+    <aside className="fixed left-0 top-0 z-40 flex h-screen w-[260px] flex-col bg-bg-sidebar" aria-label="Navegacion principal">
       {/* Logo area */}
       <div className="flex items-center gap-2.5 px-5 py-5">
         <div className="flex h-8 w-8 items-center justify-center rounded-[8px] bg-accent">
@@ -124,7 +124,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-7 overflow-y-auto px-3 pt-2 pb-4">
+      <nav className="flex-1 space-y-7 overflow-y-auto px-3 pt-2 pb-4" role="navigation">
         <div>
           <p className="mb-2.5 px-3 text-[11px] font-medium uppercase tracking-[0.08em] text-sidebar-text-muted">
             Principal

@@ -18,15 +18,26 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "project_id requerido" }, { status: 400 });
     }
 
-    // Fetch project
+    // Verify user has an organization
+    const { data: org } = await supabase
+      .from("organizations")
+      .select("id")
+      .eq("owner_id", user.id)
+      .maybeSingle();
+
+    // Fetch project and verify ownership
     const { data: project, error: projectError } = await supabase
       .from("projects")
-      .select("id, convocatoria_id, status")
+      .select("id, convocatoria_id, status, organization_id")
       .eq("id", projectId)
       .single();
 
     if (projectError || !project) {
       return NextResponse.json({ error: "Proyecto no encontrado" }, { status: 404 });
+    }
+
+    if (org && project.organization_id !== org.id) {
+      return NextResponse.json({ error: "No autorizado para este proyecto" }, { status: 403 });
     }
 
     // Fetch rubric for the convocatoria

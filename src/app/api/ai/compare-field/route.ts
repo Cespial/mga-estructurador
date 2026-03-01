@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { findSimilarSubmissions } from "@/lib/ai/project-embedding";
+import { compareFieldSchema, parseBody } from "@/lib/ai/validation";
 
 /**
  * POST /api/ai/compare-field
@@ -19,21 +20,12 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "No autenticado" }, { status: 401 });
   }
 
-  let body: {
-    convocatoria_id: string;
-    submission_id: string;
-    etapa_id: string;
-    campo_id: string;
-    campo_nombre: string;
-    current_value: string;
-  };
-  try {
-    body = await request.json();
-  } catch {
-    return NextResponse.json({ error: "Request body invalido" }, { status: 400 });
+  const parsed = await parseBody(request, compareFieldSchema);
+  if (!parsed.success) {
+    return NextResponse.json({ error: parsed.error }, { status: parsed.status });
   }
 
-  const { convocatoria_id, submission_id, etapa_id, campo_id, campo_nombre, current_value } = body;
+  const { convocatoria_id, submission_id, etapa_id, campo_id, campo_nombre, current_value } = parsed.data;
   const supabase = await createClient();
 
   // Find similar submissions (excluding current one)

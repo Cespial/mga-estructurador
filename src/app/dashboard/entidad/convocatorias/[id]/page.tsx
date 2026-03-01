@@ -106,6 +106,7 @@ export default async function ConvocatoriaDetailPage({
           { href: `monitoreo`, label: "Avance promedio", value: municipiosAsignados.length > 0 ? Math.round(municipiosAsignados.reduce((acc, m) => acc + m.progress, 0) / municipiosAsignados.length) + "%" : "—", sub: "ver monitoreo" },
           { href: `documentos`, label: "Documentos", value: documents.length, sub: documents.length === 0 ? "Subir documentos" : `${readyDocs} procesado${readyDocs !== 1 ? "s" : ""}` },
           { href: `rubricas`, label: "Rubrica", value: criteriosCount, sub: criteriosCount === 0 ? "Definir criterios" : `criterio${criteriosCount !== 1 ? "s" : ""} definido${criteriosCount !== 1 ? "s" : ""}` },
+          { href: `informe`, label: "Informe IA", value: "AI", sub: "Generar reporte ejecutivo" },
         ].map((stat) => (
           <Link
             key={stat.href}

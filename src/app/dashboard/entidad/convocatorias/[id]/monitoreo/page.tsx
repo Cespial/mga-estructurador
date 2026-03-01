@@ -14,6 +14,7 @@ import type {
 import { toRow, toRows } from "@/lib/supabase/helpers";
 import { MonitoreoTable } from "./monitoreo-table";
 import { HelpButton } from "@/components/help-button";
+import { PerformanceHeatmap } from "@/components/ai/performance-heatmap";
 
 export default async function MonitoreoPage({
   params,
@@ -195,11 +196,23 @@ export default async function MonitoreoPage({
           </p>
         </div>
       ) : (
-        <MonitoreoTable
-          rows={rows}
-          etapas={etapas.map((e) => ({ id: e.id, nombre: e.nombre }))}
-          hasRubric={hasRubric}
-        />
+        <>
+          <MonitoreoTable
+            rows={rows}
+            etapas={etapas.map((e) => ({ id: e.id, nombre: e.nombre }))}
+            hasRubric={hasRubric}
+          />
+
+          {/* Performance heatmap */}
+          {hasRubric && (
+            <div className="mt-8">
+              <p className="text-[11px] font-medium uppercase tracking-[0.08em] text-text-muted mb-4">
+                Heatmap de desempeno
+              </p>
+              <PerformanceHeatmap convocatoriaId={id} />
+            </div>
+          )}
+        </>
       )}
     </div>
   );

@@ -2,6 +2,7 @@
 
 import { type ReactNode } from "react";
 import { Sidebar } from "@/components/sidebar";
+import { NotificationBell } from "@/components/notification-bell";
 
 interface DashboardShellProps {
   children: ReactNode;
@@ -24,9 +25,12 @@ export function DashboardShell({ children, userName, userEmail, orgType }: Dashb
               {orgType === "entity" ? "Entidad" : orgType === "municipality" ? "Municipio" : "Overview"}
             </span>
           </div>
-          <div className="flex items-center gap-2.5">
-            <div className="h-2 w-2 rounded-full bg-success" />
-            <span className="text-[12px] text-text-muted">Conectado</span>
+          <div className="flex items-center gap-3">
+            <NotificationBell />
+            <div className="flex items-center gap-2">
+              <div className="h-2 w-2 rounded-full bg-success" />
+              <span className="text-[12px] text-text-muted">Conectado</span>
+            </div>
           </div>
         </header>
         <div className="px-8 py-8">{children}</div>

@@ -6,7 +6,7 @@ import { WizardClient } from "./wizard-client";
 import type {
   Project,
   ProjectForm,
-  PolytechConvocatoria,
+  PuBlitecConvocatoria,
   AiChatMessage,
   WizardStepDefinition,
 } from "@/lib/types/database";
@@ -56,7 +56,7 @@ export default async function WizardPage({
     .eq("id", proj.convocatoria_id)
     .single();
 
-  const conv = convocatoria as PolytechConvocatoria | null;
+  const conv = convocatoria as PuBlitecConvocatoria | null;
 
   // Determine wizard steps: use convocatoria form_schema or defaults
   const wizardSteps: WizardStepDefinition[] =

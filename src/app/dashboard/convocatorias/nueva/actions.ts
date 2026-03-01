@@ -3,7 +3,7 @@
 import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { createConvocatoriaV2Schema } from "@/lib/validators/polytech";
+import { createConvocatoriaV2Schema } from "@/lib/validators/publitec";
 
 export interface CreateConvocatoriaState {
   error?: string;

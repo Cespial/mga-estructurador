@@ -118,7 +118,7 @@ export function Sidebar({ userName, userEmail, orgType }: SidebarProps) {
         </div>
         <div>
           <span className="text-[15px] font-semibold text-sidebar-text">
-            Poly<span className="text-accent">tech</span>
+            PuBli<span className="text-accent">tec</span>
           </span>
         </div>
       </div>

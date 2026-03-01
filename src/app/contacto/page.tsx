@@ -3,9 +3,9 @@ import type { Metadata } from "next";
 import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
-  title: "Contacto — Polytech",
+  title: "Contacto — PuBlitec",
   description:
-    "Contactanos para implementar el Polytech en tu entidad territorial.",
+    "Contactanos para implementar el PuBlitec en tu entidad territorial.",
 };
 
 export default function ContactoPage() {
@@ -45,7 +45,7 @@ export default function ContactoPage() {
             Contacto
           </h1>
           <p className="mt-4 text-text-secondary">
-            Quieres implementar el Polytech en tu entidad? Cuentanos
+            Quieres implementar el PuBlitec en tu entidad? Cuentanos
             tu caso y te orientamos.
           </p>
         </div>
@@ -98,7 +98,7 @@ export default function ContactoPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-bg-app px-4 py-8">
         <div className="mx-auto max-w-6xl text-center text-[13px] text-text-muted">
-          <p>Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
+          <p>PuBlitec &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
           <div className="mt-2 flex items-center justify-center gap-4 text-[11px]">
             <Link href="/" className="hover:text-text-secondary">Inicio</Link>
             <Link href="/casos" className="hover:text-text-secondary">Casos</Link>

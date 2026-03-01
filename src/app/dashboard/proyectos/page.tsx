@@ -6,10 +6,10 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import type { Project, PolytechConvocatoria } from "@/lib/types/database";
+import type { Project, PuBlitecConvocatoria } from "@/lib/types/database";
 
 interface ProjectWithConvocatoria extends Project {
-  convocatorias_v2: Pick<PolytechConvocatoria, "id" | "name"> | null;
+  convocatorias_v2: Pick<PuBlitecConvocatoria, "id" | "name"> | null;
 }
 
 export default async function ProyectosPage() {

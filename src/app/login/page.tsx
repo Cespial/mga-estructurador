@@ -17,7 +17,7 @@ export default async function LoginPage({
               <span className="text-lg font-bold text-white">P</span>
             </div>
             <span className="text-[22px] font-semibold text-text-primary">
-              Poly<span className="text-accent">tech</span>
+              PuBli<span className="text-accent">tec</span>
             </span>
           </Link>
           <p className="mt-3 text-[13px] text-text-muted">
@@ -100,7 +100,7 @@ export default async function LoginPage({
         </div>
 
         <p className="mt-6 text-center text-[11px] text-text-muted">
-          Al registrarte, aceptas los terminos de uso de Polytech.
+          Al registrarte, aceptas los terminos de uso de PuBlitec.
         </p>
       </div>
     </main>

@@ -38,7 +38,7 @@ export async function GET() {
     .eq("municipio_id", mun.id)
     .limit(5);
 
-  // Fetch open convocatorias (both MGA and Polytech)
+  // Fetch open convocatorias (both MGA and PuBlitec)
   const { data: mgaConvs } = await supabase
     .from("convocatorias")
     .select("id, nombre, descripcion, fecha_cierre, estado")
@@ -62,7 +62,7 @@ export async function GET() {
       nombre: c.name,
       descripcion: c.description ?? "",
       fecha_cierre: c.deadline,
-      tipo: "Polytech" as const,
+      tipo: "PuBlitec" as const,
     })),
   ];
 

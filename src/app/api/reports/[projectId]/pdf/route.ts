@@ -12,7 +12,7 @@ import type {
   Organization,
 } from "@/lib/types/database";
 
-// Polytech brand blue (EAFIT)
+// PuBlitec brand blue (EAFIT)
 const BRAND_BLUE: [number, number, number] = [37, 99, 235];
 const DARK_TEXT: [number, number, number] = [33, 33, 33];
 const GRAY_TEXT: [number, number, number] = [100, 100, 100];
@@ -370,7 +370,7 @@ export async function GET(
       doc.setFontSize(7);
       doc.setTextColor(150, 150, 150);
       doc.text(
-        `Polytech - Reporte generado automaticamente | Pagina ${i} de ${pageCount}`,
+        `PuBlitec - Reporte generado automaticamente | Pagina ${i} de ${pageCount}`,
         pageWidth / 2,
         doc.internal.pageSize.getHeight() - 8,
         { align: "center" },
@@ -386,7 +386,7 @@ export async function GET(
       status: 200,
       headers: {
         "Content-Type": "application/pdf",
-        "Content-Disposition": `attachment; filename="polytech-reporte-${projectId}.pdf"`,
+        "Content-Disposition": `attachment; filename="publitec-reporte-${projectId}.pdf"`,
       },
     });
   } catch (error) {

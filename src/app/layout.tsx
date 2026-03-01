@@ -9,11 +9,11 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Polytech — Plataforma de Convocatorias con IA",
+  title: "PuBlitec — Plataforma de Convocatorias con IA",
   description:
     "Plataforma donde entidades crean convocatorias con rubricas y municipios estructuran proyectos con asistencia de inteligencia artificial. Reportes Excel y PDF profesionales.",
   openGraph: {
-    title: "Polytech — Plataforma de Convocatorias con IA",
+    title: "PuBlitec — Plataforma de Convocatorias con IA",
     description:
       "Gestiona convocatorias, estructura proyectos con IA y genera reportes profesionales.",
     type: "website",

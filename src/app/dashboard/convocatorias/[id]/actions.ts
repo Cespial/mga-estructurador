@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { getProfile } from "@/lib/auth";
 import { createClient } from "@/lib/supabase/server";
-import { createRubricCriterionSchema } from "@/lib/validators/polytech";
+import { createRubricCriterionSchema } from "@/lib/validators/publitec";
 import type { ConvocatoriaStatus } from "@/lib/types/database";
 
 // ── Update Convocatoria Status ──

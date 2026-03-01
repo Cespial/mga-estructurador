@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardHeader, CardTitle } from "@/components/ui/card";
 import { EmptyState } from "@/components/ui/empty-state";
 import { ConvocatoriaDetailClient } from "./detail-client";
-import type { RubricCriterion, PolytechConvocatoria, Project, Rubric } from "@/lib/types/database";
+import type { RubricCriterion, PuBlitecConvocatoria, Project, Rubric } from "@/lib/types/database";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -62,7 +62,7 @@ export default async function ConvocatoriaDetailPage({ params }: PageProps) {
 
   return (
     <ConvocatoriaDetailClient
-      convocatoria={convocatoria as PolytechConvocatoria}
+      convocatoria={convocatoria as PuBlitecConvocatoria}
       rubric={rubric ?? null}
       criteria={criteria}
       projects={projectList}

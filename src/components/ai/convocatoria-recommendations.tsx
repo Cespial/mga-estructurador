@@ -6,7 +6,7 @@ import Link from "next/link";
 interface Recommendation {
   convocatoria_id: string;
   convocatoria_nombre: string;
-  convocatoria_tipo: "MGA" | "Polytech";
+  convocatoria_tipo: "MGA" | "PuBlitec";
   match_score: number;
   razon: string;
   probabilidad_exito: string;
@@ -83,7 +83,7 @@ export function ConvocatoriaRecommendations() {
               <div className="min-w-0 flex-1">
                 <Link
                   href={
-                    rec.convocatoria_tipo === "Polytech"
+                    rec.convocatoria_tipo === "PuBlitec"
                       ? `/dashboard/proyectos/aplicar/${rec.convocatoria_id}`
                       : `/dashboard/convocatorias/${rec.convocatoria_id}`
                   }

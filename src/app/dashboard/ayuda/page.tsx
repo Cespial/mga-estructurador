@@ -1,7 +1,7 @@
 import { HelpCenter } from "./help-center";
 
 export const metadata = {
-  title: "Ayuda — Polytech",
+  title: "Ayuda — PuBlitec",
 };
 
 export default function AyudaPage() {

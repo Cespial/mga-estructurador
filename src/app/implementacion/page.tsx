@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Plan de implementacion — Polytech",
+  title: "Plan de implementacion — PuBlitec",
   description:
-    "Checklist y pasos para implementar el Polytech en tu entidad territorial. Desde la configuracion inicial hasta la evaluacion y evidencia.",
+    "Checklist y pasos para implementar el PuBlitec en tu entidad territorial. Desde la configuracion inicial hasta la evaluacion y evidencia.",
 };
 
 export default function ImplementacionPage() {
@@ -44,7 +44,7 @@ export default function ImplementacionPage() {
             Plan de implementacion
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-text-secondary">
-            Pasos para poner en marcha el Polytech en tu entidad.
+            Pasos para poner en marcha el PuBlitec en tu entidad.
             Sin fechas fijas — cada entidad avanza a su ritmo.
           </p>
         </div>
@@ -197,7 +197,7 @@ export default function ImplementacionPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-bg-app px-4 py-8">
         <div className="mx-auto max-w-6xl text-center text-[13px] text-text-muted">
-          <p>Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
+          <p>PuBlitec &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
           <div className="mt-2 flex items-center justify-center gap-4 text-[11px]">
             <Link href="/" className="hover:text-text-secondary">Inicio</Link>
             <Link href="/casos" className="hover:text-text-secondary">Casos</Link>

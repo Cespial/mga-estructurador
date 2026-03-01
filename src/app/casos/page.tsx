@@ -2,9 +2,9 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Casos de uso — Polytech",
+  title: "Casos de uso — PuBlitec",
   description:
-    "Descubre como entidades territoriales usan el Polytech para gestionar convocatorias, evaluar proyectos y generar evidencia auditable.",
+    "Descubre como entidades territoriales usan el PuBlitec para gestionar convocatorias, evaluar proyectos y generar evidencia auditable.",
 };
 
 export default function CasosPage() {
@@ -44,7 +44,7 @@ export default function CasosPage() {
             Casos de uso
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-text-secondary">
-            Escenarios reales donde el Polytech aporta valor. Los datos
+            Escenarios reales donde el PuBlitec aporta valor. Los datos
             mostrados son representativos del funcionamiento de la plataforma.
           </p>
         </div>
@@ -141,7 +141,7 @@ export default function CasosPage() {
       {/* Footer */}
       <footer className="border-t border-border bg-bg-app px-4 py-8">
         <div className="mx-auto max-w-6xl text-center text-[13px] text-text-muted">
-          <p>Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
+          <p>PuBlitec &mdash; Plataforma de convocatorias con inteligencia artificial.</p>
           <div className="mt-2 flex items-center justify-center gap-4 text-[11px]">
             <Link href="/" className="hover:text-text-secondary">Inicio</Link>
             <Link href="/casos" className="hover:text-text-secondary">Casos</Link>

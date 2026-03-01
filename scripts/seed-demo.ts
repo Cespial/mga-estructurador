@@ -1,5 +1,5 @@
 /**
- * Seed script for Polytech demo.
+ * Seed script for PuBlitec demo.
  *
  * Creates demo users, organizations, convocatorias, rubrics, projects,
  * scores, and criteria scores for the Monday demo presentation.
@@ -124,7 +124,7 @@ async function createOrGetUser(email: string, password: string, fullName: string
 }
 
 async function main() {
-  console.log("=== Polytech Demo Seed ===\n");
+  console.log("=== PuBlitec Demo Seed ===\n");
 
   // ── 1. Create demo users ──
   console.log("1. Creating demo users...");

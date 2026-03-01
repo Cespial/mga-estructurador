@@ -2,11 +2,11 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Polytech — Gestiona convocatorias con inteligencia artificial",
+  title: "PuBlitec — Gestiona convocatorias con inteligencia artificial",
   description:
     "Plataforma donde entidades crean convocatorias con rubricas y municipios estructuran proyectos con asistencia IA. Reportes Excel y PDF profesionales con analisis de pre-factibilidad.",
   openGraph: {
-    title: "Polytech",
+    title: "PuBlitec",
     description: "Gestiona convocatorias con inteligencia artificial.",
     type: "website",
     locale: "es_CO",
@@ -24,7 +24,7 @@ export default function LandingPage() {
               <span className="text-sm font-bold text-white">P</span>
             </div>
             <span className="text-lg font-semibold text-text-primary">
-              Poly<span className="text-accent">tech</span>
+              PuBli<span className="text-accent">tec</span>
             </span>
           </div>
           <div className="flex items-center gap-6">
@@ -213,7 +213,7 @@ export default function LandingPage() {
               Instrucciones del Piloto
             </h2>
             <p className="mt-4 text-text-secondary max-w-2xl mx-auto">
-              Explora Polytech con cuentas de prueba. Hay dos roles principales: la
+              Explora PuBlitec con cuentas de prueba. Hay dos roles principales: la
               entidad que crea convocatorias y el municipio que estructura proyectos
               con asistencia IA.
             </p>
@@ -497,7 +497,7 @@ export default function LandingPage() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <div className="flex h-6 w-6 items-center justify-center rounded bg-accent text-xs font-bold text-white">P</div>
-              <span className="text-sm font-semibold text-text-secondary">Polytech</span>
+              <span className="text-sm font-semibold text-text-secondary">PuBlitec</span>
             </div>
             <div className="flex items-center gap-6 text-xs text-text-muted">
               <a href="#features" className="hover:text-text-secondary transition-colors">Funcionalidades</a>
@@ -507,7 +507,7 @@ export default function LandingPage() {
             </div>
           </div>
           <p className="mt-6 text-center text-xs text-text-muted">
-            Polytech &mdash; Plataforma de convocatorias con inteligencia artificial.
+            PuBlitec &mdash; Plataforma de convocatorias con inteligencia artificial.
           </p>
         </div>
       </footer>

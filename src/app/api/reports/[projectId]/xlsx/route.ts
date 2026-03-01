@@ -12,7 +12,7 @@ import type {
   ScoringJob,
 } from "@/lib/types/database";
 
-// Polytech brand blue (EAFIT)
+// PuBlitec brand blue (EAFIT)
 const BRAND_BLUE_ARGB = "FF2563EB";
 const WHITE_ARGB = "FFFFFFFF";
 const LIGHT_GRAY_ARGB = "FFF5F5F5";
@@ -117,7 +117,7 @@ export async function GET(
     // Build workbook
     // ------------------------------------------------------------------
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = "Polytech";
+    workbook.creator = "PuBlitec";
     workbook.created = new Date();
 
     // ====================== RESUMEN sheet ======================
@@ -425,7 +425,7 @@ export async function GET(
       headers: {
         "Content-Type":
           "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-        "Content-Disposition": `attachment; filename="polytech-reporte-${projectId}.xlsx"`,
+        "Content-Disposition": `attachment; filename="publitec-reporte-${projectId}.xlsx"`,
       },
     });
   } catch (error) {

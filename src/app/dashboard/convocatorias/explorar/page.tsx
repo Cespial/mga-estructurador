@@ -6,9 +6,9 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EmptyState } from "@/components/ui/empty-state";
-import type { PolytechConvocatoria, Organization } from "@/lib/types/database";
+import type { PuBlitecConvocatoria, Organization } from "@/lib/types/database";
 
-interface ConvocatoriaWithOrg extends PolytechConvocatoria {
+interface ConvocatoriaWithOrg extends PuBlitecConvocatoria {
   organizations: Pick<Organization, "id" | "name"> | null;
 }
 

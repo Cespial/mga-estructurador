@@ -1,3 +1,5 @@
+import { withRetry, fetchWithRetryInfo } from "./retry";
+
 export interface LlmMessage {
   role: "system" | "user" | "assistant";
   content: string;
@@ -11,6 +13,7 @@ export interface LlmResponse {
 
 export interface LlmAdapter {
   chat(messages: LlmMessage[]): Promise<LlmResponse>;
+  chatStream(messages: LlmMessage[]): Promise<ReadableStream<Uint8Array>>;
 }
 
 // ============================================================
@@ -29,36 +32,48 @@ export function createOpenAiAdapter(): LlmAdapter {
 // Anthropic adapter
 // ============================================================
 
+function getAnthropicConfig() {
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) {
+    throw new Error(
+      "ANTHROPIC_API_KEY no está configurada. Agrégala en .env.local o en Vercel.",
+    );
+  }
+  return {
+    apiKey,
+    model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6",
+    baseHeaders: {
+      "Content-Type": "application/json",
+      "x-api-key": apiKey,
+      "anthropic-version": "2023-06-01",
+    },
+  };
+}
+
 export function createAnthropicAdapter(): LlmAdapter {
   return {
     async chat(messages) {
-      const apiKey = process.env.ANTHROPIC_API_KEY;
-      if (!apiKey) {
-        throw new Error(
-          "ANTHROPIC_API_KEY no está configurada. Agrégala en .env.local o en Vercel.",
-        );
-      }
-
+      const config = getAnthropicConfig();
       const systemMsg = messages.find((m) => m.role === "system");
       const userMsgs = messages.filter((m) => m.role !== "system");
 
-      const response = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-          "anthropic-version": "2023-06-01",
-        },
-        body: JSON.stringify({
-          model: process.env.ANTHROPIC_MODEL ?? "claude-sonnet-4-6",
-          max_tokens: 2048,
-          system: systemMsg?.content ?? "",
-          messages: userMsgs.map((m) => ({
-            role: m.role,
-            content: m.content,
-          })),
-        }),
-      });
+      const response = await withRetry(
+        () =>
+          fetchWithRetryInfo("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: config.baseHeaders,
+            body: JSON.stringify({
+              model: config.model,
+              max_tokens: 2048,
+              system: systemMsg?.content ?? "",
+              messages: userMsgs.map((m) => ({
+                role: m.role,
+                content: m.content,
+              })),
+            }),
+          }),
+        { maxRetries: 3, baseMs: 1000 },
+      );
 
       const data = await response.json();
 
@@ -80,6 +95,44 @@ export function createAnthropicAdapter(): LlmAdapter {
           completion_tokens: data.usage?.output_tokens ?? 0,
         },
       };
+    },
+
+    async chatStream(messages) {
+      const config = getAnthropicConfig();
+      const systemMsg = messages.find((m) => m.role === "system");
+      const userMsgs = messages.filter((m) => m.role !== "system");
+
+      const response = await withRetry(
+        () =>
+          fetchWithRetryInfo("https://api.anthropic.com/v1/messages", {
+            method: "POST",
+            headers: config.baseHeaders,
+            body: JSON.stringify({
+              model: config.model,
+              max_tokens: 2048,
+              stream: true,
+              system: systemMsg?.content ?? "",
+              messages: userMsgs.map((m) => ({
+                role: m.role,
+                content: m.content,
+              })),
+            }),
+          }),
+        { maxRetries: 3, baseMs: 1000 },
+      );
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(
+          `Anthropic API error: ${(data as Record<string, Record<string, string>>).error?.message ?? response.statusText}`,
+        );
+      }
+
+      if (!response.body) {
+        throw new Error("No response body for streaming");
+      }
+
+      return response.body;
     },
   };
 }

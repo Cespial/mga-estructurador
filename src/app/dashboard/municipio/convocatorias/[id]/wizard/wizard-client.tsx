@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import type { MgaEtapa, MgaCampo } from "@/lib/types/database";
 import type { AiAssistResponse } from "@/lib/ai/schemas";
+import { useAiStream } from "@/lib/hooks/use-ai-stream";
 import { saveSubmissionData } from "./actions";
 
 interface PreEvalCampoScore {
@@ -63,12 +64,62 @@ export function WizardClient({
   );
 
   // AI assist state
-  const [aiLoading, setAiLoading] = useState<string | null>(null); // campo_id being loaded
+  const [aiActiveCampo, setAiActiveCampo] = useState<string | null>(null);
   const [aiResponse, setAiResponse] = useState<{
     campoId: string;
-    data: AiAssistResponse & { _meta?: { model: string; duration_ms: number } };
+    data: AiAssistResponse & {
+      _meta?: { model: string; duration_ms: number; cached?: boolean };
+    };
   } | null>(null);
   const [aiError, setAiError] = useState<string | null>(null);
+
+  // Streaming hook for AI assist
+  const aiStream = useAiStream({
+    onDone: (fullText, meta) => {
+      // Try to parse as JSON for structured response
+      if (aiActiveCampo) {
+        try {
+          const parsed = JSON.parse(fullText);
+          setAiResponse({
+            campoId: aiActiveCampo,
+            data: {
+              suggested_text: parsed.suggested_text ?? fullText,
+              bullets: parsed.bullets ?? [],
+              risks: parsed.risks ?? [],
+              missing_info_questions: parsed.missing_info_questions ?? [],
+              citations: parsed.citations ?? [],
+              confidence: parsed.confidence ?? null,
+              _meta: {
+                model: meta.model,
+                duration_ms: 0,
+                cached: meta.cached,
+              },
+            },
+          });
+        } catch {
+          setAiResponse({
+            campoId: aiActiveCampo,
+            data: {
+              suggested_text: fullText,
+              bullets: [],
+              risks: [],
+              missing_info_questions: [],
+              citations: [],
+              confidence: null,
+              _meta: {
+                model: meta.model,
+                duration_ms: 0,
+                cached: meta.cached,
+              },
+            },
+          });
+        }
+      }
+    },
+    onError: (message) => {
+      setAiError(message);
+    },
+  });
 
   // Pre-evaluation state
   const [preEvalLoading, setPreEvalLoading] = useState(false);
@@ -128,44 +179,27 @@ export function WizardClient({
     // Clear AI panel when changing etapa
     setAiResponse(null);
     setAiError(null);
+    setAiActiveCampo(null);
   }
 
   async function requestAiAssist(campo: MgaCampo) {
-    setAiLoading(campo.id);
+    setAiActiveCampo(campo.id);
     setAiError(null);
     setAiResponse(null);
 
-    try {
-      const res = await fetch("/api/ai/assist", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          convocatoria_id: convocatoriaId,
-          etapa_id: currentEtapa.id,
-          campo_id: campo.id,
-          current_text: data[campo.id] || undefined,
-        }),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        setAiError(json.error ?? "Error al consultar el asistente IA");
-        return;
-      }
-
-      setAiResponse({ campoId: campo.id, data: json });
-    } catch {
-      setAiError("Error de conexión al consultar el asistente IA");
-    } finally {
-      setAiLoading(null);
-    }
+    await aiStream.startStream("/api/ai/assist", {
+      convocatoria_id: convocatoriaId,
+      etapa_id: currentEtapa.id,
+      campo_id: campo.id,
+      current_text: data[campo.id] || undefined,
+    });
   }
 
   function applyAiSuggestion() {
     if (!aiResponse) return;
     handleFieldChange(aiResponse.campoId, aiResponse.data.suggested_text);
     setAiResponse(null);
+    setAiActiveCampo(null);
   }
 
   async function requestPreEvaluation() {
@@ -350,13 +384,13 @@ export function WizardClient({
                     <button
                       type="button"
                       onClick={() => requestAiAssist(campo)}
-                      disabled={aiLoading !== null}
+                      disabled={aiStream.isStreaming}
                       className="inline-flex items-center gap-1.5 rounded-md border border-purple-200 bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition hover:bg-purple-100 disabled:cursor-not-allowed disabled:opacity-50"
                     >
-                      {aiLoading === campo.id ? (
+                      {aiStream.isStreaming && aiActiveCampo === campo.id ? (
                         <>
                           <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-purple-300 border-t-purple-700" />
-                          Consultando...
+                          Generando...
                         </>
                       ) : (
                         <>
@@ -390,15 +424,35 @@ export function WizardClient({
                   onChange={(val) => handleFieldChange(campo.id, val)}
                 />
 
+                {/* Streaming text preview — shows while streaming */}
+                {aiStream.isStreaming && aiActiveCampo === campo.id && (
+                  <div className="mt-3 rounded-lg border border-purple-200 bg-purple-50/50 px-4 py-3">
+                    <div className="flex items-center gap-2 mb-2">
+                      <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-purple-500" />
+                      <span className="text-[10px] font-semibold uppercase tracking-wider text-purple-500">
+                        Generando respuesta...
+                      </span>
+                    </div>
+                    <div className="text-[13px] text-text-primary animate-shimmer-text">
+                      {aiStream.text || (
+                        <span className="text-purple-400">Pensando...</span>
+                      )}
+                    </div>
+                  </div>
+                )}
+
                 {/* AI Response Panel — inline below the field */}
                 {aiResponse && aiResponse.campoId === campo.id && (
                   <AiResponsePanel
                     response={aiResponse.data}
                     onApply={applyAiSuggestion}
-                    onDismiss={() => setAiResponse(null)}
+                    onDismiss={() => {
+                      setAiResponse(null);
+                      setAiActiveCampo(null);
+                    }}
                   />
                 )}
-                {aiError && aiLoading === null && aiResponse === null && (
+                {aiError && aiActiveCampo === campo.id && !aiStream.isStreaming && !aiResponse && (
                   <div className="mt-2 rounded-md bg-red-50 px-3 py-2 text-xs text-red-700">
                     {aiError}
                   </div>
@@ -474,6 +528,33 @@ export function WizardClient({
 }
 
 // ============================================================
+// Confidence Badge
+// ============================================================
+
+function ConfidenceBadge({ score }: { score: number | null | undefined }) {
+  if (score == null) return null;
+
+  const pct = Math.round(score * 100);
+  const color =
+    score > 0.8
+      ? "bg-emerald-100 text-emerald-700 border-emerald-200"
+      : score >= 0.5
+        ? "bg-amber-100 text-amber-700 border-amber-200"
+        : "bg-red-100 text-red-700 border-red-200";
+
+  return (
+    <span
+      className={`inline-flex items-center gap-1 rounded-full border px-2 py-0.5 text-[10px] font-semibold ${color}`}
+    >
+      <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {pct}% confianza
+    </span>
+  );
+}
+
+// ============================================================
 // AI Response Panel
 // ============================================================
 
@@ -483,7 +564,7 @@ function AiResponsePanel({
   onDismiss,
 }: {
   response: AiAssistResponse & {
-    _meta?: { model: string; duration_ms: number };
+    _meta?: { model: string; duration_ms: number; cached?: boolean };
   };
   onApply: () => void;
   onDismiss: () => void;
@@ -492,11 +573,22 @@ function AiResponsePanel({
     <div className="mt-3 rounded-lg border border-purple-200 bg-purple-50/50">
       {/* Header */}
       <div className="flex items-center justify-between border-b border-purple-100 px-4 py-2">
-        <span className="text-xs font-semibold text-purple-700">
-          Sugerencia del Asistente IA
-        </span>
         <div className="flex items-center gap-2">
-          {response._meta && (
+          <span className="text-xs font-semibold text-purple-700">
+            Sugerencia del Asistente IA
+          </span>
+          <ConfidenceBadge score={response.confidence} />
+          {response._meta?.cached && (
+            <span className="inline-flex items-center gap-1 rounded-full border border-blue-200 bg-blue-50 px-2 py-0.5 text-[10px] font-semibold text-blue-700">
+              <svg className="h-3 w-3" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+              </svg>
+              Respuesta instantanea
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-2">
+          {response._meta && !response._meta.cached && (
             <span className="text-[10px] text-purple-400">
               {response._meta.model} &middot;{" "}
               {(response._meta.duration_ms / 1000).toFixed(1)}s

@@ -4,6 +4,13 @@ import { useState } from "react";
 import type { RubricCriterio, RubricNivel, MgaEtapa } from "@/lib/types/database";
 import { saveRubric } from "./actions";
 
+interface SuggestedCriterio {
+  campo_id: string;
+  descripcion: string;
+  peso: number;
+  niveles: RubricNivel[];
+}
+
 interface RubricEditorProps {
   convocatoriaId: string;
   etapas: MgaEtapa[];
@@ -24,6 +31,7 @@ export function RubricEditor({
 }: RubricEditorProps) {
   const [criterios, setCriterios] = useState<RubricCriterio[]>(initialCriterios);
   const [saving, setSaving] = useState(false);
+  const [suggesting, setSuggesting] = useState(false);
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   // Flatten all campos with etapa info for selection
@@ -92,6 +100,61 @@ export function RubricEditor({
       setMessage({ type: "success", text: "Rúbrica guardada correctamente" });
     }
     setSaving(false);
+  }
+
+  async function handleSuggestWithAI() {
+    setSuggesting(true);
+    setMessage(null);
+    try {
+      const res = await fetch("/api/ai/suggest-rubric", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          convocatoria_id: convocatoriaId,
+          etapas: etapas.map((e) => ({
+            id: e.id,
+            nombre: e.nombre,
+            campos: e.campos.map((c) => ({ id: c.id, nombre: c.nombre })),
+          })),
+        }),
+      });
+
+      if (!res.ok) throw new Error("Error");
+
+      const data = await res.json();
+      const suggested = (data.criterios ?? []) as SuggestedCriterio[];
+
+      // Only add suggestions for campos that exist and don't already have criteria
+      const newCriterios: RubricCriterio[] = [];
+      for (const sc of suggested) {
+        const campo = allCampos.find((c) => c.id === sc.campo_id);
+        if (campo && !usedCampoIds.has(sc.campo_id)) {
+          newCriterios.push({
+            campo_id: sc.campo_id,
+            descripcion: sc.descripcion,
+            peso: sc.peso,
+            niveles: sc.niveles,
+          });
+        }
+      }
+
+      if (newCriterios.length > 0) {
+        setCriterios((prev) => [...prev, ...newCriterios]);
+        setMessage({
+          type: "success",
+          text: `IA sugirio ${newCriterios.length} criterio${newCriterios.length !== 1 ? "s" : ""}. Revisa y ajusta antes de guardar.`,
+        });
+      } else {
+        setMessage({
+          type: "success",
+          text: "La IA no encontro criterios nuevos para sugerir. Todos los campos relevantes ya tienen criterios.",
+        });
+      }
+    } catch {
+      setMessage({ type: "error", text: "Error al obtener sugerencias de IA" });
+    } finally {
+      setSuggesting(false);
+    }
   }
 
   // Calculate total weight
@@ -315,7 +378,7 @@ export function RubricEditor({
         </div>
       )}
 
-      {/* Save button */}
+      {/* Save button + AI suggest */}
       <div className="mt-6 flex items-center gap-3">
         <button
           onClick={handleSave}
@@ -323,6 +386,35 @@ export function RubricEditor({
           className="rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors disabled:opacity-50"
         >
           {saving ? "Guardando..." : "Guardar rúbrica"}
+        </button>
+        <button
+          onClick={handleSuggestWithAI}
+          disabled={suggesting}
+          className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-purple-300 bg-purple-50 px-4 py-2 text-[13px] font-medium text-purple-700 hover:bg-purple-100 transition-colors disabled:opacity-50"
+        >
+          {suggesting ? (
+            <>
+              <span className="inline-block h-3.5 w-3.5 animate-spin rounded-full border-2 border-purple-300 border-t-purple-600" />
+              Sugiriendo...
+            </>
+          ) : (
+            <>
+              <svg
+                className="h-3.5 w-3.5"
+                fill="none"
+                viewBox="0 0 24 24"
+                strokeWidth={1.5}
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09Z"
+                />
+              </svg>
+              Sugerir criterios con IA
+            </>
+          )}
         </button>
       </div>
     </div>

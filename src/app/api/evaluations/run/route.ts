@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
+import { retrieveContext } from "@/lib/ai/retrieval";
 import type {
   Submission,
   LegacyRubric as Rubric,
@@ -137,6 +138,18 @@ Responde SIEMPRE en formato JSON válido con esta estructura exacta:
 
       const maxScore = Math.max(...criterio.niveles.map((n) => n.score));
 
+      // RAG: retrieve reference documents for this criterion
+      let ragSection = "";
+      try {
+        const ragQuery = `${criterio.descripcion} ${campoNombre}`;
+        const ragChunks = await retrieveContext(submission.convocatoria_id, ragQuery, 3, 0.7);
+        if (ragChunks.length > 0) {
+          ragSection = `\n\n<documentos_referencia>\n${ragChunks.map((c, i) => `[${i + 1}] ${c.file_name}: ${c.chunk_text}`).join("\n\n")}\n</documentos_referencia>\n\nUsa estos documentos como referencia para evaluar si la respuesta es coherente con los requisitos de la convocatoria.`;
+        }
+      } catch {
+        // best-effort
+      }
+
       const userPrompt = `<criterio>
 Criterio: ${criterio.descripcion}
 Campo: ${campoNombre}
@@ -148,7 +161,7 @@ ${nivelesText}
 
 <respuesta_municipio>
 ${campoValue.trim() || "(Campo vacío — el municipio no ha respondido)"}
-</respuesta_municipio>
+</respuesta_municipio>${ragSection}
 
 Evalúa la respuesta del municipio según el criterio y los niveles definidos.
 Responde ÚNICAMENTE con el JSON especificado.`;

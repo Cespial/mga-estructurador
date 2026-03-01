@@ -57,6 +57,14 @@ export async function generateEmbeddings(
 }
 
 /**
+ * Generates a single embedding for a document text (input_type=document).
+ */
+export async function generateEmbedding(text: string): Promise<number[]> {
+  const results = await generateEmbeddings([text]);
+  return results[0];
+}
+
+/**
  * Generates a single embedding for a query string.
  */
 export async function generateQueryEmbedding(

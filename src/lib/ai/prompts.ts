@@ -15,8 +15,16 @@ Tu objetivo es ayudar a municipios a diligenciar correctamente los campos de una
   "bullets": ["punto clave 1", "punto clave 2"],
   "risks": ["riesgo identificado 1"],
   "missing_info_questions": ["pregunta 1 sobre info faltante"],
-  "citations": [{"source": "nombre_documento.pdf", "chunk_text": "texto relevante citado", "relevance_score": 0.85}]
+  "citations": [{"source": "nombre_documento.pdf", "chunk_text": "texto relevante citado", "relevance_score": 0.85}],
+  "confidence": 0.85
 }
+
+IMPORTANTE sobre el campo "confidence":
+- Es un número entre 0.0 y 1.0 que refleja tu nivel de confianza en la sugerencia.
+- 0.9-1.0: Muy alta confianza — la respuesta está directamente respaldada por documentos de la convocatoria.
+- 0.7-0.89: Alta confianza — la respuesta se basa en buenas prácticas y contexto sólido.
+- 0.5-0.69: Confianza media — la respuesta es razonable pero faltan datos específicos.
+- <0.5: Baja confianza — la respuesta es especulativa y necesita validación.
 
 Si recibes contexto de documentos (sección <contexto_rag>), utilízalo como fuente principal para tu respuesta y cita las fuentes en el campo "citations". Si no hay contexto de documentos, deja "citations" vacío.`;
 

@@ -1,6 +1,8 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAnthropicAdapter } from "@/lib/ai/adapter";
+import { createSSEStream } from "@/lib/ai/stream-adapter";
+import { retrieveContext } from "@/lib/ai/retrieval";
 import type { LlmMessage } from "@/lib/ai/adapter";
 import type {
   Project,
@@ -15,6 +17,7 @@ import type {
  *
  * AI chat assistant for the wizard. Helps municipalities fill out
  * project form fields by providing contextual guidance in Spanish.
+ * Now supports streaming (SSE) and RAG context from convocatoria documents.
  *
  * Body: { project_id: string, content: string, step_number: number }
  */
@@ -98,6 +101,19 @@ export async function POST(request: Request) {
       .limit(10);
 
     // ------------------------------------------------------------------
+    // 1b. RAG: retrieve relevant document chunks
+    // ------------------------------------------------------------------
+    let ragChunks: Awaited<ReturnType<typeof retrieveContext>> = [];
+    try {
+      const convocatoriaId = project.convocatoria_id;
+      if (convocatoriaId) {
+        ragChunks = await retrieveContext(convocatoriaId, content, 5, 0.7);
+      }
+    } catch {
+      // RAG is best-effort; continue without context if it fails
+    }
+
+    // ------------------------------------------------------------------
     // 2. Build system prompt
     // ------------------------------------------------------------------
     const stepDef = getStepDefinition(convocatoria, step_number);
@@ -107,6 +123,7 @@ export async function POST(request: Request) {
       stepDef,
       currentForm,
       allForms as ProjectForm[] | null,
+      ragChunks,
     );
 
     // ------------------------------------------------------------------
@@ -129,42 +146,85 @@ export async function POST(request: Request) {
     messages.push({ role: "user", content });
 
     // ------------------------------------------------------------------
-    // 4. Call Claude
+    // 4. Call Claude with streaming
     // ------------------------------------------------------------------
     const adapter = createAnthropicAdapter();
-    const llmResponse = await adapter.chat(messages);
-    const assistantContent = llmResponse.content;
 
-    // ------------------------------------------------------------------
-    // 5. Save both messages to ai_chat_messages
-    // ------------------------------------------------------------------
+    // Save user message immediately
     const now = new Date().toISOString();
+    await supabase.from("ai_chat_messages").insert({
+      project_id,
+      role: "user" as const,
+      content,
+      step_number,
+      created_at: now,
+    });
 
-    await supabase.from("ai_chat_messages").insert([
-      {
-        project_id,
-        role: "user" as const,
-        content,
-        step_number,
-        created_at: now,
-      },
-      {
+    try {
+      const rawStream = await adapter.chatStream(messages);
+      const sseStream = createSSEStream(rawStream);
+
+      // We collect the full response in a TransformStream to save it after completion
+      let fullResponse = "";
+      const collectAndForward = new TransformStream<Uint8Array, Uint8Array>({
+        transform(chunk, controller) {
+          controller.enqueue(chunk);
+          // Parse delta events to collect full text
+          const text = new TextDecoder().decode(chunk);
+          const dataMatches = text.matchAll(/event: delta\ndata: ({.*?})\n/g);
+          for (const match of dataMatches) {
+            try {
+              const parsed = JSON.parse(match[1]);
+              if (parsed.text) fullResponse += parsed.text;
+            } catch {
+              // skip
+            }
+          }
+        },
+        async flush() {
+          // Save the assistant message after stream completes
+          if (fullResponse) {
+            const saveSupabase = await createClient();
+            await saveSupabase.from("ai_chat_messages").insert({
+              project_id,
+              role: "assistant" as const,
+              content: fullResponse,
+              step_number,
+              created_at: new Date().toISOString(),
+            });
+          }
+        },
+      });
+
+      const outputStream = sseStream.pipeThrough(collectAndForward);
+
+      return new Response(outputStream, {
+        headers: {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        },
+      });
+    } catch (err) {
+      // Fallback to non-streaming if streaming fails
+      const llmResponse = await adapter.chat(messages);
+      const assistantContent = llmResponse.content;
+
+      // Save assistant message
+      await supabase.from("ai_chat_messages").insert({
         project_id,
         role: "assistant" as const,
         content: assistantContent,
         step_number,
-        created_at: now,
-      },
-    ]);
+        created_at: new Date().toISOString(),
+      });
 
-    // ------------------------------------------------------------------
-    // 6. Return assistant message
-    // ------------------------------------------------------------------
-    return NextResponse.json({
-      role: "assistant",
-      content: assistantContent,
-      model: llmResponse.model,
-    });
+      return NextResponse.json({
+        role: "assistant",
+        content: assistantContent,
+        model: llmResponse.model,
+      });
+    }
   } catch (error) {
     const message =
       error instanceof Error ? error.message : "Error interno del servidor";
@@ -193,6 +253,7 @@ function buildChatSystemPrompt(
   stepDef: WizardStepDefinition | null,
   currentForm: ProjectForm | null,
   allForms: ProjectForm[] | null,
+  ragChunks?: Awaited<ReturnType<typeof retrieveContext>>,
 ): string {
   const sections: string[] = [];
 
@@ -206,7 +267,8 @@ REGLAS IMPORTANTES:
 - Si no tienes suficiente informacion para dar una buena sugerencia, pide mas contexto al usuario.
 - No inventes datos numericos (presupuestos, poblacion) -- pide al usuario que confirme.
 - Usa un tono amigable pero profesional, tutea al usuario.
-- Tus respuestas deben ser concisas (maximo 3-4 parrafos) a menos que el usuario pida algo mas elaborado.`);
+- Tus respuestas deben ser concisas (maximo 3-4 parrafos) a menos que el usuario pida algo mas elaborado.
+- Si citas informacion de los documentos de la convocatoria, menciona la fuente.`);
 
   // Convocatoria context
   if (convocatoria) {
@@ -260,6 +322,22 @@ ${fieldDescriptions}`);
 PROGRESO DE OTROS PASOS:
 ${otherSteps}`);
     }
+  }
+
+  // RAG document context
+  if (ragChunks && ragChunks.length > 0) {
+    sections.push(`
+<contexto_documentos>
+Los siguientes fragmentos provienen de documentos oficiales de la convocatoria. Usalos como fuente de informacion cuando sea relevante:
+
+${ragChunks
+  .map(
+    (chunk, i) =>
+      `[Fuente ${i + 1}: ${chunk.file_name} (relevancia: ${(chunk.similarity * 100).toFixed(0)}%)]
+${chunk.chunk_text}`,
+  )
+  .join("\n\n")}
+</contexto_documentos>`);
   }
 
   return sections.join("\n");

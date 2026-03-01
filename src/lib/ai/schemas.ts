@@ -16,6 +16,13 @@ export const aiAssistResponseSchema = z.object({
       }),
     )
     .describe("Fuentes citadas del RAG (si aplica)"),
+  confidence: z
+    .number()
+    .min(0)
+    .max(1)
+    .optional()
+    .nullable()
+    .describe("Score de confianza del 0.0 al 1.0"),
 });
 
 export type AiAssistResponse = z.infer<typeof aiAssistResponseSchema>;

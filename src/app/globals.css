@@ -145,6 +145,14 @@ html {
 
 .animate-spin-slow { animation: spin-slow 3s linear infinite; }
 
+.animate-shimmer-text {
+  background: linear-gradient(90deg, var(--color-accent, #7c3aed) 0%, #a78bfa 50%, var(--color-accent, #7c3aed) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
 /* Stagger children */
 .stagger-children > * { animation: fade-in-up 0.35s ease-out both; }
 .stagger-children > *:nth-child(1) { animation-delay: 0ms; }

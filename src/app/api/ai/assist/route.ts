@@ -4,6 +4,7 @@ import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
 import { buildSystemPrompt, buildUserPrompt } from "@/lib/ai/prompts";
 import { retrieveContext } from "@/lib/ai/retrieval";
+import { createSSEStream } from "@/lib/ai/stream-adapter";
 import {
   aiAssistRequestSchema,
   aiAssistResponseSchema,
@@ -18,6 +19,8 @@ import crypto from "crypto";
 
 export async function POST(request: Request) {
   const startTime = Date.now();
+  const wantsStream =
+    request.headers.get("accept")?.includes("text/event-stream") ?? false;
 
   // 1. Auth check
   const profile = await getProfile();
@@ -120,7 +123,7 @@ export async function POST(request: Request) {
     // RAG is best-effort; continue without context if it fails
   }
 
-  // 7. Build prompt and call LLM
+  // 7. Build prompt
   const systemPrompt = buildSystemPrompt();
   const userPrompt = buildUserPrompt({
     convocatoria,
@@ -136,10 +139,82 @@ export async function POST(request: Request) {
     .digest("hex")
     .slice(0, 16);
 
+  // 7b. Cache check: look for same prompt_hash in audit_logs from last 24h
+  const twentyFourHoursAgo = new Date(
+    Date.now() - 24 * 60 * 60 * 1000,
+  ).toISOString();
+  const { data: cachedLog } = await supabase
+    .from("audit_logs")
+    .select("response_json, duration_ms")
+    .eq("action", "ai_assist")
+    .eq("prompt_hash", promptHash)
+    .gte("created_at", twentyFourHoursAgo)
+    .order("created_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+
+  if (cachedLog?.response_json) {
+    const cachedResponse = cachedLog.response_json;
+    const durationMs = Date.now() - startTime;
+
+    // Write audit log for the cached hit too
+    await supabase.from("audit_logs").insert({
+      actor_user_id: profile.id,
+      tenant_id: profile.tenant_id,
+      action: "ai_assist",
+      convocatoria_id,
+      campo_id,
+      prompt_hash: promptHash,
+      sources_used: ragChunks.map((c) => ({
+        file_name: c.file_name,
+        chunk_index: c.chunk_index,
+        similarity: c.similarity,
+      })),
+      response_json: cachedResponse,
+      duration_ms: durationMs,
+    });
+
+    return NextResponse.json({
+      ...cachedResponse,
+      _meta: {
+        model: "cached",
+        duration_ms: durationMs,
+        cached: true,
+      },
+    });
+  }
+
+  // 8. Call LLM — streaming or buffered
+  const adapter = createLlmAdapter();
+
+  if (wantsStream) {
+    // Streaming path
+    try {
+      const rawStream = await adapter.chatStream([
+        { role: "system", content: systemPrompt },
+        { role: "user", content: userPrompt },
+      ]);
+
+      const sseStream = createSSEStream(rawStream);
+
+      return new Response(sseStream, {
+        headers: {
+          "Content-Type": "text/event-stream",
+          "Cache-Control": "no-cache",
+          Connection: "keep-alive",
+        },
+      });
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Error al llamar al LLM";
+      return NextResponse.json({ error: message }, { status: 502 });
+    }
+  }
+
+  // Non-streaming path (default)
   let llmContent: string;
   let llmModel = "unknown";
   try {
-    const adapter = createLlmAdapter();
     const llmResponse = await adapter.chat([
       { role: "system", content: systemPrompt },
       { role: "user", content: userPrompt },
@@ -152,7 +227,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: message }, { status: 502 });
   }
 
-  // 7. Parse and validate LLM response
+  // 9. Parse and validate LLM response
   let assistResponse;
   try {
     const raw = JSON.parse(llmContent);
@@ -165,6 +240,7 @@ export async function POST(request: Request) {
         risks: raw.risks ?? [],
         missing_info_questions: raw.missing_info_questions ?? [],
         citations: [],
+        confidence: raw.confidence ?? null,
       };
     } else {
       assistResponse = validated.data;
@@ -177,12 +253,29 @@ export async function POST(request: Request) {
       risks: [],
       missing_info_questions: [],
       citations: [],
+      confidence: null,
     };
   }
 
+  // 9b. Compute hybrid confidence score
+  const llmConfidence =
+    typeof assistResponse.confidence === "number"
+      ? assistResponse.confidence
+      : 0.7;
+  const avgRagSimilarity =
+    ragChunks.length > 0
+      ? ragChunks.reduce((sum, c) => sum + c.similarity, 0) / ragChunks.length
+      : 0.5;
+  const hybridConfidence =
+    ragChunks.length > 0
+      ? 0.6 * llmConfidence + 0.4 * avgRagSimilarity
+      : llmConfidence;
+
+  assistResponse.confidence = Math.round(hybridConfidence * 100) / 100;
+
   const durationMs = Date.now() - startTime;
 
-  // 8. Write audit log
+  // 10. Write audit log
   await supabase.from("audit_logs").insert({
     actor_user_id: profile.id,
     tenant_id: profile.tenant_id,
@@ -199,12 +292,13 @@ export async function POST(request: Request) {
     duration_ms: durationMs,
   });
 
-  // 9. Return response
+  // 11. Return response
   return NextResponse.json({
     ...assistResponse,
     _meta: {
       model: llmModel,
       duration_ms: durationMs,
+      cached: false,
     },
   });
 }

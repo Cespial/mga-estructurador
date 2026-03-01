@@ -33,6 +33,7 @@ interface ChatMsg {
   role: "user" | "assistant";
   content: string;
   fieldId?: string;
+  isStreaming?: boolean;
 }
 
 /* ──────────────────────────────────────────────────────────
@@ -201,7 +202,7 @@ export function WizardClient({
     });
   }, [allFormData, step, project.id]);
 
-  /* ── AI Chat ───────────────────────────────────────── */
+  /* ── AI Chat with Streaming ─────────────────────────── */
   const sendChatMessage = useCallback(
     async (message: string, fieldId?: string) => {
       if (!message.trim()) return;
@@ -216,10 +217,24 @@ export function WizardClient({
       setChatInput("");
       setChatLoading(true);
 
+      // Create placeholder streaming message
+      const assistantId = `assistant-${Date.now()}`;
+      const streamingMsg: ChatMsg = {
+        id: assistantId,
+        role: "assistant",
+        content: "",
+        fieldId,
+        isStreaming: true,
+      };
+      setChatMessages((prev) => [...prev, streamingMsg]);
+
       try {
         const res = await fetch("/api/ai/chat", {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "text/event-stream",
+          },
           body: JSON.stringify({
             project_id: project.id,
             step_number: step.step_number,
@@ -231,31 +246,122 @@ export function WizardClient({
           throw new Error("Error en la respuesta del asistente.");
         }
 
-        const data = await res.json();
-        const assistantMsg: ChatMsg = {
-          id: `assistant-${Date.now()}`,
-          role: "assistant",
-          content: data.content ?? "Lo siento, no pude generar una respuesta.",
-          fieldId,
-        };
-        setChatMessages((prev) => [...prev, assistantMsg]);
+        const contentType = res.headers.get("content-type") ?? "";
 
-        if (fieldId) {
-          setActiveAiFieldId(fieldId);
+        if (contentType.includes("text/event-stream") && res.body) {
+          // Streaming response
+          const reader = res.body.getReader();
+          const decoder = new TextDecoder();
+          let sseBuffer = "";
+          let fullContent = "";
+
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+
+            sseBuffer += decoder.decode(value, { stream: true });
+
+            const messages = sseBuffer.split("\n\n");
+            sseBuffer = messages.pop() ?? "";
+
+            for (const msg of messages) {
+              const lines = msg.split("\n");
+              let eventType = "";
+              let eventData = "";
+
+              for (const line of lines) {
+                if (line.startsWith("event: ")) eventType = line.slice(7).trim();
+                else if (line.startsWith("data: ")) eventData = line.slice(6).trim();
+              }
+
+              if (!eventType || !eventData) continue;
+
+              try {
+                const parsed = JSON.parse(eventData);
+                if (eventType === "delta" && parsed.text) {
+                  fullContent += parsed.text;
+                  setChatMessages((prev) =>
+                    prev.map((m) =>
+                      m.id === assistantId
+                        ? { ...m, content: fullContent }
+                        : m
+                    )
+                  );
+                } else if (eventType === "done") {
+                  setChatMessages((prev) =>
+                    prev.map((m) =>
+                      m.id === assistantId
+                        ? { ...m, isStreaming: false }
+                        : m
+                    )
+                  );
+                } else if (eventType === "error") {
+                  setChatMessages((prev) =>
+                    prev.map((m) =>
+                      m.id === assistantId
+                        ? {
+                            ...m,
+                            content: parsed.message ?? "Error del asistente",
+                            isStreaming: false,
+                          }
+                        : m
+                    )
+                  );
+                }
+              } catch {
+                // skip malformed events
+              }
+            }
+          }
+
+          // Finalize if not already done
+          setChatMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId ? { ...m, isStreaming: false } : m
+            )
+          );
+
+          if (fieldId) {
+            setActiveAiFieldId(fieldId);
+          }
+        } else {
+          // Non-streaming JSON response (fallback)
+          const data = await res.json();
+          setChatMessages((prev) =>
+            prev.map((m) =>
+              m.id === assistantId
+                ? {
+                    ...m,
+                    content:
+                      data.content ?? "Lo siento, no pude generar una respuesta.",
+                    isStreaming: false,
+                  }
+                : m
+            )
+          );
+
+          if (fieldId) {
+            setActiveAiFieldId(fieldId);
+          }
         }
       } catch {
-        const errMsg: ChatMsg = {
-          id: `error-${Date.now()}`,
-          role: "assistant",
-          content:
-            "Lo siento, hubo un error al conectar con el asistente. Por favor intenta de nuevo.",
-        };
-        setChatMessages((prev) => [...prev, errMsg]);
+        setChatMessages((prev) =>
+          prev.map((m) =>
+            m.id === assistantId
+              ? {
+                  ...m,
+                  content:
+                    "Lo siento, hubo un error al conectar con el asistente. Por favor intenta de nuevo.",
+                  isStreaming: false,
+                }
+              : m
+          )
+        );
       } finally {
         setChatLoading(false);
       }
     },
-    [project.id, step, allFormData]
+    [project.id, step]
   );
 
   /* ── Apply AI suggestion to field ──────────────────── */
@@ -770,10 +876,15 @@ export function WizardClient({
                       : "bg-bg-elevated border border-border text-text-primary rounded-bl-sm"
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap leading-relaxed">{msg.content}</p>
+                  <p className="text-sm whitespace-pre-wrap leading-relaxed">
+                    {msg.content}
+                    {msg.isStreaming && (
+                      <span className="inline-block w-1.5 h-4 ml-0.5 bg-accent animate-pulse rounded-sm" />
+                    )}
+                  </p>
 
                   {/* Apply suggestion button for assistant messages with a field context */}
-                  {msg.role === "assistant" && msg.fieldId && (
+                  {msg.role === "assistant" && msg.fieldId && !msg.isStreaming && msg.content && (
                     <button
                       onClick={() => applySuggestion(msg.content, msg.fieldId)}
                       className="mt-2 flex items-center gap-1.5 rounded-[var(--radius-button)] bg-accent/10 border border-accent/20 px-2.5 py-1 text-xs font-medium text-accent hover:bg-accent/20 transition-all duration-200"
@@ -788,8 +899,8 @@ export function WizardClient({
               </div>
             ))}
 
-            {/* Typing indicator */}
-            {chatLoading && (
+            {/* Typing indicator — only if loading and no streaming message yet */}
+            {chatLoading && !chatMessages.some((m) => m.isStreaming) && (
               <div className="flex justify-start animate-fade-in">
                 <div className="bg-bg-elevated border border-border rounded-[var(--radius-card)] rounded-bl-sm px-4 py-3">
                   <div className="flex items-center gap-1">

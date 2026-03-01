@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { getProfile } from "@/lib/auth";
 import { createLlmAdapter } from "@/lib/ai/adapter";
+import { retrieveContext } from "@/lib/ai/retrieval";
 import type {
   Submission,
   LegacyRubric as Rubric,
@@ -155,9 +156,21 @@ ${nivelesText}
         })
         .join("\n\n");
 
+      // RAG: retrieve reference documents for this etapa
+      let ragSection = "";
+      try {
+        const ragQuery = `evaluacion ${etapa.nombre} requisitos criterios`;
+        const ragChunks = await retrieveContext(body.convocatoria_id, ragQuery, 5, 0.65);
+        if (ragChunks.length > 0) {
+          ragSection = `\n\n<documentos_referencia>\nUsa estos documentos como contexto para evaluar si las respuestas cumplen con los requisitos de la convocatoria:\n\n${ragChunks.map((c, i) => `[${i + 1}] ${c.file_name}: ${c.chunk_text}`).join("\n\n")}\n</documentos_referencia>`;
+        }
+      } catch {
+        // best-effort
+      }
+
       const userPrompt = `Evalúa la siguiente etapa "${etapa.nombre}" con ${relevantCriteria.length} criterios.
 
-${criteriosText}
+${criteriosText}${ragSection}
 
 Evalúa CADA criterio según sus niveles definidos. Responde ÚNICAMENTE con el JSON especificado.`;
 

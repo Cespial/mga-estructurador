@@ -5,8 +5,9 @@ import { getProfile } from "@/lib/auth";
 /**
  * GET /api/comments?submission_id=xxx&field_id=yyy
  * POST /api/comments { submission_id, field_id, content }
+ * PATCH /api/comments { comment_id, action: "resolve"|"reopen", resolved_note? }
  *
- * CRUD for field-level comments (entity → municipality feedback loop).
+ * CRUD for field-level comments (entity <-> municipality feedback loop).
  */
 export async function GET(request: Request) {
   const profile = await getProfile();
@@ -114,4 +115,81 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ comment: data });
+}
+
+/**
+ * PATCH /api/comments — Resolve or reopen a comment
+ */
+export async function PATCH(request: Request) {
+  const profile = await getProfile();
+  if (!profile) {
+    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
+  }
+
+  let body: {
+    comment_id: string;
+    action: "resolve" | "reopen";
+    resolved_note?: string;
+  };
+  try {
+    body = await request.json();
+  } catch {
+    return NextResponse.json({ error: "Request invalido" }, { status: 400 });
+  }
+
+  const { comment_id, action, resolved_note } = body;
+
+  if (!comment_id || !action) {
+    return NextResponse.json(
+      { error: "comment_id y action son requeridos" },
+      { status: 400 },
+    );
+  }
+
+  const supabase = await createClient();
+
+  if (action === "resolve") {
+    const { data, error } = await supabase
+      .from("field_comments")
+      .update({
+        resolved: true,
+        resolved_at: new Date().toISOString(),
+        resolved_by: profile.id,
+        resolved_note: resolved_note?.trim() || null,
+      })
+      .eq("id", comment_id)
+      .select()
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ comment: data });
+  }
+
+  if (action === "reopen") {
+    const { data, error } = await supabase
+      .from("field_comments")
+      .update({
+        resolved: false,
+        resolved_at: null,
+        resolved_by: null,
+        resolved_note: null,
+      })
+      .eq("id", comment_id)
+      .select()
+      .single();
+
+    if (error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+
+    return NextResponse.json({ comment: data });
+  }
+
+  return NextResponse.json(
+    { error: "action debe ser 'resolve' o 'reopen'" },
+    { status: 400 },
+  );
 }

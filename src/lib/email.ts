@@ -88,6 +88,50 @@ export function contactNotificationEmail(data: {
   };
 }
 
+export function submissionConfirmationEmail(data: {
+  municipioNombre: string;
+  convocatoriaNombre: string;
+  progress: number;
+  submittedAt: string;
+}): { subject: string; html: string } {
+  const date = new Date(data.submittedAt).toLocaleString("es-CO", {
+    dateStyle: "long",
+    timeStyle: "short",
+  });
+  return {
+    subject: `[PuBlitec] Confirmacion de envio — ${data.convocatoriaNombre}`,
+    html: `
+      <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto;">
+        <h2 style="color: #1e40af;">Proyecto enviado exitosamente</h2>
+        <p style="color: #4b5563;">
+          El municipio <strong>${data.municipioNombre}</strong> ha enviado formalmente su proyecto
+          para la convocatoria <strong>${data.convocatoriaNombre}</strong>.
+        </p>
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 16px; text-align: center; margin: 16px 0;">
+          <p style="font-size: 14px; font-weight: bold; color: #16a34a; margin: 0;">
+            Estado: Enviado
+          </p>
+          <p style="font-size: 12px; color: #22c55e; margin: 4px 0 0;">
+            ${date}
+          </p>
+        </div>
+        <div style="background: #eff6ff; border-radius: 8px; padding: 16px; text-align: center; margin: 16px 0;">
+          <p style="font-size: 32px; font-weight: bold; color: #1e40af; margin: 0;">
+            ${data.progress}%
+          </p>
+          <p style="font-size: 12px; color: #3b82f6; margin: 4px 0 0;">completado</p>
+        </div>
+        <p style="color: #4b5563;">
+          Tu proyecto sera revisado por la entidad. Recibiras notificaciones cuando haya actualizaciones.
+          El formulario esta bloqueado hasta que la entidad solicite cambios (si aplica).
+        </p>
+        <hr style="border: none; border-top: 1px solid #e5e7eb; margin: 16px 0;">
+        <p style="font-size: 12px; color: #9ca3af;">PuBlitec — Confirmacion automatica de envio</p>
+      </div>
+    `,
+  };
+}
+
 export function wizardCompleteEmail(data: {
   municipioNombre: string;
   convocatoriaNombre: string;

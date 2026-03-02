@@ -128,11 +128,15 @@ export default async function WizardPage({
       <div className="mt-8">
         <WizardClient
           convocatoriaId={id}
+          convocatoriaNombre={convocatoria.nombre}
           submissionId={submission.id}
           etapas={etapas}
           initialData={submission.data_json}
           initialEtapa={submission.etapa_actual}
           initialProgress={submission.progress}
+          initialStatus={submission.status ?? "draft"}
+          initialLocked={submission.locked ?? false}
+          deadline={convocatoria.fecha_cierre}
         />
       </div>
     </div>

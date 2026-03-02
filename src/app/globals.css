@@ -187,3 +187,86 @@ html {
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* ═══════════════════════════════════════════════ */
+/* ── Landing Page ──                              */
+/* ═══════════════════════════════════════════════ */
+
+.font-display {
+  font-family: var(--font-display), Georgia, "Times New Roman", serif;
+}
+
+/* Hero gradient mesh */
+.landing-hero-bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 25% 30%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 40% at 80% 60%, rgba(37, 99, 235, 0.04) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 80%, rgba(99, 102, 241, 0.03) 0%, transparent 50%),
+    linear-gradient(180deg, var(--color-bg-app) 0%, #ffffff 40%, var(--color-bg-app) 100%);
+}
+
+/* Subtle dot grid overlay */
+.landing-grid {
+  background-image:
+    radial-gradient(circle, rgba(37, 99, 235, 0.07) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* Problem section warm bg */
+.landing-problem-bg {
+  background:
+    radial-gradient(ellipse 60% 50% at 50% 0%, rgba(217, 119, 6, 0.04) 0%, transparent 60%),
+    var(--color-bg-app);
+}
+
+/* CTA gradient */
+.landing-cta-bg {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 45%, #3b82f6 100%);
+}
+
+/* Blinking cursor */
+@keyframes landing-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.landing-cursor {
+  animation: landing-blink 1s step-end infinite;
+}
+
+/* Progress bar fill animation */
+@keyframes landing-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
+.landing-fill {
+  animation: landing-fill 1.8s ease-out 0.6s both;
+  transform-origin: left;
+}
+
+/* Float animation for mockup */
+@keyframes landing-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.landing-float {
+  animation: landing-float 6s ease-in-out infinite;
+}
+
+/* Mockup ring glow */
+.landing-mockup-ring {
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    0 20px 60px -10px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(37, 99, 235, 0.06);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-cursor, .landing-fill, .landing-float {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}

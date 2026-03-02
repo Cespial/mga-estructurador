@@ -289,6 +289,14 @@ export interface ConvocatoriaMunicipio {
   updated_at: string;
 }
 
+export type SubmissionStatus =
+  | "draft"
+  | "submitted"
+  | "under_review"
+  | "needs_revision"
+  | "approved"
+  | "rejected";
+
 export interface Submission {
   id: string;
   convocatoria_id: string;
@@ -296,9 +304,27 @@ export interface Submission {
   data_json: Record<string, string>;
   etapa_actual: string | null;
   progress: number;
+  status: SubmissionStatus;
+  locked: boolean;
   completed_at: string | null;
+  submitted_at: string | null;
   created_at: string;
   updated_at: string;
+}
+
+export interface FieldComment {
+  id: string;
+  submission_id: string;
+  field_id: string;
+  author_id: string;
+  author_role: string;
+  content: string;
+  resolved: boolean;
+  resolved_at: string | null;
+  resolved_by: string | null;
+  resolved_note: string | null;
+  blocking: boolean;
+  created_at: string;
 }
 
 export interface Document {

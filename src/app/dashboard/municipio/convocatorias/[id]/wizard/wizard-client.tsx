@@ -7,6 +7,19 @@ import { useAiStream } from "@/lib/hooks/use-ai-stream";
 import { TextDiffView } from "@/components/ai/text-diff-view";
 import { ProjectComparison } from "@/components/ai/project-comparison";
 import { ImprovementWizard } from "@/components/ai/improvement-wizard";
+import { GlossaryText } from "@/components/mga-glossary-tooltip";
+import { FieldWritingGuide } from "@/components/field-writing-guide";
+import { DeadlineRiskIndicator } from "@/components/deadline-risk-indicator";
+import { PreSubmitChecklist } from "@/components/pre-submit-checklist";
+import { SubmissionCeremony } from "@/components/submission-ceremony";
+import { OnboardingTour } from "@/components/onboarding-tour";
+import { FieldHistory } from "@/components/field-history";
+import { ProgressMilestones } from "@/components/progress-milestones";
+import { AiUsageStats } from "@/components/ai-usage-stats";
+import { PostSubmissionTracker } from "@/components/post-submission-tracker";
+import { RevisionRequestPanel } from "@/components/revision-request-panel";
+import { EvaluationDeepDive } from "@/components/evaluation-deep-dive";
+import { isFormLocked, STATUS_META, type SubmissionStatus } from "@/lib/submission-status";
 import { saveSubmissionData } from "./actions";
 
 interface PreEvalCampoScore {
@@ -35,20 +48,28 @@ interface PreEvalResult {
 
 interface WizardProps {
   convocatoriaId: string;
+  convocatoriaNombre: string;
   submissionId: string;
   etapas: MgaEtapa[];
   initialData: Record<string, string>;
   initialEtapa: string | null;
   initialProgress: number;
+  initialStatus: string;
+  initialLocked: boolean;
+  deadline: string | null;
 }
 
 export function WizardClient({
   convocatoriaId,
+  convocatoriaNombre,
   submissionId,
   etapas,
   initialData,
   initialEtapa,
   initialProgress,
+  initialStatus,
+  initialLocked,
+  deadline,
 }: WizardProps) {
   const [currentEtapaIndex, setCurrentEtapaIndex] = useState(() => {
     if (initialEtapa) {
@@ -149,6 +170,17 @@ export function WizardClient({
   // Improvement wizard state
   const [showImprovementWizard, setShowImprovementWizard] = useState(false);
 
+  // Wave A: Submission ceremony & checklist state
+  const [submissionStatus, setSubmissionStatus] = useState<SubmissionStatus>(
+    (initialStatus as SubmissionStatus) || "draft",
+  );
+  const [formLocked, setFormLocked] = useState(initialLocked);
+  const [showChecklist, setShowChecklist] = useState(false);
+  const [showCeremony, setShowCeremony] = useState(false);
+  const [checklistPassed, setChecklistPassed] = useState(false);
+
+  const locked = formLocked || isFormLocked(submissionStatus);
+
   // Smart nudge state (per-field)
   const [nudges, setNudges] = useState<Record<string, string | null>>({});
   const nudgeTimers = useRef<Record<string, ReturnType<typeof setTimeout>>>({});
@@ -192,6 +224,7 @@ export function WizardClient({
   }, [pendingFields, dirty, doSave, etapas, currentEtapaIndex]);
 
   function handleFieldChange(campoId: string, value: string) {
+    if (locked) return; // Form is locked after submission
     setData((prev) => ({ ...prev, [campoId]: value }));
     setPendingFields((prev) => ({ ...prev, [campoId]: value }));
     setDirty(true);
@@ -468,11 +501,53 @@ export function WizardClient({
 
   return (
     <div className="flex gap-6">
+      {/* Onboarding tour */}
+      <OnboardingTour />
+
+      {/* Progress milestones (celebrations) */}
+      <ProgressMilestones
+        progress={progress}
+        preEvalScore={preEvalResult?.total_score ?? null}
+      />
+
+      {/* Locked banner */}
+      {locked && (
+        <div className="fixed top-0 left-0 right-0 z-50 bg-amber-50 border-b border-amber-200 px-4 py-2 text-center">
+          <p className="text-xs font-medium text-amber-800">
+            {submissionStatus === "submitted"
+              ? "Este proyecto fue enviado. El formulario esta bloqueado."
+              : submissionStatus === "under_review"
+                ? "Este proyecto esta en revision. El formulario esta bloqueado."
+                : submissionStatus === "approved"
+                  ? "Este proyecto fue aprobado."
+                  : submissionStatus === "rejected"
+                    ? "Este proyecto no fue aprobado."
+                    : "El formulario esta bloqueado."}
+          </p>
+        </div>
+      )}
+
       {/* Sidebar: etapa navigation */}
       <div className="w-56 shrink-0">
         <div className="sticky top-6">
+          {/* Status badge */}
+          {submissionStatus !== "draft" && (
+            <div className={`mb-3 rounded-md border px-3 py-2 text-center ${STATUS_META[submissionStatus].bgColor} ${STATUS_META[submissionStatus].borderColor}`}>
+              <p className={`text-xs font-semibold ${STATUS_META[submissionStatus].color}`}>
+                {STATUS_META[submissionStatus].label}
+              </p>
+            </div>
+          )}
+
+          {/* Deadline risk */}
+          {deadline && (
+            <div className="mb-3">
+              <DeadlineRiskIndicator deadline={deadline} progress={progress} />
+            </div>
+          )}
+
           {/* Progress bar */}
-          <div className="mb-4">
+          <div className="mb-4" data-tour="progress-bar">
             <div className="flex items-center justify-between text-xs text-text-muted">
               <span>Progreso general</span>
               <span className="font-semibold text-text-primary">{progress}%</span>
@@ -487,7 +562,7 @@ export function WizardClient({
                 style={{ width: `${progress}%` }}
               />
             </div>
-            {progress === 100 && (
+            {progress === 100 && submissionStatus === "draft" && (
               <div className="mt-2 animate-fade-in-up rounded-md bg-emerald-50 px-3 py-2 text-center">
                 <p className="text-xs font-semibold text-emerald-700">
                   Completado
@@ -499,7 +574,7 @@ export function WizardClient({
             )}
           </div>
 
-          <nav className="space-y-1">
+          <nav className="space-y-1" data-tour="etapa-nav">
             {etapas.map((etapa, i) => {
               const status = getEtapaStatus(etapa);
               const isCurrent = i === currentEtapaIndex;
@@ -542,11 +617,83 @@ export function WizardClient({
               <span>Autoguardado activo</span>
             )}
           </div>
+
+          {/* AI usage stats */}
+          <AiUsageStats submissionId={submissionId} />
+
+          {/* Submit button — only when in draft or needs_revision */}
+          {!locked && (submissionStatus === "draft" || submissionStatus === "needs_revision") && (
+            <button
+              type="button"
+              onClick={() => setShowChecklist(true)}
+              className="mt-4 w-full rounded-[var(--radius-button)] bg-accent px-3 py-2 text-xs font-medium text-white hover:bg-accent-hover transition-colors"
+            >
+              Preparar envio
+            </button>
+          )}
         </div>
       </div>
 
       {/* Main content: current etapa fields */}
       <div className="min-w-0 flex-1">
+        {/* Post-submission tracker */}
+        {submissionStatus !== "draft" && (
+          <div className="mb-4">
+            <PostSubmissionTracker
+              status={submissionStatus}
+              submittedAt={null}
+              completedAt={null}
+            />
+          </div>
+        )}
+
+        {/* Revision request panel */}
+        {submissionStatus === "needs_revision" && (
+          <div className="mb-4">
+            <RevisionRequestPanel
+              submissionId={submissionId}
+              onNavigateToField={(campoId) => {
+                // Find which etapa contains this campo and navigate to it
+                for (let i = 0; i < etapas.length; i++) {
+                  if (etapas[i].campos.some((c) => c.id === campoId)) {
+                    setCurrentEtapaIndex(i);
+                    break;
+                  }
+                }
+              }}
+            />
+          </div>
+        )}
+
+        {/* Evaluation deep dive */}
+        {preEvalResult && submissionStatus !== "draft" && (
+          <div className="mb-4">
+            <EvaluationDeepDive
+              scores={preEvalResult.etapas.flatMap((e) =>
+                e.scores.map((s) => ({
+                  campo_id: s.campo_id,
+                  campo_nombre: s.campo_nombre,
+                  score: s.score,
+                  max_score: s.max_score,
+                  justificacion: s.justificacion,
+                  recomendacion: s.recomendacion ?? undefined,
+                  current_response: data[s.campo_id],
+                })),
+              )}
+              totalScore={preEvalResult.total_score}
+              maxScore={100}
+              onImproveField={(campoId) => {
+                for (let i = 0; i < etapas.length; i++) {
+                  if (etapas[i].campos.some((c) => c.id === campoId)) {
+                    setCurrentEtapaIndex(i);
+                    break;
+                  }
+                }
+              }}
+            />
+          </div>
+        )}
+
         <div className="rounded-[14px] border border-border bg-bg-card">
           <div className="border-b border-border px-6 py-4">
             <div className="flex items-center justify-between">
@@ -573,7 +720,8 @@ export function WizardClient({
               <button
                 type="button"
                 onClick={requestAutoDraft}
-                disabled={autoDrafting}
+                disabled={autoDrafting || locked}
+                data-tour="auto-draft-btn"
                 className="inline-flex items-center gap-1.5 rounded-md border border-purple-200 bg-purple-50 px-3 py-1.5 text-xs font-medium text-purple-700 transition hover:bg-purple-100 disabled:opacity-50"
               >
                 {autoDrafting ? (
@@ -601,7 +749,7 @@ export function WizardClient({
                     htmlFor={campo.id}
                     className="flex items-center gap-2 text-[13px] font-medium text-text-primary"
                   >
-                    {campo.nombre}
+                    <GlossaryText text={campo.nombre} />
                     {campo.requerido && (
                       <span className="text-xs text-red-500">*</span>
                     )}
@@ -629,7 +777,8 @@ export function WizardClient({
                       <button
                         type="button"
                         onClick={() => requestAiAssist(campo)}
-                        disabled={aiStream.isStreaming}
+                        disabled={aiStream.isStreaming || locked}
+                        data-tour="ai-assist-btn"
                         className="inline-flex items-center gap-1.5 rounded-md border border-purple-200 bg-purple-50 px-2.5 py-1 text-xs font-medium text-purple-700 transition hover:bg-purple-100 disabled:cursor-not-allowed disabled:opacity-50"
                       >
                         {aiStream.isStreaming && aiActiveCampo === campo.id ? (
@@ -651,13 +800,18 @@ export function WizardClient({
                 </div>
                 {campo.descripcion && (
                   <p className="mb-2 text-xs text-text-muted">
-                    {campo.descripcion}
+                    <GlossaryText text={campo.descripcion} />
                   </p>
                 )}
+                {/* Writing guide */}
+                <div data-tour="writing-guide">
+                  <FieldWritingGuide campoId={campo.id} campoNombre={campo.nombre} />
+                </div>
                 <FieldInput
                   campo={campo}
                   value={data[campo.id] ?? ""}
                   onChange={(val) => handleFieldChange(campo.id, val)}
+                  disabled={locked}
                 />
 
                 {/* Streaming text preview — shows while streaming */}
@@ -769,6 +923,17 @@ export function WizardClient({
                     Auto-generado por IA — revisa y edita
                   </div>
                 )}
+
+                {/* Field history */}
+                {(campo.tipo === "textarea" || campo.tipo === "text") && (
+                  <FieldHistory
+                    submissionId={submissionId}
+                    campoId={campo.id}
+                    campoNombre={campo.nombre}
+                    currentValue={data[campo.id] ?? ""}
+                    onRestore={(value) => handleFieldChange(campo.id, value)}
+                  />
+                )}
               </div>
             ))}
           </div>
@@ -810,6 +975,7 @@ export function WizardClient({
               type="button"
               onClick={requestPreEvaluation}
               disabled={progress < 30 || preEvalLoading}
+              data-tour="pre-eval-btn"
               className="inline-flex items-center gap-1.5 rounded-[var(--radius-button)] border border-purple-200 bg-purple-50 px-3 py-2 text-[13px] font-medium text-purple-700 transition hover:bg-purple-100 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {preEvalLoading ? (
@@ -845,6 +1011,59 @@ export function WizardClient({
             Siguiente &rarr;
           </button>
         </div>
+
+        {/* Pre-submit checklist overlay */}
+        {showChecklist && !showCeremony && (
+          <div className="mt-4">
+            <PreSubmitChecklist
+              submissionId={submissionId}
+              etapas={etapas}
+              data={data}
+              progress={progress}
+              preEvalScore={preEvalResult?.total_score ?? null}
+              onAllPassed={setChecklistPassed}
+              onClose={() => setShowChecklist(false)}
+            />
+            {checklistPassed && (
+              <div className="mt-3 text-right">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowChecklist(false);
+                    setShowCeremony(true);
+                  }}
+                  className="inline-flex items-center gap-2 rounded-[var(--radius-button)] bg-accent px-4 py-2 text-[13px] font-medium text-white hover:bg-accent-hover transition-colors"
+                >
+                  Continuar al envio
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Submission ceremony overlay */}
+        {showCeremony && (
+          <div className="mt-4">
+            <SubmissionCeremony
+              submissionId={submissionId}
+              convocatoriaId={convocatoriaId}
+              convocatoriaNombre={convocatoriaNombre}
+              etapas={etapas}
+              data={data}
+              progress={progress}
+              preEvalScore={preEvalResult?.total_score ?? null}
+              onSubmitted={() => {
+                setSubmissionStatus("submitted");
+                setFormLocked(true);
+                setShowCeremony(false);
+              }}
+              onClose={() => setShowCeremony(false)}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
@@ -1068,13 +1287,15 @@ function FieldInput({
   campo,
   value,
   onChange,
+  disabled,
 }: {
   campo: { id: string; tipo: string };
   value: string;
   onChange: (val: string) => void;
+  disabled?: boolean;
 }) {
   const baseClass =
-    "block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8";
+    "block w-full rounded-[var(--radius-input)] border border-border bg-bg-input px-3 py-2.5 text-[13px] text-text-primary shadow-sm placeholder:text-text-muted focus:border-accent focus:outline-none focus:ring-2 focus:ring-accent/8 disabled:opacity-60 disabled:cursor-not-allowed disabled:bg-bg-elevated";
 
   switch (campo.tipo) {
     case "textarea":
@@ -1086,6 +1307,7 @@ function FieldInput({
           rows={5}
           className={baseClass}
           placeholder="Escriba aqui..."
+          disabled={disabled}
         />
       );
     case "number":
@@ -1097,6 +1319,7 @@ function FieldInput({
           onChange={(e) => onChange(e.target.value)}
           className={baseClass}
           placeholder="0"
+          disabled={disabled}
         />
       );
     case "date":
@@ -1107,6 +1330,7 @@ function FieldInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           className={baseClass}
+          disabled={disabled}
         />
       );
     default:
@@ -1118,6 +1342,7 @@ function FieldInput({
           onChange={(e) => onChange(e.target.value)}
           className={baseClass}
           placeholder="Escriba aqui..."
+          disabled={disabled}
         />
       );
   }

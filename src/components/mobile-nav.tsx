@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 
 const NAV_LINKS = [
-  { href: "#desafio", label: "El desafio" },
+  { href: "#desafio", label: "El desafío" },
   { href: "#funcionalidades", label: "Funcionalidades" },
   { href: "#como-funciona", label: "Proceso" },
   { href: "#piloto", label: "Piloto" },
@@ -18,7 +18,7 @@ export function MobileNav() {
       <button
         onClick={() => setOpen(!open)}
         className="flex h-9 w-9 items-center justify-center rounded-lg hover:bg-bg-hover transition-colors"
-        aria-label={open ? "Cerrar menu" : "Abrir menu"}
+        aria-label={open ? "Cerrar menú" : "Abrir menú"}
       >
         {open ? (
           <svg className="h-5 w-5 text-text-primary" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
@@ -50,7 +50,7 @@ export function MobileNav() {
                 onClick={() => setOpen(false)}
                 className="block rounded-[var(--radius-button)] bg-accent px-4 py-2.5 text-center text-[14px] font-semibold text-white hover:bg-accent-hover transition-colors"
               >
-                Iniciar sesion
+                Iniciar sesión
               </Link>
             </div>
           </div>

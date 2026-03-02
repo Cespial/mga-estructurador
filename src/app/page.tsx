@@ -3,13 +3,13 @@ import type { Metadata } from "next";
 import { MobileNav } from "@/components/mobile-nav";
 
 export const metadata: Metadata = {
-  title: "PuBlitec — Convocatorias publicas con inteligencia artificial",
+  title: "PuBlitec — Convocatorias públicas con inteligencia artificial",
   description:
-    "Plataforma donde entidades publicas crean convocatorias con rubricas y municipios estructuran proyectos MGA con asistencia de inteligencia artificial. Evaluacion automatica, reportes PDF y Excel.",
+    "Plataforma donde entidades públicas crean convocatorias con rúbricas y municipios estructuran proyectos MGA con asistencia de inteligencia artificial. Evaluación automática, reportes PDF y Excel.",
   openGraph: {
     title: "PuBlitec — Convocatorias con IA",
     description:
-      "Entidades crean convocatorias. Municipios estructuran proyectos con IA. Reportes automaticos.",
+      "Entidades crean convocatorias. Municipios estructuran proyectos con IA. Reportes automáticos.",
     type: "website",
     locale: "es_CO",
   },
@@ -34,7 +34,7 @@ export default function LandingPage() {
 
           <div className="hidden md:flex items-center gap-7">
             {[
-              { href: "#desafio", label: "El desafio" },
+              { href: "#desafio", label: "El desafío" },
               { href: "#funcionalidades", label: "Funcionalidades" },
               { href: "#como-funciona", label: "Proceso" },
               { href: "#piloto", label: "Piloto" },
@@ -51,7 +51,7 @@ export default function LandingPage() {
               href="/login"
               className="rounded-[var(--radius-button)] bg-accent px-5 py-2 text-[13px] font-semibold text-white hover:bg-accent-hover transition-all shadow-sm"
             >
-              Iniciar sesion
+              Iniciar sesión
             </Link>
           </div>
 
@@ -76,16 +76,16 @@ export default function LandingPage() {
 
             <h1 className="font-display text-[2.5rem] leading-[1.12] tracking-tight text-text-primary sm:text-5xl lg:text-[3.25rem]">
               Los municipios merecen las mismas oportunidades de{" "}
-              <span className="text-accent">inversion publica</span>
+              <span className="text-accent">inversión pública</span>
             </h1>
 
             <p
               className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-text-secondary animate-fade-in-up"
               style={{ animationDelay: "80ms" }}
             >
-              PuBlitec cierra la brecha tecnica. La inteligencia artificial asiste
-              a municipios en la formulacion de proyectos MGA mientras las entidades
-              evaluan con rubricas estandarizadas y generan reportes automaticos.
+              PuBlitec cierra la brecha técnica. La inteligencia artificial asiste
+              a municipios en la formulación de proyectos MGA mientras las entidades
+              evalúan con rúbricas estandarizadas y generan reportes automáticos.
             </p>
 
             <div
@@ -104,15 +104,6 @@ export default function LandingPage() {
               >
                 Probar el piloto
               </Link>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="mx-auto mt-14 max-w-lg">
-            <div className="grid grid-cols-3 divide-x divide-border stagger-children">
-              <StatCounter value="500+" label="Municipios asistidos" />
-              <StatCounter value="2,400" label="Proyectos estructurados" />
-              <StatCounter value="85%" label="Mejora en puntajes" />
             </div>
           </div>
 
@@ -136,14 +127,14 @@ export default function LandingPage() {
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
             <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-amber-600">
-              El desafio
+              El desafío
             </p>
             <h2 className="mt-3 font-display text-[1.75rem] tracking-tight text-text-primary sm:text-3xl lg:text-4xl">
               La brecha que separa a los municipios de los recursos
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[15px] text-text-secondary leading-relaxed">
-              Los municipios con menor capacidad tecnica son los que mas pierden
-              convocatorias — y los que mas necesitan inversion publica.
+              Los municipios con menor capacidad técnica son los que más pierden
+              convocatorias — y los que más necesitan inversión pública.
             </p>
           </div>
 
@@ -156,10 +147,10 @@ export default function LandingPage() {
                   d="M16.5 10.5V6.75a4.5 4.5 0 1 0-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 0 0 2.25-2.25v-6.75a2.25 2.25 0 0 0-2.25-2.25H6.75a2.25 2.25 0 0 0-2.25 2.25v6.75a2.25 2.25 0 0 0 2.25 2.25Z"
                 />
               }
-              title="Capacidad tecnica limitada"
-              description="Los equipos municipales no tienen formacion en metodologia MGA. Los proyectos se formulan con plantillas genericas que no cumplen criterios de evaluacion."
+              title="Capacidad técnica limitada"
+              description="Los equipos municipales no tienen formación en metodología MGA. Los proyectos se formulan con plantillas genéricas que no cumplen criterios de evaluación."
               stat="68%"
-              statLabel="de municipios cat. 5-6 sin equipo tecnico MGA"
+              statLabel="de municipios cat. 5-6 sin equipo técnico MGA"
             />
             <PainPoint
               icon={
@@ -170,7 +161,7 @@ export default function LandingPage() {
                 />
               }
               title="Procesos manuales y lentos"
-              description="Convocatorias gestionadas con documentos Word, correos y hojas de calculo. Sin trazabilidad, sin control de versiones, sin estandarizacion."
+              description="Convocatorias gestionadas con documentos Word, correos y hojas de cálculo. Sin trazabilidad, sin control de versiones, sin estandarización."
               stat="4.7"
               statLabel="meses promedio para formular un proyecto MGA"
             />
@@ -182,10 +173,10 @@ export default function LandingPage() {
                   d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88"
                 />
               }
-              title="Evaluacion opaca e inconsistente"
-              description="Evaluadores aplican criterios de forma desigual. Sin retroalimentacion transparente, los municipios no saben como mejorar para la siguiente convocatoria."
+              title="Evaluación opaca e inconsistente"
+              description="Evaluadores aplican criterios de forma desigual. Sin retroalimentación transparente, los municipios no saben cómo mejorar para la siguiente convocatoria."
               stat="23%"
-              statLabel="de submissions reciben retroalimentacion detallada"
+              statLabel="de submissions reciben retroalimentación detallada"
             />
           </div>
         </div>
@@ -207,7 +198,7 @@ export default function LandingPage() {
               Todo lo que necesitas, de punta a punta
             </h2>
             <p className="mx-auto mt-4 max-w-xl text-[15px] text-text-secondary">
-              Desde la creacion de la convocatoria hasta el reporte final de evaluacion.
+              Desde la creación de la convocatoria hasta el reporte final de evaluación.
             </p>
           </div>
 
@@ -219,7 +210,7 @@ export default function LandingPage() {
               description="Formulario multi-etapa inteligente. La IA asiste campo por campo con sugerencias basadas en los documentos de la convocatoria."
               mockup={
                 <div className="flex items-center gap-1.5 mb-3">
-                  {["Identificacion", "Preparacion", "Evaluacion", "Programacion"].map(
+                  {["Identificación", "Preparación", "Evaluación", "Programación"].map(
                     (s, i) => (
                       <div key={s} className="flex items-center gap-1.5">
                         <div
@@ -245,11 +236,11 @@ export default function LandingPage() {
               }
             />
 
-            {/* Feature 2: Pre-evaluacion */}
+            {/* Feature 2: Pre-evaluación */}
             <FeatureCard
               accentColor="emerald"
-              title="Pre-evaluacion en tiempo real"
-              description="Evalua tu proyecto contra la rubrica antes de enviar. Ve puntaje por criterio, justificaciones y recomendaciones de mejora."
+              title="Pre-evaluación en tiempo real"
+              description="Evalúa tu proyecto contra la rúbrica antes de enviar. Ve puntaje por criterio, justificaciones y recomendaciones de mejora."
               mockup={
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-emerald-400 bg-emerald-50">
@@ -268,7 +259,7 @@ export default function LandingPage() {
             <FeatureCard
               accentColor="purple"
               title="Auto-completar con IA"
-              description="Un click genera borrador completo de toda la etapa. La IA usa el contexto de etapas previas y documentos de referencia."
+              description="Un clic genera borrador completo de toda la etapa. La IA usa el contexto de etapas previas y documentos de referencia."
               mockup={
                 <div className="space-y-1.5">
                   <div className="h-2 w-full rounded bg-purple-200/60" />
@@ -286,17 +277,17 @@ export default function LandingPage() {
             <FeatureCard
               accentColor="indigo"
               title="Chat copiloto"
-              description="Conversa con la IA sobre tu proyecto. Puede citar documentos de la convocatoria y sugerir cambios directos en campos."
+              description="Conversa con la IA sobre tu proyecto. Puede citar documentos de la convocatoria y sugerir cambios directos en los campos."
               mockup={
                 <div className="space-y-2">
                   <div className="flex justify-end">
                     <div className="rounded-lg rounded-br-sm bg-accent/10 px-2.5 py-1.5 text-[9px] text-accent max-w-[70%]">
-                      Como mejoro la justificacion?
+                      ¿Cómo mejoro la justificación?
                     </div>
                   </div>
                   <div className="flex">
                     <div className="rounded-lg rounded-bl-sm bg-bg-elevated px-2.5 py-1.5 text-[9px] text-text-secondary max-w-[80%]">
-                      Segun el TdR, debes incluir datos cuantitativos de la poblacion...
+                      Según el TdR, debes incluir datos cuantitativos de la población...
                     </div>
                   </div>
                 </div>
@@ -307,7 +298,7 @@ export default function LandingPage() {
             <FeatureCard
               accentColor="red"
               title="Reportes PDF y Excel"
-              description="Genera reportes profesionales con scoring detallado, justificaciones por criterio y analisis comparativo automatico."
+              description="Genera reportes profesionales con scoring detallado, justificaciones por criterio y análisis comparativo automático."
               mockup={
                 <div className="flex items-center gap-3">
                   <div className="flex h-10 w-8 items-center justify-center rounded border border-red-200 bg-red-50">
@@ -328,7 +319,7 @@ export default function LandingPage() {
             {/* Feature 6: Evaluacion rubrica */}
             <FeatureCard
               accentColor="amber"
-              title="Evaluacion con rubrica"
+              title="Evaluación con rúbrica"
               description="La entidad define criterios con pesos y niveles. La IA pre-llena scores y justificaciones que el evaluador puede ajustar."
               mockup={
                 <div className="grid grid-cols-4 gap-1">
@@ -375,28 +366,28 @@ export default function LandingPage() {
               {
                 step: "1",
                 title: "Crear convocatoria",
-                desc: "La entidad define formulario MGA por etapas, configura rubrica de evaluacion con pesos y sube documentos de referencia.",
+                desc: "La entidad define formulario MGA por etapas, configura rúbrica de evaluación con pesos y sube documentos de referencia.",
                 iconPath:
                   "M19.5 14.25v-2.625a3.375 3.375 0 0 0-3.375-3.375h-1.5A1.125 1.125 0 0 1 13.5 7.125v-1.5a3.375 3.375 0 0 0-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 0 0-9-9Z",
               },
               {
                 step: "2",
                 title: "Estructurar con IA",
-                desc: "El municipio completa el wizard paso a paso. La IA sugiere textos, identifica riesgos y auto-completa secciones enteras.",
+                desc: "El municipio completa el wizard paso a paso. La IA sugiere textos, identifica riesgos y autocompleta secciones enteras.",
                 iconPath:
                   "M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456Z",
               },
               {
                 step: "3",
                 title: "Evaluar proyectos",
-                desc: "La IA evalua cada criterio de la rubrica con scoring justificado. El evaluador humano puede ajustar cualquier puntaje.",
+                desc: "La IA evalúa cada criterio de la rúbrica con scoring justificado. El evaluador humano puede ajustar cualquier puntaje.",
                 iconPath:
                   "M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0 1 18 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3 1.5 1.5 3-3.75",
               },
               {
                 step: "4",
                 title: "Generar reportes",
-                desc: "Exporta resultados en Excel y PDF profesional con pre-factibilidad, comparativas y recomendaciones del sistema.",
+                desc: "Exporta resultados en Excel y PDF profesional con prefactibilidad, comparativas y recomendaciones del sistema.",
                 iconPath:
                   "M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 0 1 3 19.875v-6.75ZM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V8.625ZM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 0 1-1.125-1.125V4.125Z",
               },
@@ -432,36 +423,6 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* ═══════════════════════════════════════════ */}
-      {/* SOCIAL PROOF                                */}
-      {/* ═══════════════════════════════════════════ */}
-      <section className="border-t border-border px-6 py-20">
-        <div className="mx-auto max-w-6xl">
-          {/* Metrics */}
-          <div className="grid gap-6 sm:grid-cols-4 stagger-children">
-            <MetricCard value="500+" label="Municipios en la plataforma" />
-            <MetricCard value="2,400+" label="Proyectos MGA estructurados" />
-            <MetricCard value="12,000+" label="Evaluaciones IA generadas" />
-            <MetricCard value="85%" label="Incremento promedio en score" />
-          </div>
-
-          {/* Testimonials */}
-          <div className="mt-14 grid gap-6 sm:grid-cols-2">
-            <TestimonialCard
-              quote="Antes nos tomaba 5 meses formular un proyecto MGA. Con PuBlitec y la asistencia de IA, nuestro equipo lo completa en 3 semanas con un puntaje 40% mas alto."
-              name="Maria Fernanda Torres"
-              role="Secretaria de Planeacion"
-              org="Municipio de San Rafael"
-            />
-            <TestimonialCard
-              quote="La pre-evaluacion en tiempo real cambio todo. Los municipios pueden ver su puntaje antes de enviar y mejorar iterativamente. La calidad de los proyectos recibidos mejoro notablemente."
-              name="Carlos Andres Restrepo"
-              role="Director de Proyectos"
-              org="IDEA Antioquia"
-            />
-          </div>
-        </div>
-      </section>
 
       {/* ═══════════════════════════════════════════ */}
       {/* PILOT                                       */}
@@ -508,7 +469,7 @@ export default function LandingPage() {
                     Entidad
                   </h3>
                   <p className="text-[11px] text-text-muted">
-                    Crea convocatorias, evalua y genera reportes
+                    Crea convocatorias, evalúa y genera reportes
                   </p>
                 </div>
               </div>
@@ -520,7 +481,7 @@ export default function LandingPage() {
                   </code>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-text-muted">Contrasena</span>
+                  <span className="text-xs text-text-muted">Contraseña</span>
                   <code className="rounded border border-border bg-white px-2 py-0.5 text-xs font-mono text-text-primary">
                     Demo1234!
                   </code>
@@ -563,7 +524,7 @@ export default function LandingPage() {
                   </code>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-text-muted">Contrasena</span>
+                  <span className="text-xs text-text-muted">Contraseña</span>
                   <code className="rounded border border-border bg-white px-2 py-0.5 text-xs font-mono text-text-primary">
                     Demo1234!
                   </code>
@@ -605,13 +566,13 @@ export default function LandingPage() {
       >
         <div className="mx-auto max-w-5xl text-center">
           <p className="text-[11px] font-bold uppercase tracking-[0.2em] text-text-muted">
-            Construido para entidades publicas
+            Construido para entidades públicas
           </p>
           <div className="mt-8 flex flex-wrap items-center justify-center gap-x-10 gap-y-6">
             {[
               { name: "IDEA", style: "tracking-[0.3em] font-black text-[18px]" },
               {
-                name: "Gobernacion de Antioquia",
+                name: "Gobernación de Antioquia",
                 style: "font-semibold text-[14px]",
               },
               { name: "EAFIT", style: "tracking-[0.2em] font-bold text-[16px]" },
@@ -634,10 +595,10 @@ export default function LandingPage() {
       <section className="landing-cta-bg px-6 py-20">
         <div className="mx-auto max-w-2xl text-center">
           <h2 className="font-display text-[1.75rem] tracking-tight text-white sm:text-3xl lg:text-4xl">
-            Transforma la gestion de convocatorias en tu entidad
+            Transforma la gestión de convocatorias en tu entidad
           </h2>
           <p className="mt-4 text-[15px] text-white/70 leading-relaxed">
-            Empieza a recibir proyectos mejor estructurados, evalua con IA y genera
+            Empieza a recibir proyectos mejor estructurados, evalúa con IA y genera
             reportes profesionales en minutos.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -674,8 +635,8 @@ export default function LandingPage() {
                 </span>
               </div>
               <p className="mt-4 max-w-xs text-[13px] text-white/40 leading-relaxed">
-                Plataforma de convocatorias publicas con inteligencia artificial.
-                Formulacion MGA, evaluacion automatica y reportes profesionales.
+                Plataforma de convocatorias públicas con inteligencia artificial.
+                Formulación MGA, evaluación automática y reportes profesionales.
               </p>
             </div>
 
@@ -687,7 +648,7 @@ export default function LandingPage() {
               <ul className="mt-4 space-y-2.5">
                 {[
                   { href: "#funcionalidades", label: "Funcionalidades" },
-                  { href: "#como-funciona", label: "Como funciona" },
+                  { href: "#como-funciona", label: "Cómo funciona" },
                   { href: "#piloto", label: "Piloto" },
                   { href: "/casos", label: "Casos de uso" },
                 ].map((link) => (
@@ -710,7 +671,7 @@ export default function LandingPage() {
               </h4>
               <ul className="mt-4 space-y-2.5">
                 {[
-                  { href: "/implementacion", label: "Implementacion" },
+                  { href: "/implementacion", label: "Implementación" },
                   { href: "/dashboard/ayuda", label: "Centro de ayuda" },
                   { href: "/contacto", label: "Contacto" },
                 ].map((link) => (
@@ -732,7 +693,7 @@ export default function LandingPage() {
                 Legal
               </h4>
               <ul className="mt-4 space-y-2.5">
-                {["Terminos de servicio", "Politica de privacidad", "Politica de datos"].map(
+                {["Términos de servicio", "Política de privacidad", "Política de datos"].map(
                   (label) => (
                     <li key={label}>
                       <span className="text-[13px] text-white/40 cursor-default">
@@ -754,7 +715,7 @@ export default function LandingPage() {
                 href="/login"
                 className="text-[12px] text-white/40 hover:text-white/70 transition-colors"
               >
-                Iniciar sesion
+                Iniciar sesión
               </Link>
               <Link
                 href="/login?action=signup"
@@ -773,17 +734,6 @@ export default function LandingPage() {
 /* ════════════════════════════════════════════════════ */
 /* Sub-components                                       */
 /* ════════════════════════════════════════════════════ */
-
-function StatCounter({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="text-center px-4">
-      <p className="font-display text-[1.75rem] tracking-tight text-text-primary">
-        {value}
-      </p>
-      <p className="mt-1 text-[11px] text-text-muted">{label}</p>
-    </div>
-  );
-}
 
 function PainPoint({
   icon,
@@ -892,50 +842,6 @@ function MiniBar({
   );
 }
 
-function MetricCard({ value, label }: { value: string; label: string }) {
-  return (
-    <div className="rounded-[var(--radius-card)] border border-border bg-white p-6 text-center shadow-sm">
-      <p className="font-display text-[2rem] tracking-tight text-text-primary">
-        {value}
-      </p>
-      <p className="mt-1 text-[12px] text-text-muted">{label}</p>
-    </div>
-  );
-}
-
-function TestimonialCard({
-  quote,
-  name,
-  role,
-  org,
-}: {
-  quote: string;
-  name: string;
-  role: string;
-  org: string;
-}) {
-  return (
-    <div className="rounded-[var(--radius-card)] border border-border bg-white p-6 shadow-sm">
-      <svg
-        className="h-6 w-6 text-accent/20 mb-3"
-        fill="currentColor"
-        viewBox="0 0 24 24"
-      >
-        <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151C7.546 6.068 5.983 8.789 5.983 11H10v10H0z" />
-      </svg>
-      <p className="text-[13px] text-text-secondary leading-relaxed italic">
-        &ldquo;{quote}&rdquo;
-      </p>
-      <div className="mt-4 border-t border-border pt-4">
-        <p className="text-[13px] font-semibold text-text-primary">{name}</p>
-        <p className="text-[11px] text-text-muted">
-          {role}, {org}
-        </p>
-      </div>
-    </div>
-  );
-}
-
 function HeroMockup() {
   return (
     <div className="rounded-2xl bg-[#0f172a] p-1.5 landing-mockup-ring landing-float">
@@ -966,7 +872,7 @@ function HeroMockup() {
                 Wizard MGA
               </span>
             </div>
-            {["Convocatorias", "Analiticas", "Portafolio", "Calendario"].map(
+            {["Convocatorias", "Analíticas", "Portafolio", "Calendario"].map(
               (item) => (
                 <div
                   key={item}
@@ -985,7 +891,7 @@ function HeroMockup() {
             <div className="grid grid-cols-3 gap-2">
               {[
                 { label: "Progreso", value: "73%", color: "text-blue-400" },
-                { label: "Pre-evaluacion", value: "82/100", color: "text-emerald-400" },
+                { label: "Pre-evaluación", value: "82/100", color: "text-emerald-400" },
                 { label: "Campos IA", value: "14/18", color: "text-purple-400" },
               ].map((stat) => (
                 <div
@@ -1034,10 +940,10 @@ function HeroMockup() {
             {/* Stage progress */}
             <div className="flex items-center gap-2">
               {[
-                { label: "Identificacion", pct: 100, color: "bg-emerald-400" },
-                { label: "Preparacion", pct: 85, color: "bg-blue-400" },
-                { label: "Evaluacion", pct: 60, color: "bg-amber-400" },
-                { label: "Programacion", pct: 25, color: "bg-white/15" },
+                { label: "Identificación", pct: 100, color: "bg-emerald-400" },
+                { label: "Preparación", pct: 85, color: "bg-blue-400" },
+                { label: "Evaluación", pct: 60, color: "bg-amber-400" },
+                { label: "Programación", pct: 25, color: "bg-white/15" },
               ].map((stage, i) => (
                 <div key={stage.label} className="flex-1">
                   <p className="text-[7px] text-white/20 mb-1 truncate">

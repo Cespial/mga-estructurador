@@ -1,6 +1,13 @@
 # Estructurador MGA por Convocatorias
 
-Plataforma web para ayudar a **municipios** a estructurar proyectos bajo la Metodología General Ajustada (MGA), en el marco de **convocatorias** creadas por entidades gubernamentales (ministerios/gobernaciones).
+> Plataforma web para ayudar a **municipios** a estructurar proyectos bajo la Metodología General Ajustada (MGA), en el marco de **convocatorias** creadas por entidades gubernamentales.
+
+[![Next.js](https://img.shields.io/badge/Next.js-16-000?logo=next.js)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Supabase](https://img.shields.io/badge/Supabase-3FCF8E?logo=supabase&logoColor=white)](https://supabase.com)
+[![Vercel](https://img.shields.io/badge/Vercel-000?logo=vercel&logoColor=white)](https://vercel.com)
+
+**Live:** [mga-estructurador.vercel.app](https://mga-estructurador.vercel.app)
 
 ## Stack
 

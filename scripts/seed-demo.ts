@@ -87,7 +87,7 @@ const FORM_SCHEMA = [
   },
 ];
 
-async function createOrGetUser(email: string, password: string, fullName: string) {
+async function createOrGetUser(email: string, password: string, fullName: string, role: string) {
   // Try to find existing user first
   const { data: existing } = await supabase.auth.admin.listUsers();
   const found = existing?.users?.find((u) => u.email === email);
@@ -98,7 +98,7 @@ async function createOrGetUser(email: string, password: string, fullName: string
       id: found.id,
       email,
       full_name: fullName,
-      role: "platform_admin",
+      role,
     }, { onConflict: "id" });
     return found.id;
   }
@@ -117,7 +117,7 @@ async function createOrGetUser(email: string, password: string, fullName: string
     id: data.user.id,
     email,
     full_name: fullName,
-    role: "platform_admin",
+    role,
   }, { onConflict: "id" });
 
   return data.user.id;
@@ -128,11 +128,11 @@ async function main() {
 
   // ── 1. Create demo users ──
   console.log("1. Creating demo users...");
-  const ideaUserId = await createOrGetUser("demo@idea.gov.co", "Demo2026!", "Carlos Montoya (IDEA)");
-  const gobUserId = await createOrGetUser("demo@gobantioquia.gov.co", "Demo2026!", "Ana Maria Restrepo (Gobernacion)");
-  const rionUserId = await createOrGetUser("demo@rionegro.gov.co", "Demo2026!", "Juan Pablo Henao (Rionegro)");
-  const envigadoUserId = await createOrGetUser("demo@envigado.gov.co", "Demo2026!", "Laura Gomez (Envigado)");
-  const bellosUserId = await createOrGetUser("demo@bello.gov.co", "Demo2026!", "Andres Martinez (Bello)");
+  const ideaUserId = await createOrGetUser("demo@idea.gov.co", "Demo2026!", "Carlos Montoya (IDEA)", "entidad_admin");
+  const gobUserId = await createOrGetUser("demo@gobantioquia.gov.co", "Demo2026!", "Ana Maria Restrepo (Gobernacion)", "entidad_admin");
+  const rionUserId = await createOrGetUser("demo@rionegro.gov.co", "Demo2026!", "Juan Pablo Henao (Rionegro)", "municipio_user");
+  const envigadoUserId = await createOrGetUser("demo@envigado.gov.co", "Demo2026!", "Laura Gomez (Envigado)", "municipio_user");
+  const bellosUserId = await createOrGetUser("demo@bello.gov.co", "Demo2026!", "Andres Martinez (Bello)", "municipio_user");
 
   // ── 2. Create organizations ──
   console.log("\n2. Creating organizations...");

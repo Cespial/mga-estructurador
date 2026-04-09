@@ -28,9 +28,9 @@ const LIGHT_GRAY_ARGB = "FFF5F5F5";
  */
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ projectId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { projectId } = await params;
+  const { id: projectId } = await params;
   const supabase = await createClient();
 
   // Verify authentication

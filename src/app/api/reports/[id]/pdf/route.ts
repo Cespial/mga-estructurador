@@ -25,9 +25,9 @@ const GRAY_TEXT: [number, number, number] = [100, 100, 100];
  */
 export async function GET(
   _request: Request,
-  { params }: { params: Promise<{ projectId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
-  const { projectId } = await params;
+  const { id: projectId } = await params;
   const supabase = await createClient();
 
   // Verify authentication

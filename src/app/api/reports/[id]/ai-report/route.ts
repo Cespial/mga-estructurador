@@ -13,14 +13,14 @@ import type { EvaluationScore } from "@/lib/types/database";
  */
 export async function POST(
   _request: Request,
-  { params }: { params: Promise<{ convocatoriaId: string }> },
+  { params }: { params: Promise<{ id: string }> },
 ) {
   const profile = await getProfile();
   if (!profile || profile.role !== "entidad_admin") {
     return NextResponse.json({ error: "No autorizado" }, { status: 403 });
   }
 
-  const { convocatoriaId } = await params;
+  const { id: convocatoriaId } = await params;
 
   const supabase = await createClient();
 
